@@ -6,6 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const devMode = process.env.NODE_ENV !== 'production';
+const AssetsPlugin = require('assets-webpack-plugin');
 
 /**
  * @type {import('webpack').Configuration}
@@ -14,6 +15,12 @@ var config = {
     entry: [`./src/index.tsx`],
     mode: 'development',
     plugins: [
+        new AssetsPlugin({
+            useCompilerPath: true,
+            keepInMemory: true,
+            includeManifest: true,
+            removeFullPathAutoPrefix: true,
+        }),
         new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
             filename: `static/styles/[chunkhash].css`,
@@ -31,7 +38,7 @@ var config = {
             },
         }),
     ],
-    devtool: 'eval-source-map',
+    devtool: 'inline-source-map',
     module: {
         rules: [
             {

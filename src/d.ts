@@ -7,3 +7,10 @@ declare module '*.jpeg';
 declare module '*.jpg';
 declare module '*.jpeg';
 declare module '*.png';
+
+declare module 'webpack-assets.json' {
+    type assets = {
+        [key: string]: string;
+    };
+    export default assets;
+}
