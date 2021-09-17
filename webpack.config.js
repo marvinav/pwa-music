@@ -59,7 +59,13 @@ var config = {
         extensions: ['.tsx', '.ts', '.js'],
     },
     output: {
-        filename: 'scripts/[name].[fullhash].bundle.js',
+        chunkFilename: (path, asset) => {
+            let dir = 'scripts/';
+            if (path.chunk.id.includes('src_workers')) {
+                dir = path.chunk.id.includes('service-worker') ? '' : 'workers/';
+            }
+            return `${dir}[name].[fullhash].bundle.js`;
+        },
         path: path.resolve(__dirname, 'dist'),
         publicPath: 'auto',
     },
