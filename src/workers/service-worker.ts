@@ -1,19 +1,38 @@
 /// <reference lib="WebWorker" />
 import 'regenerator-runtime/runtime';
 import { cachedFetch } from './helpers';
+import { WebpackAsset } from '../types';
 
-self.addEventListener('fetch', (event: FetchEvent) => {
-    console.log(event.request.url);
-    event.respondWith(
-        caches.match(event.request).then(function (response) {
-            return response || fetch(event.request);
-        }),
-    );
+self.addEventListener('fetch', async (event: FetchEvent) => {
+    event.respondWith(cachedFetch(event.request));
 });
 
 self.addEventListener('install', async function (event: Event) {
-    cachedFetch('asd');
-    caches.open('main').then((cache) => {
-        cache.addAll(['/']);
-    });
+    const assetsResponse = await cachedFetch(WebpackAsset);
+    if (assetsResponse.ok) {
+        const assets: AssertObject = await assetsResponse.json();
+        const assetsUrls = assets && flatAsset(assets);
+        console.log(assetsUrls);
+        const webpackAssets = await caches.open('webpack-assets');
+        await webpackAssets.addAll(assetsUrls);
+    }
 });
+
+function flatAsset(assets: AssertObject) {
+    const result = [];
+    for (const name of Object.getOwnPropertyNames(assets)) {
+        const value = assets[name];
+        if (typeof value === 'string') {
+            result.push(value);
+        } else if (value instanceof Array) {
+            result.push(...value);
+        } else {
+            result.push(...flatAsset(value as AssertObject));
+        }
+    }
+    return result;
+}
+
+interface AssertObject {
+    [key: string]: string | AssertObject | Array<string>;
+}

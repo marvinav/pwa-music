@@ -99,3 +99,5 @@ export enum KeyCode {
     CLOSE_BRACKET = 221,
     SINGLE_QUOTE = 222,
 }
+
+export const WebpackAsset = 'webpack-assets.json';
