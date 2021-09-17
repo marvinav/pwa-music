@@ -1,9 +1,13 @@
 {
   "compilerOptions": {
     "module": "ES2020",
-    "lib": ["es6", "dom"],
+    "lib": [
+      "ES2020",
+      "DOM",
+    ],
     "moduleResolution": "node",
     "sourceMap": true,
+    "strict": true,
     "experimentalDecorators": true,
     "noImplicitThis": true,
     "allowSyntheticDefaultImports": true,

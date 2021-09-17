@@ -4,9 +4,11 @@ import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom';
 import { Loading } from './pages/Loading';
 import { BackgroundMemo as Background } from './layouts/Background';
 import { NavBar } from './layouts/NavBar';
+import './workers/high-load';
 
 const NotFound = lazy(() => import(/* webpackChunkName: "NotFound" */ './pages/NotFound'));
 const Home = lazy(() => import(/* webpackChunkName: "Home" */ './pages/Home'));
+const WebWorker = new Worker(new URL('./workers/high-load.ts', import.meta.url));
 
 // Входная точка приложения.
 // Корень всего сайта.

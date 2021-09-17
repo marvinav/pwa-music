@@ -5,11 +5,14 @@ const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
 const devMode = process.env.NODE_ENV !== 'production';
 
+/**
+ * @type {import('webpack').Configuration}
+ */
 var config = {
     entry: [`./src/index.tsx`],
+    mode: 'development',
     plugins: [
         new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
@@ -33,7 +36,7 @@ var config = {
         rules: [
             {
                 // Загрузчик typescript
-                test: /\.(tsx?$|js$)/,
+                test: /\.(tsx$|ts$|js$)/,
                 use: 'babel-loader',
                 exclude: /node_modules/,
             },
@@ -56,7 +59,7 @@ var config = {
         extensions: ['.tsx', '.ts', '.js'],
     },
     output: {
-        filename: 'scripts/[name].[hash][chunkhash].bundle.js',
+        filename: 'scripts/[name].[fullhash].bundle.js',
         path: path.resolve(__dirname, 'dist'),
         publicPath: 'auto',
     },
@@ -66,11 +69,6 @@ var config = {
         https: true,
         port: 3000,
         hot: true,
-        historyApiFallback: {
-            rewrites: [{ from: /./, to: '/index.html' }],
-            verbose: true,
-            disableDotRule: false,
-        },
     },
 };
 
