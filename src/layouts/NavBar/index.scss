@@ -1,0 +1,15 @@
+nav#nav-bar {
+    display: flex;
+    position: sticky;
+    top: 0px;
+    left: 0;
+    justify-content: center;
+    gap: 1em;
+    align-items: center;
+    background-color: black;
+    padding: 5px;
+    box-sizing: border-box;
+    .navlink {
+        font-size: 1.5em;
+    }
+}

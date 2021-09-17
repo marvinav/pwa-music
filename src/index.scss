@@ -1,0 +1,212 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto&display=swap');
+//region Mixins
+
+@mixin headings {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @content;
+    }
+}
+
+//endregion Mixins
+
+// Style Variables
+
+:root {
+    --background-color: black;
+    --color: yellow;
+    --color-selected: rgb(82, 82, 58);
+    --border-color-focus: rgb(194, 194, 19);
+    --main-font-family: 'Roboto', sans-serif;
+    --special-font-family: 'Press Start 2P', cursive;
+    --border-radius: 5px;
+}
+
+// depth-1
+:root {
+    --background-color-1: rgb(58, 41, 41);
+    --color-1: yellow;
+}
+
+// Paddings and margins
+
+.p-0 {
+    padding: 0;
+}
+
+.m-0 {
+    margin: 0;
+}
+
+.p-s {
+    padding: 6px;
+}
+
+.m-s {
+    margin: 6px;
+}
+
+.p-m {
+    padding: 9px;
+}
+
+.m-m {
+    margin: 9px;
+}
+
+.p-b {
+    padding: 12px;
+}
+
+.m-b {
+    margin: 12px;
+}
+
+.rounded {
+    border-radius: var(--border-radius);
+}
+// Layers
+
+.depth-0 {
+    background-color: var(--background-color);
+    color: var(--color-1);
+}
+
+.depth-1 {
+    background-color: var(--background-color-1);
+    color: var(--color-1);
+}
+
+.paper-0 {
+    @extend .depth-0;
+    @extend .p-s;
+    @extend .m-0;
+}
+
+.paper-1 {
+    @extend .depth-1;
+    @extend .p-s;
+    @extend .m-0;
+}
+
+.paper-0 .shine-shadow,
+.depth-0 .shine-shadow {
+    * {
+        filter: drop-shadow(3px 3px var(--background-color-1));
+    }
+}
+
+.paper-1 .shine-shadow,
+.depth-1 .shine-shadow {
+    filter: drop-shadow(3px 3px var(--background-color-1));
+}
+
+// Layouts
+
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+
+    &.align-center {
+        align-items: center;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .container {
+        &.align-center {
+            align-items: stretch;
+        }
+    }
+}
+
+.full-screen {
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+}
+
+#root {
+    display: contents;
+}
+
+body {
+    @extend .paper-0;
+    @extend .container;
+    @extend .full-screen;
+    @include headings {
+        font-family: var(--special-font-family);
+    }
+    p,
+    span {
+        font-family: var(--main-font-family);
+    }
+}
+
+.focusable {
+    box-sizing: border-box;
+    border: 3px solid transparent;
+    padding: 3px;
+    &:focus {
+        padding: 3px;
+        outline: none;
+        border: 3px solid var(--border-color-focus);
+        animation-name: blink-border-focusable;
+        animation-iteration-count: infinite;
+        animation-duration: 1s;
+        animation-direction: normal;
+    }
+}
+
+@keyframes blink-border-focusable {
+    from {
+        border-color: transparent;
+    }
+    to {
+        border-color: var(--border-color-focus);
+    }
+}
+
+// Fonts
+
+.main-font {
+    font-family: var(--main-font-family);
+}
+
+.special-font {
+    font-family: var(--special-font-family);
+}
+
+// Scrollbar
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: var(--background-color);
+    &:hover {
+        background: var(--color-selected);
+    }
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
