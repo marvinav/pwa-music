@@ -27,11 +27,6 @@ export interface IDictionaryContextValue {
      * Available languages
      */
     langs: string[];
-
-    /**
-     * Formate date to locale
-     */
-    formatDate: IDictionaryFormatDate;
 }
 
 // Контекст
@@ -40,30 +35,9 @@ export const dictionaryContext = createContext<IDictionaryContextValue>({
     d: () => undefined,
     lang: 'en',
     langs: ['en'],
-    formatDate: (date) => date.toString(),
 });
 
 // Hook, вызовом которого получаем контекст.
 export const useDictionary = () => {
     return useContext<IDictionaryContextValue>(dictionaryContext);
 };
-
-export type IDictionaryFormatDate = (
-    date: Date | string | number,
-    format?: {
-        type: 'time' | 'date' | 'all';
-        /**
-         * If advanced than use yestarday, ignore year for current year
-         */
-        advanced: boolean;
-        /**
-         * Referenced date
-         */
-        date?: Date | string | number;
-
-        /**
-         * Template
-         */
-        template?: string;
-    },
-) => string;

@@ -7,6 +7,10 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const devMode = process.env.NODE_ENV !== 'production';
 const AssetsPlugin = require('assets-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
+
+const isDevServer = process.env.WEBPACK_DEV_SERVER;
+const publicPath = path.resolve(__dirname, 'dist/public');
 
 /**
  * @type {import('webpack').Configuration}
@@ -17,7 +21,7 @@ var config = {
     plugins: [
         new AssetsPlugin({
             useCompilerPath: true,
-            keepInMemory: true,
+            keepInMemory: isDevServer,
             includeManifest: true,
             removeFullPathAutoPrefix: true,
         }),
@@ -27,6 +31,9 @@ var config = {
         }),
         new HtmlWebpackPlugin({
             template: 'static/index.html',
+        }),
+        new CopyPlugin({
+            patterns: [{ from: 'public', to: 'public' }],
         }),
         new FaviconsWebpackPlugin({
             logo: './static/favicon.png',
@@ -77,6 +84,9 @@ var config = {
         publicPath: 'auto',
     },
     devServer: {
+        writeToDisk: (path) => {
+            return path.includes(publicPath);
+        },
         contentBase: path.resolve(__dirname, 'dist/'),
         host: 'localhost',
         https: true,

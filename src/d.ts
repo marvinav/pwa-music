@@ -8,6 +8,12 @@ declare module '*.jpg';
 declare module '*.jpeg';
 declare module '*.png';
 
+declare module '*.json' {
+    type dictionary = {
+        [key: string]: string;
+    };
+    export default dictionary;
+}
 declare module 'webpack-assets.json' {
     type assets = {
         [key: string]: string;
