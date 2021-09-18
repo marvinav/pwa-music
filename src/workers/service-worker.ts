@@ -8,6 +8,7 @@ self.addEventListener('fetch', async (event: FetchEvent) => {
 });
 
 self.addEventListener('install', async function (event: Event) {
+    console.log('Service Worker Installed');
     const assetsResponse = await cachedFetch(WebpackAsset);
     if (assetsResponse.ok) {
         const assets: AssertObject = await assetsResponse.json();

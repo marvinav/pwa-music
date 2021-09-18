@@ -8,6 +8,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const devMode = process.env.NODE_ENV !== 'production';
 const AssetsPlugin = require('assets-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const util = require('util');
 
 const isDevServer = process.env.WEBPACK_DEV_SERVER;
 const publicPath = path.resolve(__dirname, 'dist/public');
@@ -17,7 +18,6 @@ const publicPath = path.resolve(__dirname, 'dist/public');
  */
 var config = {
     entry: [`./src/index.tsx`],
-    mode: 'development',
     plugins: [
         new AssetsPlugin({
             useCompilerPath: true,
@@ -74,10 +74,8 @@ var config = {
     },
     output: {
         chunkFilename: (path, asset) => {
-            let dir = 'scripts/';
-            if (path.chunk.id.includes('src_workers')) {
-                dir = path.chunk.id.includes('service-worker') ? '' : 'workers/';
-            }
+            let dir = path.chunk.name === 'service-worker' ? '' : 'scripts/';
+
             return `${dir}[name].[fullhash].bundle.js`;
         },
         path: path.resolve(__dirname, 'dist'),
@@ -96,5 +94,7 @@ var config = {
 };
 
 module.exports = (env, argv) => {
+    config.mode = argv.mode;
+    config.devtool = argv.mode === 'development' ? 'eval' : false;
     return config;
 };

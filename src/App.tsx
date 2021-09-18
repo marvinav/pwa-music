@@ -12,7 +12,9 @@ const Home = lazy(() => import(/* webpackChunkName: "Home" */ './pages/Home'));
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
-        navigator.serviceWorker.register(new URL('./workers/service-worker.ts', import.meta.url));
+        navigator.serviceWorker.register(
+            new URL(/* webpackChunkName: "service-worker"*/ './workers/service-worker.ts', import.meta.url),
+        );
     });
 }
 
