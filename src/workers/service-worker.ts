@@ -7,20 +7,19 @@ self.addEventListener('fetch', async (event: FetchEvent) => {
     event.respondWith(cachedFetch(event.request));
 });
 
-self.addEventListener('install', async function (event: Event) {
+self.addEventListener('install', async () => {
     console.log('Service Worker Installed');
     const assetsResponse = await cachedFetch(WebpackAsset);
     if (assetsResponse.ok) {
         const assets: AssertObject = await assetsResponse.json();
         const assetsUrls = assets && flatAsset(assets);
-        console.log(assetsUrls);
         const webpackAssets = await caches.open('webpack-assets');
-        await webpackAssets.addAll(assetsUrls);
+        await webpackAssets.addAll(assetsUrls.filter((x) => !x.startsWith('public/')));
     }
 });
 
 function flatAsset(assets: AssertObject) {
-    const result = [];
+    const result: string[] = [];
     for (const name of Object.getOwnPropertyNames(assets)) {
         const value = assets[name];
         if (typeof value === 'string') {

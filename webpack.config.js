@@ -19,6 +19,7 @@ const publicPath = path.resolve(__dirname, 'dist/public');
 var config = {
     entry: [`./src/index.tsx`],
     plugins: [
+        /**Generate webpack-asset file with all static files */
         new AssetsPlugin({
             useCompilerPath: true,
             keepInMemory: isDevServer,
@@ -74,6 +75,7 @@ var config = {
     },
     output: {
         chunkFilename: (path, asset) => {
+            console.log(path.query);
             let dir = path.chunk.name === 'service-worker' ? '' : 'scripts/';
 
             return `${dir}[name].[fullhash].bundle.js`;
@@ -83,6 +85,7 @@ var config = {
     },
     devServer: {
         writeToDisk: (path) => {
+            console.log({ path: path.includes(publicPath) });
             return path.includes(publicPath);
         },
         contentBase: path.resolve(__dirname, 'dist/'),

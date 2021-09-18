@@ -12,7 +12,7 @@ const defaultLang = 'en_US';
 
 // Реализация контекста словаря посредством загрузки json схем, которые хранятся в static
 const useDictionary = (): IDictionaryContextValue => {
-    const [language, setLanguage] = useState<string>(window.navigator.language);
+    const [language, setLanguage] = useState<string>(window.navigator.language.split('-')[0]);
     const [dictionary, setDictionary] = useState<{ [key: string]: string }>(null);
 
     React.useEffect(() => {
@@ -20,7 +20,7 @@ const useDictionary = (): IDictionaryContextValue => {
     }, [language]);
 
     React.useEffect(() => {
-        if (language === defaultLang) {
+        if (!language || language === defaultLang) {
             setDictionary(null);
         } else {
             (async (language) => {
@@ -30,7 +30,9 @@ const useDictionary = (): IDictionaryContextValue => {
                         setDictionary(await response.json());
                         return;
                     }
-                } catch (err) {}
+                } catch (err) {
+                    console.error(err);
+                }
             })(language);
         }
     }, [language]);
