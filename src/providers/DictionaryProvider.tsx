@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { dictionaryPath } from '../constants';
 
 import { dictionaryContext, IDictionaryContextValue } from '../contexts/DictionaryContext';
+import { cachedFetch } from '../workers/helpers';
 
 export default function DictionaryProvider(props: React.PropsWithChildren<unknown>) {
     const dictionary = useDictionary();
@@ -25,7 +26,7 @@ const useDictionary = (): IDictionaryContextValue => {
         } else {
             (async (language) => {
                 try {
-                    const response = await fetch(dictionaryPath(language));
+                    const response = await cachedFetch(dictionaryPath(language));
                     if (response.ok) {
                         setDictionary(await response.json());
                         return;

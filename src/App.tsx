@@ -4,19 +4,9 @@ import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom';
 import { Loading } from './pages/Loading';
 import { BackgroundMemo as Background } from './layouts/Background';
 import { NavBar } from './layouts/NavBar';
-import './workers/service-worker';
 
 const NotFound = lazy(() => import(/* webpackChunkName: "NotFound" */ './pages/NotFound'));
 const Home = lazy(() => import(/* webpackChunkName: "Home" */ './pages/Home'));
-// const WebWorker = new Worker(new URL('./workers/high-load.ts', import.meta.url));
-
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function () {
-        navigator.serviceWorker.register(
-            new URL(/* webpackChunkName: "service-worker"*/ './workers/service-worker.ts', import.meta.url),
-        );
-    });
-}
 
 // Входная точка приложения.
 // Корень всего сайта.

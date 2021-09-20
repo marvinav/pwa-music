@@ -1,21 +1,38 @@
 /// <reference lib="WebWorker" />
+
 import 'regenerator-runtime/runtime';
 import { cachedFetch } from './helpers';
 import { WebpackAsset } from '../types';
 
-self.addEventListener('fetch', async (event: FetchEvent) => {
-    event.respondWith(cachedFetch(event.request));
+declare const self: ServiceWorkerGlobalScope;
+declare const clients: Clients;
+
+/**
+ * Regex for url which related to application navigation
+ */
+const navRegex = /((?!\/assets\/|\/public\/|\/static\/|\/scripts\/).*)(^(?!.*\.js$|.*\.css$|.*\.html$).*)/;
+
+self.addEventListener('fetch', async (event) => {
+    const requestUrl = new URL(event.request.url);
+    if (requestUrl.hostname === self.location.hostname && navRegex.test(requestUrl.pathname)) {
+        console.log({ da: requestUrl.pathname });
+        caches.match('/').then(console.log);
+        event.respondWith(caches.match('/'));
+    } else {
+        event.respondWith(cachedFetch(event.request));
+    }
 });
 
-self.addEventListener('install', async () => {
-    console.log('Service Worker Installed');
+self.addEventListener('install', async (ev) => {
     const assetsResponse = await cachedFetch(WebpackAsset);
     if (assetsResponse.ok) {
         const assets: AssertObject = await assetsResponse.json();
-        const assetsUrls = assets && flatAsset(assets);
+        const assetsUrls = new Set(assets && flatAsset(assets));
         const webpackAssets = await caches.open('webpack-assets');
-        await webpackAssets.addAll(assetsUrls.filter((x) => !x.startsWith('public/')));
+        await webpackAssets.add('/');
+        await webpackAssets.addAll([...assetsUrls].filter((x) => !x.startsWith('public/')));
     }
+    console.log('Service Worker Installed');
 });
 
 function flatAsset(assets: AssertObject) {

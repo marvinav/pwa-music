@@ -6,6 +6,7 @@
       "DOM"
     ],
     "moduleResolution": "node",
+    "downlevelIteration": true,
     "sourceMap": true,
     "experimentalDecorators": true,
     "noImplicitThis": true,
