@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
+const fs = require('fs');
 // web pack plugins
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -19,7 +20,7 @@ const publicPath = path.resolve(__dirname, 'dist/public');
 var config = {
     entry: [`./src/index.tsx`],
     plugins: [
-        /**Generate webpack-asset file with all static files */
+        /**Generate webpack-asset file with all static files url */
         new AssetsPlugin({
             useCompilerPath: true,
             keepInMemory: isDevServer,
@@ -74,24 +75,26 @@ var config = {
         extensions: ['.tsx', '.ts', '.js'],
     },
     output: {
-        chunkFilename: (path, asset) => {
-            console.log(path.query);
+        filename: '[name].[contenthash].bundle.js',
+        chunkFilename: (path) => {
+            // Place Service Worker in root scope
             let dir = path.chunk.name === 'service-worker' ? '' : 'scripts/';
-
-            return `${dir}[name].[fullhash].bundle.js`;
+            return `${dir}[name].[chunkhash].chunk.js`;
         },
         path: path.resolve(__dirname, 'dist'),
         publicPath: 'auto',
     },
     devServer: {
         writeToDisk: (path) => {
-            console.log({ path: path.includes(publicPath) });
             return path.includes(publicPath);
         },
         contentBase: path.resolve(__dirname, 'dist/'),
         host: 'localhost',
-        https: true,
-        port: 3000,
+        https: {
+            key: fs.readFileSync(path.resolve(__dirname, '.development/private.key')),
+            cert: fs.readFileSync(path.resolve(__dirname, '.development/private.crt')),
+            cacert: fs.readFileSync(path.resolve(__dirname, '.development/private.pem')),
+        },
         hot: true,
     },
 };
