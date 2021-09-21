@@ -8,7 +8,7 @@
         "lint": "eslint '*/**/*.{js,ts,tsx}'",
         "lint-fix": "eslint '*/**/*.{js,ts,tsx}' --fix",
         "start": "webpack serve --mode=development",
-        "chrome": "google-chrome --user-data-dir=/tmp/foo --ignore-certificate-errors --unsafely-treat-insecure-origin-as-secure=https://localhost:8080"
+        "chrome": "google-chrome --user-data-dir=/tmp/foo --ignore-certificate-errors --unsafely-treat-insecure-origin-as-secure=https://localhost:8080 https://localhost:8080"
     },
     "author": "marvinav",
     "license": "MIT",
