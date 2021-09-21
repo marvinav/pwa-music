@@ -1,55 +1,46 @@
 /// <reference lib="WebWorker" />
 
 import 'regenerator-runtime/runtime';
+
+import { Assets } from '../services/Assets';
 import { cachedFetch } from './helpers';
-import { WebpackAsset } from '../types';
 
 declare const self: ServiceWorkerGlobalScope;
-declare const clients: Clients;
 
 /**
  * Regex for url which related to application navigation
  */
 const navRegex = /((?!\/assets\/|\/public\/|\/static\/|\/scripts\/).*)(^(?!.*\.js$|.*\.css$|.*\.html$).*)/;
+const assets = new Assets();
 
 self.addEventListener('fetch', async (event) => {
     const requestUrl = new URL(event.request.url);
-    if (requestUrl.hostname === self.location.hostname && navRegex.test(requestUrl.pathname)) {
-        console.log({ da: requestUrl.pathname });
-        caches.match('/').then(console.log);
-        event.respondWith(caches.match('/'));
+    if (requestUrl.hostname === self.location.hostname) {
+        event.respondWith(navRegex.test(requestUrl.pathname) ? caches.match('/') : cachedFetch(event.request));
     } else {
-        event.respondWith(cachedFetch(event.request));
+        event.respondWith(fetch(event.request));
     }
 });
 
 self.addEventListener('install', async (ev) => {
-    const assetsResponse = await cachedFetch(WebpackAsset);
-    if (assetsResponse.ok) {
-        const assets: AssertObject = await assetsResponse.json();
-        const assetsUrls = new Set(assets && flatAsset(assets));
-        const webpackAssets = await caches.open('webpack-assets');
-        await webpackAssets.add('/');
-        await webpackAssets.addAll([...assetsUrls].filter((x) => !x.startsWith('public/')));
-    }
+    console.time('Installation time');
+    (await caches.open('root')).add('/');
+    const webpackAssets = await caches.open('webpack-assets');
+    // Install assets for current webworker.
+    await webpackAssets.addAll(await assets.getCoreAssetsUrls());
+    console.timeEnd('Installation time');
     console.log('Service Worker Installed');
 });
 
-function flatAsset(assets: AssertObject) {
-    const result: string[] = [];
-    for (const name of Object.getOwnPropertyNames(assets)) {
-        const value = assets[name];
-        if (typeof value === 'string') {
-            result.push(value);
-        } else if (value instanceof Array) {
-            result.push(...value);
-        } else {
-            result.push(...flatAsset(value as AssertObject));
+self.addEventListener('activate', async (ev) => {
+    console.time('Activation time');
+    const cache = await caches.open('webpack-assets');
+    const cachedAssets = await cache.keys();
+    const coreUrls = await assets.getCoreAssetsUrls();
+    cachedAssets.forEach((cached) => {
+        if (!coreUrls.find((a) => cached.url.endsWith(a))) {
+            cache.delete(cached);
         }
-    }
-    return result;
-}
-
-interface AssertObject {
-    [key: string]: string | AssertObject | Array<string>;
-}
+    });
+    console.timeEnd('Activation time');
+});

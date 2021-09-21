@@ -7,14 +7,8 @@
         "build": "npx webpack --mode=production",
         "lint": "eslint '*/**/*.{js,ts,tsx}'",
         "lint-fix": "eslint '*/**/*.{js,ts,tsx}' --fix",
-        "create-key": "openssl genrsa -out .development/private.key 4096",
-        "create-csr": "openssl req -batch -new -sha256 -out .development/private.csr -key .development/private.key -config .development/ssl.conf ",
-        "create-crt": "openssl x509 -req -days 3650 -in .development/private.csr -signkey .development/private.key -out .development/private.crt -extensions req_ext -extfile .development/ssl.conf",
-        "create-pem": "openssl x509 -in .development/private.crt -out .development/private.pem -outform PEM",
-        "pregenerate-ssl": "rm -r .development/private.*",
-        "generate-ssl": "npm run create-key && npm run create-csr && npm run create-crt && npm run create-pem",
         "start": "webpack serve --mode=development",
-        "poststart": "certutil -D -d sql:${HOME}/.pki/nssdb -n \"localhost\""
+        "chrome": "google-chrome --user-data-dir=/tmp/foo --ignore-certificate-errors --unsafely-treat-insecure-origin-as-secure=https://localhost:8080"
     },
     "author": "marvinav",
     "license": "MIT",

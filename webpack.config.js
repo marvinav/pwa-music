@@ -78,8 +78,10 @@ var config = {
         filename: '[name].[contenthash].bundle.js',
         chunkFilename: (path) => {
             // Place Service Worker in root scope
-            let dir = path.chunk.name === 'service-worker' ? '' : 'scripts/';
-            return `${dir}[name].[chunkhash].chunk.js`;
+            if (path.chunk.name === 'service-worker') {
+                return 'service-worker.chunk.js';
+            }
+            return `scripts/[name].[chunkhash].chunk.js`;
         },
         path: path.resolve(__dirname, 'dist'),
         publicPath: 'auto',
@@ -90,11 +92,7 @@ var config = {
         },
         contentBase: path.resolve(__dirname, 'dist/'),
         host: 'localhost',
-        https: {
-            key: fs.readFileSync(path.resolve(__dirname, '.development/private.key')),
-            cert: fs.readFileSync(path.resolve(__dirname, '.development/private.crt')),
-            cacert: fs.readFileSync(path.resolve(__dirname, '.development/private.pem')),
-        },
+        https: true,
         hot: true,
     },
 };

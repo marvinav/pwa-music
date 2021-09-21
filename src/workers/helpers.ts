@@ -1,8 +1,8 @@
-export async function cachedFetch(request: RequestInfo) {
+export async function cachedFetch(request: RequestInfo, cacheName = 'cached-event') {
     try {
         const response = await fetch(request);
         const responseClone = response.clone();
-        caches.open('cached-event').then(function (cache) {
+        caches.open(cacheName).then(function (cache) {
             console.log(`${(request as Request).url ?? request} added to cache`);
             cache.put(request, responseClone);
         });
