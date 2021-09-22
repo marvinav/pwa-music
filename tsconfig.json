@@ -7,7 +7,7 @@
       "WebWorker"
     ],
     "moduleResolution": "node",
-    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
     "downlevelIteration": true,
     "sourceMap": true,
     "experimentalDecorators": true,
