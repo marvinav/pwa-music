@@ -25,15 +25,17 @@ export function Avatar(props: {
     );
 }
 
-function useClassName(props: { className: string, size?: string }) {
+function useClassName(props: { className: string; size?: string }) {
     const { className, size } = props;
 
     const classes: string[] = ['avatar-container'];
 
     if (className) {
-        classes.push(className)
+        classes.push(className);
     }
-
-    classes.push(size ?? 'normal')
+    const a = '23';
+    const b = true;
+    const c: number = a + b;
+    classes.push(size ?? 'normal');
     return classes.join(' ');
 }

@@ -12,9 +12,7 @@ type AppProviderProps = React.PropsWithChildren<unknown>;
 const AppProvider = (props: AppProviderProps) => {
     return (
         <BrowserRouter>
-            <DictionaryProvider>
-                {props.children}
-            </DictionaryProvider>
+            <DictionaryProvider>{props.children}</DictionaryProvider>
         </BrowserRouter>
     );
 };
