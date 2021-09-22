@@ -1,4 +1,5 @@
 import React, { HTMLAttributes } from 'react';
+import PropTypes from 'prop-types';
 import './index.scss';
 
 type NavLinkProps = React.PropsWithChildren<
@@ -22,9 +23,8 @@ type NavLinkProps = React.PropsWithChildren<
     }
 >;
 
-export function NavLink(props: NavLinkProps) {
+export const NavLink: React.VFC<NavLinkProps> = (props) => {
     const { onNavigate, path, disabled, selected } = props;
-
     const reactAttributes = { ...props };
     delete reactAttributes.onNavigate;
     delete reactAttributes.ref;
@@ -49,7 +49,17 @@ export function NavLink(props: NavLinkProps) {
             {props.children}
         </span>
     );
-}
+};
+
+NavLink.propTypes = {
+    onNavigate: PropTypes.func,
+    path: PropTypes.string,
+    disabled: PropTypes.bool,
+    selected: PropTypes.bool,
+    onClick: PropTypes.func,
+    children: PropTypes.element,
+    className: PropTypes.string,
+};
 
 function className(props: { selected?: boolean; disabled?: boolean; className?: string }) {
     const main = ['navlink'];
