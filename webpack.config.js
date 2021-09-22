@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
-const fs = require('fs');
 // web pack plugins
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -11,8 +10,24 @@ const AssetsPlugin = require('assets-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const util = require('util');
 
-const isDevServer = process.env.WEBPACK_DEV_SERVER;
+const isDevServer = process.env.WEBPACK_DEV_SERVE;
+
 const publicPath = path.resolve(__dirname, 'dist/public');
+
+/**
+ * @type {import('webpack-dev-server').Configuration}
+ */
+var devServer = {
+    devMiddleware: {
+        writeToDisk: (path) => {
+            return path.includes(publicPath);
+        },
+    },
+    static: path.resolve(__dirname, 'dist/'),
+    host: 'localhost',
+    https: true,
+    hot: true,
+};
 
 /**
  * @type {import('webpack').Configuration}
@@ -86,15 +101,7 @@ var config = {
         path: path.resolve(__dirname, 'dist'),
         publicPath: 'auto',
     },
-    devServer: {
-        writeToDisk: (path) => {
-            return path.includes(publicPath);
-        },
-        contentBase: path.resolve(__dirname, 'dist/'),
-        host: 'localhost',
-        https: true,
-        hot: true,
-    },
+    devServer,
 };
 
 module.exports = (env, argv) => {

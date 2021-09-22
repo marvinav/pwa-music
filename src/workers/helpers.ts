@@ -1,5 +1,8 @@
 export async function cachedFetch(request: RequestInfo, cacheName = 'cached-event') {
     try {
+        if (!navigator.onLine) {
+            throw new Error('Device is offline');
+        }
         const response = await fetch(request);
         const responseClone = response.clone();
         caches.open(cacheName).then(function (cache) {
