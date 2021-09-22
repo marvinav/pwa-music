@@ -3,6 +3,7 @@ const path = require('path');
 // web pack plugins
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const devMode = process.env.NODE_ENV !== 'production';
@@ -10,6 +11,8 @@ const AssetsPlugin = require('assets-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 
 const isDevServer = new Boolean(process.env.WEBPACK_DEV_SERVE);
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
 const publicPath = path.resolve(__dirname, 'dist/public');
 
 /**
@@ -66,7 +69,14 @@ var config = {
             {
                 // Загрузчик typescript
                 test: /\.(tsx$|ts$|js$)/,
-                use: 'babel-loader',
+                use: [
+                    {
+                        loader: require.resolve('babel-loader'),
+                        options: {
+                            plugins: [isDevelopment && require.resolve('react-refresh/babel')].filter(Boolean),
+                        },
+                    },
+                ],
                 exclude: /node_modules/,
             },
             {
@@ -105,5 +115,8 @@ var config = {
 module.exports = (env, argv) => {
     config.mode = argv.mode;
     config.devtool = argv.mode === 'development' ? 'eval' : false;
+    if (isDevelopment) {
+        config.plugins.push(new ReactRefreshWebpackPlugin());
+    }
     return config;
 };

@@ -1,5 +1,4 @@
 import React, { Suspense, lazy } from 'react';
-import { hot } from 'react-hot-loader/root';
 import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom';
 import { Loading } from './pages/Loading';
 import { BackgroundMemo as Background } from './layouts/Background';
@@ -29,4 +28,4 @@ const App = () => {
     );
 };
 
-export default hot(App);
+export default App;
