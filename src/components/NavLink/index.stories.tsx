@@ -18,3 +18,10 @@ export default {
 const Template: ComponentStory<typeof NavLink> = (args) => <NavLink {...args} />;
 
 export const Primary = Template.bind({});
+
+export const Focusable = Template.bind({});
+Focusable.args = { className: 'special-font focusable' };
+
+export const FocusabeleInFocus = Template.bind({});
+FocusabeleInFocus.args = { className: 'special-font focusable' };
+FocusabeleInFocus.parameters = { pseudo: { focus: true } };
