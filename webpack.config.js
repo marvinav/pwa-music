@@ -65,7 +65,7 @@ var config = {
             removeFullPathAutoPrefix: true,
         }),
     ],
-    devtool: 'inline-source-map',
+    devtool: 'source-map',
     module: {
         rules: [
             {

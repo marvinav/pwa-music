@@ -5,6 +5,29 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Unsafe Chrome",
+            "type": "chrome",
+            "runtimeArgs": [
+                "--user-data-dir=/tmp/foo",
+                "--ignore-certificate-errors",
+                "--unsafely-treat-insecure-origin-as-secure=https://localhost:8080",
+                "https://localhost:8080"
+            ],
+            "url": "https://localhost:8080",
+            "skipFiles": [
+                "<node_internals>/**",
+                "node_modules/**",
+                "dist/**"
+            ],
+            "sourceMaps": true,
+            "cleanUp": "wholeBrowser",
+            "webRoot": "${workspaceFolder}/dist",
+            "smartStep": true,
+            "pathMapping": {
+                "///webpack-internal": "${workspaceFolder}"
+            },
+        },
+        {
             "name": "Laung Edge",
             "request": "launch",
             "type": "edge",
@@ -19,12 +42,5 @@
             },
             "sourceMaps": true,
         },
-        // {
-        //     "type": "pwa-chrome",
-        //     "request": "launch",
-        //     "name": "Launch Chrome against localhost",
-        //     "url": "http://localhost:8080",
-        //     "webRoot": "${workspaceFolder}"
-        // }
     ]
 }
