@@ -8,12 +8,16 @@
         "lint": "eslint '*/**/*.{js,ts,tsx}'",
         "lint-fix": "eslint '*/**/*.{js,ts,tsx}' --fix",
         "types": "tsc --noEmit",
+        "preinstall": "node .my-space/preinstall.js",
         "prettier": "prettier --check \"src\"",
         "prettier-fix": "prettier -w \"src\"",
         "start": "WEBPACK_DEV_SERVE=true webpack serve --mode=development",
         "chrome": "google-chrome --user-data-dir=/tmp/foo --ignore-certificate-errors --unsafely-treat-insecure-origin-as-secure=https://localhost:8080 https://localhost:8080",
         "storybook": "start-storybook -p 6006",
         "build-storybook": "build-storybook"
+    },
+    "engines": {
+        "node": ">14.15.0"
     },
     "author": "marvinav",
     "license": "MIT",
