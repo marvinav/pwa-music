@@ -11,7 +11,7 @@ module.exports = {
             jsx: true, // Allows for the parsing of JSX
         },
     },
-    plugins: ["prettier", 'react', '@typescript-eslint', 'react-hooks'],
+    plugins: ['prettier', 'react', '@typescript-eslint', 'react-hooks'],
     settings: {
         react: {
             version: 'detect', // Tells eslint-plugin-react to automatically detect the version of React to use
@@ -23,10 +23,11 @@ module.exports = {
         'plugin:react-hooks/recommended',
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
-        'prettier'
+        'prettier',
     ],
     rules: {
         // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
         '@typescript-eslint/explicit-module-boundary-types': 'off',
+        '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     },
 };

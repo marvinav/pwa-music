@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { Route, RouteProps } from 'react-router-dom';
+import { RouteProps } from 'react-router-dom';
 
 /**
  * Обертка над Route.
@@ -8,7 +7,7 @@ import { Route, RouteProps } from 'react-router-dom';
  * Если нет, то пользователь переадресуется на страницу по умолчанию для авторизации.
  * @param props Роутинг в случае успешной авторизации
  */
-const ProtectedRoute = (props: RouteProps) => {
+const ProtectedRoute = (_props: RouteProps) => {
     // const { me } = useAuth();
     // if (me) {
     //     return <Route {...props} />;

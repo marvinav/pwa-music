@@ -10,8 +10,10 @@ const devMode = process.env.NODE_ENV !== 'production';
 const AssetsPlugin = require('assets-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 
-const isDevServer = new Boolean(process.env.WEBPACK_DEV_SERVE);
+const isDevServer = process.env.WEBPACK_DEV_SERVE;
 const isDevelopment = process.env.NODE_ENV !== 'production';
+
+console.log(isDevServer);
 
 const publicPath = path.resolve(__dirname, 'dist/public');
 

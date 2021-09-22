@@ -22,7 +22,7 @@ self.addEventListener('fetch', async (event) => {
     }
 });
 
-self.addEventListener('install', async (ev) => {
+self.addEventListener('install', async (_ev) => {
     console.time('Installation time');
     (await caches.open('root')).add('/');
     const webpackAssets = await caches.open('webpack-assets');
@@ -32,7 +32,7 @@ self.addEventListener('install', async (ev) => {
     console.log('Service Worker Installed');
 });
 
-self.addEventListener('activate', async (ev) => {
+self.addEventListener('activate', async (_ev) => {
     console.time('Activation time');
     const cache = await caches.open('webpack-assets');
     const cachedAssets = await cache.keys();

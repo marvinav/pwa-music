@@ -1,5 +1,4 @@
-import React, { createContext } from 'react';
-import { useContext } from 'react';
+import React from 'react';
 import { useRef } from 'react';
 
 interface IShinedInjectOptions {
