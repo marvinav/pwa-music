@@ -57,7 +57,7 @@ NavLink.propTypes = {
     disabled: PropTypes.bool,
     selected: PropTypes.bool,
     onClick: PropTypes.func,
-    children: PropTypes.element,
+    children: PropTypes.node,
     className: PropTypes.string,
 };
 

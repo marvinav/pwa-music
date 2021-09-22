@@ -1,18 +1,20 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useRef } from 'react';
 
-interface IShinedInjectOptions {
+export interface IShinedProps {
+    size?: number;
+    background?: string;
+    children: (options: IShinedInjectOptions) => JSX.Element;
+}
+export interface IShinedInjectOptions {
     onMouseMove: (ev: React.MouseEvent) => void;
     onMouseEnter: (ev: React.MouseEvent) => void;
     onMouseLeave: (ev: React.MouseEvent) => void;
     shine: JSX.Element;
 }
 
-export function Shined(props: {
-    size?: number;
-    background?: string;
-    children: (options: IShinedInjectOptions) => JSX.Element;
-}) {
+export const Shined: React.VFC<IShinedProps> = (props) => {
     const ref = useRef<HTMLDivElement>();
     const onMouseEnter = React.useCallback(() => {
         ref.current.style.setProperty('display', null);
@@ -29,13 +31,12 @@ export function Shined(props: {
                     position: 'fixed',
                     pointerEvents: 'none',
                     borderRadius: '50%',
-                    width: `${props.size ?? 72}px`,
-                    height: `${props.size ?? 72}px`,
+                    width: `${props.size}px`,
+                    height: `${props.size}px`,
                     overflow: 'clip',
                     filter: 'blur(5px)',
                     transform: 'translate(-50%, -50%)',
-                    background:
-                        props.background ?? 'radial-gradient(circle, rgba(255,255,0,0.25) 0%,  rgba(255,255,0,0) 70%)',
+                    background: props.background,
                 }}
                 ref={ref}
                 className="shine"
@@ -46,7 +47,7 @@ export function Shined(props: {
     const onMouseMove = React.useCallback(
         (ev: React.MouseEvent) => {
             if (ref) {
-                const halfWidth = (props.size ?? 72) / 2;
+                const halfWidth = props.size / 2;
                 ref.current.style.setProperty('top', `${ev.clientY}px`);
                 ref.current.style.setProperty('left', `${ev.clientX}px`);
                 const parentClient = ev.currentTarget.getBoundingClientRect();
@@ -72,4 +73,15 @@ export function Shined(props: {
     );
 
     return props.children({ onMouseMove, onMouseLeave, onMouseEnter, shine });
-}
+};
+
+Shined.propTypes = {
+    background: PropTypes.string,
+    children: PropTypes.func.isRequired,
+    size: PropTypes.number.isRequired,
+};
+
+Shined.defaultProps = {
+    size: 72,
+    background: 'radial-gradient(circle, rgba(255,255,0,0.25) 0%,  rgba(255,255,0,0) 70%)',
+};
