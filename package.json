@@ -1,6 +1,6 @@
 {
-    "name": "react-template",
-    "description": "Custom template to create React Sites",
+    "name": "@marvinav/private-space",
+    "description": "Powerfull start page for every web user",
     "version": "1.0.0",
     "browser": "dist/main.js",
     "scripts": {
