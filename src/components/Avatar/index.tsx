@@ -1,12 +1,17 @@
 import React from 'react';
 import './index.scss';
-
-export function Avatar(props: {
+import PropTypes from 'prop-types';
+export interface AvatarProps {
+    /**
+     * Will be passed in `src` attribute of nested `img`
+     */
     src: string;
     className?: string;
     onErrorSrc?: string;
     size?: 'xs' | 's' | 'normal' | 'l' | 'xl';
-}) {
+}
+
+export const Avatar: React.VFC<AvatarProps> = (props) => {
     const ref = React.useRef<HTMLImageElement>();
 
     const className = useClassName({ className: props.className, size: props.size });
@@ -23,7 +28,18 @@ export function Avatar(props: {
             src={props.src}
         ></img>
     );
-}
+};
+
+Avatar.defaultProps = {
+    size: 'normal',
+};
+
+Avatar.propTypes = {
+    className: PropTypes.string,
+    onErrorSrc: PropTypes.string,
+    size: PropTypes.oneOf(['xs', 's', 'normal', 'l', 'xl']),
+    src: PropTypes.string.isRequired,
+};
 
 function useClassName(props: { className: string; size?: string }) {
     const { className, size } = props;
