@@ -33,9 +33,7 @@ function useClassName(props: { className: string; size?: string }) {
     if (className) {
         classes.push(className);
     }
-    const a = '23';
-    const b = true;
-    const c: number = a + b;
+
     classes.push(size ?? 'normal');
     return classes.join(' ');
 }
