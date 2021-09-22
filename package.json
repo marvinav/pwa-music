@@ -7,7 +7,7 @@
         "build": "npx webpack --mode=production",
         "lint": "eslint '*/**/*.{js,ts,tsx}'",
         "lint-fix": "eslint '*/**/*.{js,ts,tsx}' --fix",
-        "start": "webpack serve --mode=development",
+        "start": "WEBPACK_DEV_SERVE=true webpack serve --mode=development",
         "chrome": "google-chrome --user-data-dir=/tmp/foo --ignore-certificate-errors --unsafely-treat-insecure-origin-as-secure=https://localhost:8080 https://localhost:8080"
     },
     "author": "marvinav",
@@ -33,7 +33,6 @@
         "@typescript-eslint/parser": "^4.31.2",
         "assets-webpack-plugin": "^7.1.1",
         "babel-loader": "^8.2.2",
-        "babel-plugin-transform-regenerator": "^6.26.0",
         "clean-webpack-plugin": "^4.0.0",
         "copy-webpack-plugin": "^9.0.1",
         "css-loader": "^6.3.0",

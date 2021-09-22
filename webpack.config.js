@@ -8,10 +8,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const devMode = process.env.NODE_ENV !== 'production';
 const AssetsPlugin = require('assets-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const util = require('util');
 
-const isDevServer = process.env.WEBPACK_DEV_SERVE;
-
+const isDevServer = new Boolean(process.env.WEBPACK_DEV_SERVE);
 const publicPath = path.resolve(__dirname, 'dist/public');
 
 /**
@@ -35,13 +33,6 @@ var devServer = {
 var config = {
     entry: [`./src/index.tsx`],
     plugins: [
-        /**Generate webpack-asset file with all static files url */
-        new AssetsPlugin({
-            useCompilerPath: true,
-            keepInMemory: isDevServer,
-            includeManifest: true,
-            removeFullPathAutoPrefix: true,
-        }),
         new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
             filename: `static/styles/[chunkhash].css`,
@@ -60,6 +51,13 @@ var config = {
                 developerName: 'marvinav',
                 developerURL: 'https://www.githib.com/marvinav',
             },
+        }),
+        /**Generate webpack-asset file with all static files url */
+        new AssetsPlugin({
+            useCompilerPath: true,
+            includeManifest: true,
+            keepInMemory: isDevServer,
+            removeFullPathAutoPrefix: true,
         }),
     ],
     devtool: 'inline-source-map',
