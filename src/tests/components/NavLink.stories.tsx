@@ -1,9 +1,9 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import '../../index.scss';
-import { NavLink } from './index';
+import { NavLink } from '../../components/NavLink/index';
 
-export default {
+const story: ComponentMeta<typeof NavLink> = {
     component: NavLink,
     title: 'Components/NavLink',
     args: {
@@ -13,7 +13,9 @@ export default {
             window.open(path, '_blank');
         },
     },
-} as ComponentMeta<typeof NavLink>;
+};
+
+export default story;
 
 const Template: ComponentStory<typeof NavLink> = (args) => <NavLink {...args} />;
 
