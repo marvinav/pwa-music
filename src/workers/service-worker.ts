@@ -3,7 +3,7 @@
 import 'regenerator-runtime/runtime';
 
 import { Assets } from '../services/Assets';
-import { cachedFetch } from './helpers';
+import { cachedFetch } from '../utils/helpers';
 
 declare const self: ServiceWorkerGlobalScope;
 

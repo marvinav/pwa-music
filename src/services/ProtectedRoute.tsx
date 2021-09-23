@@ -1,4 +1,5 @@
-import { RouteProps } from 'react-router-dom';
+import * as React from 'react';
+import { RouteProps, Route } from 'react-router-dom';
 
 /**
  * Обертка над Route.
@@ -7,13 +8,8 @@ import { RouteProps } from 'react-router-dom';
  * Если нет, то пользователь переадресуется на страницу по умолчанию для авторизации.
  * @param props Роутинг в случае успешной авторизации
  */
-const ProtectedRoute = (_props: RouteProps) => {
-    // const { me } = useAuth();
-    // if (me) {
-    //     return <Route {...props} />;
-    // } else {
-    //     return <SignIn></SignIn>;
-    // }
+const ProtectedRoute: React.VFC<RouteProps> = (props) => {
+    return <Route {...props} />;
 };
 
 export default ProtectedRoute;

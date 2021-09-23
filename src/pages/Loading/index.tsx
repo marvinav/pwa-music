@@ -10,7 +10,7 @@ const style = {
     backgroundColor: 'var(--main-color)',
 };
 
-export const Loading = () => {
+export const Loading: React.VFC = () => {
     return (
         <div style={style}>
             <Spinner></Spinner>

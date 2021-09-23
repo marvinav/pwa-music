@@ -1,4 +1,4 @@
-export async function cachedFetch(request: RequestInfo, cacheName = 'cached-event') {
+export async function cachedFetch(request: RequestInfo, cacheName = 'cached-event'): Promise<Response> {
     try {
         if (!navigator.onLine) {
             throw new Error('Device is offline');

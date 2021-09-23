@@ -3,7 +3,7 @@ import React from 'react';
 /**
  * Prevents updating state on an unmounted component.
  */
-export function useSafeDispatch<T>(dispatch: React.Dispatch<T>) {
+export function useSafeDispatch<T>(dispatch: React.Dispatch<T>): (action: T) => void {
     const mounted = React.useRef(false);
 
     React.useLayoutEffect(() => {

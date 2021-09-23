@@ -1,12 +1,12 @@
 import { WebpackAsset } from '../constants';
 import { AssetBase, AssetEntry, RawAsset } from '../types';
-import { cachedFetch } from '../workers/helpers';
+import { cachedFetch } from '../utils/helpers';
 
 export class Assets {
     private _assets: AssetEntry[];
     private url: string;
 
-    async loadAssets(url: string = WebpackAsset) {
+    async loadAssets(url: string = WebpackAsset): Promise<AssetEntry[]> {
         this.url = url;
         const assets = await (await cachedFetch(url)).json();
         if (assets) {
@@ -15,11 +15,11 @@ export class Assets {
         return this.assets;
     }
 
-    get assets() {
+    get assets(): AssetEntry[] {
         return this._assets;
     }
 
-    async getCoreAssetsUrls() {
+    async getCoreAssetsUrls(): Promise<string[]> {
         if (!this._assets) {
             await this.loadAssets(this.url);
         }
@@ -27,7 +27,7 @@ export class Assets {
     }
 }
 
-export function flatAsset(assets: RawAsset) {
+export function flatAsset(assets: RawAsset): AssetEntry[] {
     const result: AssetEntry[] = [];
     for (const name of Object.getOwnPropertyNames(assets)) {
         const value = assets[name];
