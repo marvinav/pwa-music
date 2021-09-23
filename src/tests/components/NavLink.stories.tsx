@@ -19,11 +19,14 @@ export default story;
 
 const Template: ComponentStory<typeof NavLink> = (args) => <NavLink {...args} />;
 
-export const Primary = Template.bind({});
+export const NewWindow = Template.bind({});
 
-export const Focusable = Template.bind({});
-Focusable.args = { className: 'special-font focusable' };
+export const NavigateLink = Template.bind({});
 
-export const FocusabeleInFocus = Template.bind({});
-FocusabeleInFocus.args = { className: 'special-font focusable' };
-FocusabeleInFocus.parameters = { pseudo: { focus: true } };
+NavigateLink.args = {
+    path: '#header',
+    children: 'Header',
+    onNavigate: (path) => {
+        window.open(path);
+    },
+};
