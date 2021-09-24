@@ -6,7 +6,7 @@ import App from './App';
 import AppProvider from './providers/AppProvider';
 import './index.scss';
 
-if (false && 'serviceWorker' in navigator) {
+if ('serviceWorker' in navigator) {
     window.addEventListener('load', async function () {
         navigator.serviceWorker.getRegistration().then(async function (registration) {
             if (registration) {

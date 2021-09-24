@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { RouteProps, useParams } from 'react-router-dom';
-import { PluginManager } from './PluginManager';
+import { RouteProps } from 'react-router-dom';
 
 /**
  * Обертка над Route.
@@ -10,8 +9,5 @@ import { PluginManager } from './PluginManager';
  * @param props Роутинг в случае успешной авторизации
  */
 export const PluginRoute: React.VFC<RouteProps> = () => {
-    const params = useParams();
-    const [plugins, setPlugins] = React.useState(new PluginManager());
-    console.log(params);
     return <div></div>;
 };
