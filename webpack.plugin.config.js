@@ -18,7 +18,7 @@ console.log('Build plugin');
  * @type {import('webpack').Configuration}
  */
 var config = {
-    entry: [`./src/plugins/yandex-disk/index.ts`],
+    entry: [`./src/plugins/yandex-disk/index`],
     plugins: [
         new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
@@ -43,9 +43,6 @@ var config = {
                 use: [
                     {
                         loader: require.resolve('babel-loader'),
-                        options: {
-                            plugins: [isDevelopment && require.resolve('react-refresh/babel')].filter(Boolean),
-                        },
                     },
                 ],
                 exclude: /node_modules/,
@@ -69,7 +66,7 @@ var config = {
         extensions: ['.tsx', '.ts', '.js'],
     },
     output: {
-        filename: '[name].[contenthash].bundle.js',
+        filename: '[name].js',
         chunkFilename: (path) => {
             // Place Service Worker in root scope
             if (path.chunk.name === 'service-worker') {
@@ -79,6 +76,7 @@ var config = {
         },
         path: path.resolve(__dirname, 'dist/plugins/yandex-disk'),
         publicPath: '/plugins/yandex-disk/',
+        libraryTarget: 'amd',
     },
 };
 

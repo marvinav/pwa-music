@@ -15,7 +15,7 @@ const links: NavBarProps['links'] = [
     {
         id: 'home',
         label: 'Home',
-        path: '/home',
+        path: '/',
     },
     {
         id: 'about',

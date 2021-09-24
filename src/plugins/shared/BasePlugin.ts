@@ -1,3 +1,6 @@
-export abstract class PluginClient {
-    render: () => void;
+import { ReactElement } from 'react';
+
+export class ReactPlugin {
+    constructor() {}
+    render: () => ReactElement;
 }

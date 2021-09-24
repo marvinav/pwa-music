@@ -1,8 +1,8 @@
 import React from 'react';
-// import ReactDOM from 'react-dom';
-import 'regenerator-runtime/runtime';
+import { ReactPlugin } from '../shared/BasePlugin';
+import { TestDiv } from './App';
 
-export class YandexDiskPlugin {
+export default class YandexDiskPlugin implements ReactPlugin {
     constructor() {
         console.log('test');
     }
@@ -11,9 +11,3 @@ export class YandexDiskPlugin {
         return <TestDiv></TestDiv>;
     }
 }
-
-export const TestDiv: React.VFC = () => {
-    return <div>{'test'}</div>;
-};
-
-new YandexDiskPlugin();

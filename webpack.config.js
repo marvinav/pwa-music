@@ -39,7 +39,7 @@ var devServer = {
 var config = {
     entry: [`./src/index`],
     plugins: [
-        new CleanWebpackPlugin(),
+        new CleanWebpackPlugin({ cleanOnceBeforeBuildPatterns: ['*/**', , '*.*', '!plugins/**'] }),
         new MiniCssExtractPlugin({
             filename: `static/styles/[chunkhash].css`,
         }),

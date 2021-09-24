@@ -1,3 +1,5 @@
+import { ReactPlugin } from '../shared/BasePlugin';
+
 export class YandexDiskClient {
     readonly oauthRequestUrlToken: string;
     private readonly clientId: string;
