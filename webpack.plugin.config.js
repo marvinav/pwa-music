@@ -3,7 +3,6 @@ const path = require('path');
 // web pack plugins
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const devMode = process.env.NODE_ENV !== 'production';
@@ -13,31 +12,13 @@ const CopyPlugin = require('copy-webpack-plugin');
 const isDevServer = process.env.WEBPACK_DEV_SERVE;
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
-console.log(isDevServer);
-
-const publicPath = path.resolve(__dirname, 'dist/public');
-
-/**
- * @type {import('webpack-dev-server').Configuration}
- */
-var devServer = {
-    devMiddleware: {
-        writeToDisk: (path) => {
-            return path.includes(publicPath);
-        },
-    },
-    static: path.resolve(__dirname, 'dist/'),
-    host: 'localhost',
-    historyApiFallback: true,
-    https: true,
-    hot: true,
-};
+console.log('Build plugin');
 
 /**
  * @type {import('webpack').Configuration}
  */
 var config = {
-    entry: [`./src/index`],
+    entry: [`./src/plugins/yandex-disk/index.ts`],
     plugins: [
         new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
@@ -47,23 +28,10 @@ var config = {
             template: 'static/index.html',
         }),
         new CopyPlugin({
-            patterns: [{ from: 'public', to: 'public' }],
-        }),
-        new FaviconsWebpackPlugin({
-            logo: './static/favicon.png',
-            favicons: {
-                appName: 'marvinav',
-                appDescription: 'Blog about web, dev and science',
-                developerName: 'marvinav',
-                developerURL: 'https://www.githib.com/marvinav',
-            },
-        }),
-        /**Generate webpack-asset file with all static files url */
-        new AssetsPlugin({
-            useCompilerPath: true,
-            includeManifest: true,
-            keepInMemory: isDevServer,
-            removeFullPathAutoPrefix: true,
+            patterns: [
+                { from: 'src/plugins/yandex-disk/manifest.json', to: 'manifest.json' },
+                { from: 'src/plugins/yandex-disk/public', to: 'public' },
+            ],
         }),
     ],
     devtool: 'source-map',
@@ -109,17 +77,12 @@ var config = {
             }
             return `scripts/[name].[chunkhash].chunk.js`;
         },
-        path: path.resolve(__dirname, 'dist'),
-        publicPath: '/',
+        path: path.resolve(__dirname, 'dist/plugins/yandex-disk'),
+        publicPath: '/plugins/yandex-disk/',
     },
-    devServer,
 };
 
 module.exports = (env, argv) => {
     config.mode = argv.mode;
-    config.devtool = argv.mode === 'development' ? 'eval' : false;
-    if (isDevelopment) {
-        config.plugins.push(new ReactRefreshWebpackPlugin());
-    }
     return config;
 };

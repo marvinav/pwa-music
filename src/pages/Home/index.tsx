@@ -1,5 +1,6 @@
 import React from 'react';
 import { Avatar } from '../../components/Avatar';
+import { Button } from '../../components/Button';
 import { Shined } from '../../components/Shined';
 import { gitHubAvatar } from '../../constants';
 import { useDictionary } from '../../contexts/DictionaryContext';
@@ -35,7 +36,7 @@ const Home: React.VFC = () => {
                     );
                 }}
             </Shined>
-            <section id="education"></section>
+            <section id="yandex.disk"></section>
             <section id="experience"></section>
         </div>
     );

@@ -3,6 +3,7 @@ import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom';
 import { Loading } from './pages/Loading';
 import { BackgroundMemo as Background } from './layouts/Background';
 import { NavBar, NavBarProps } from './layouts/NavBar';
+import { PluginRoute } from './services/PluginRoute';
 
 const NotFound = lazy(() => import(/* webpackChunkName: "NotFound" */ './pages/NotFound'));
 const Home = lazy(() => import(/* webpackChunkName: "Home" */ './pages/Home'));
@@ -39,6 +40,7 @@ const App: React.FC = () => {
             <Suspense fallback={<Loading />}>
                 <Switch>
                     <Route path="/" exact component={Home}></Route>
+                    <PluginRoute path="/plugins/:pluginId"></PluginRoute>
                     <Route component={NotFound} />
                 </Switch>
             </Suspense>
