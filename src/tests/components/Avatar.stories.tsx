@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { gitHubAvatar } from '../../constants';
 
-import { Avatar } from './index';
+import { Avatar } from '../../components/Avatar/index';
 
 export default {
     component: Avatar,

@@ -5,7 +5,7 @@ import { gitHubAvatar } from '../../constants';
 import { useDictionary } from '../../contexts/DictionaryContext';
 import './index.scss';
 
-const Home = () => {
+const Home: React.VFC = () => {
     const { d } = useDictionary();
     const AvatarMemo = React.useMemo(() => <Avatar className="avatar" src={gitHubAvatar}></Avatar>, []);
 

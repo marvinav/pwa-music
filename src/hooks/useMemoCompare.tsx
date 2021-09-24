@@ -1,9 +1,9 @@
 // usehooks.com
 import { useEffect, useRef } from 'react';
 
-export default function useMemoCompare(next, compare) {
+export default function useMemoCompare<T>(next: T, compare: (prev: T, next: T) => T): T {
     // Ref for storing previous value
-    const previousRef = useRef();
+    const previousRef = useRef<T>();
     const previous = previousRef.current;
 
     // Pass previous and next value to compare function

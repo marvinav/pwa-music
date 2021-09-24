@@ -4,9 +4,9 @@ import { useLocation } from 'react-router-dom';
 const jsonKeys = new Set(['filter']);
 
 // the query string for you.
-export function useQuery<T>() {
+export function useQuery<T extends { [key: string]: unknown }>(): T {
     const search = new URLSearchParams(useLocation().search);
-    const result: { [key: string]: any } = {};
+    const result: Record<string, unknown> = {};
     search.forEach((value, key) => {
         const toInsert = jsonKeys.has(key) ? JSON.parse(value) : value;
         let old = result[key];

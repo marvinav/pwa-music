@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React from 'react';
 
-export function Background(props: { particlesConfig: string }) {
+export const Background = (props: { particlesConfig: string }) => {
     import('particles.js').then((_x) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (window as unknown as { particlesJS: any }).particlesJS.load('particles-js-background', props.particlesConfig);
     });
     return (
@@ -10,7 +12,7 @@ export function Background(props: { particlesConfig: string }) {
             id="particles-js-background"
         ></div>
     );
-}
+};
 
 export const BackgroundMemo = React.memo(Background, (p, n) => {
     return p?.particlesConfig === n?.particlesConfig;

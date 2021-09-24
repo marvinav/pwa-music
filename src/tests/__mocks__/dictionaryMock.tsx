@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
-import { dictionaryPath } from '../constants';
 
-import { dictionaryContext, IDictionaryContextValue } from '../contexts/DictionaryContext';
-import { cachedFetch } from '../utils/helpers';
+import { dictionaryContext, IDictionaryContextValue } from '../../contexts/DictionaryContext';
 
 export const DictionaryProvider: React.FC = (props) => {
     const dictionary = useDictionary();
     return <dictionaryContext.Provider value={dictionary}>{props.children}</dictionaryContext.Provider>;
 };
 
-const defaultLang = 'en_US';
+const defaultLang = 'en';
+
+const ru = {
+    home: 'Домой',
+    about: 'Обо мне',
+    blog: 'Блог',
+};
 
 // Реализация контекста словаря посредством загрузки json схем, которые хранятся в static
 const useDictionary = (): IDictionaryContextValue => {
-    const [language, setLanguage] = useState<string>(window.navigator.language.split('-')[0]);
+    const [language, setLanguage] = useState<string>(defaultLang);
     const [dictionary, setDictionary] = useState<{ [key: string]: string }>(null);
 
     React.useEffect(() => {
@@ -23,18 +27,8 @@ const useDictionary = (): IDictionaryContextValue => {
     React.useEffect(() => {
         if (!language || language === defaultLang) {
             setDictionary(null);
-        } else {
-            (async (language) => {
-                try {
-                    const response = await cachedFetch(dictionaryPath(language));
-                    if (response.ok) {
-                        setDictionary(await response.json());
-                        return;
-                    }
-                } catch (err) {
-                    console.error(err);
-                }
-            })(language);
+        } else if (language === 'ru') {
+            setDictionary(ru);
         }
     }, [language]);
 
@@ -46,6 +40,6 @@ const useDictionary = (): IDictionaryContextValue => {
         d,
         setLanguage,
         lang: language,
-        langs: [defaultLang, 'ru_RU', 'de'],
+        langs: [defaultLang, 'ru'],
     };
 };

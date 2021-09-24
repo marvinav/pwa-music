@@ -5,7 +5,7 @@ export function useEventListener<K extends keyof WindowEventMap>(
     eventName: K,
     handler: (ev: WindowEventMap[K]) => void,
     element = window,
-) {
+): void {
     // Create a ref that stores handler
     const savedHandler = React.useRef(null);
 

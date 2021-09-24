@@ -1,13 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useRef } from 'react';
 import { NavLink } from '../../components/NavLink';
 import { useDictionary } from '../../contexts/DictionaryContext';
 
 import './index.scss';
 
-const items = [undefined, 'blog', 'about'];
+export interface NavBarProps {
+    onClick: (path: string) => void;
+    section: string | undefined;
 
-export function NavBar(props: { onClick: (path: string) => void; section: string | undefined }) {
+    links: { id: string; label: string; path: string }[];
+}
+
+export const NavBar: React.VFC<NavBarProps> = (props) => {
     const { d } = useDictionary();
     const [selected, setSelected] = React.useState(props.section);
     const focusLink = useRef(0);
@@ -37,51 +43,35 @@ export function NavBar(props: { onClick: (path: string) => void; section: string
             onFocus={(ev) => {
                 if (ev.target === ref.current) {
                     ev.preventDefault();
-                    const indexOfSelected = items.findIndex((x) => x === selected);
+                    const indexOfSelected = props.links.findIndex((x) => x.path === selected);
                     focusLink.current = indexOfSelected;
                     (ref.current.children[indexOfSelected] as HTMLElement).focus();
                 }
             }}
         >
-            <NavLinkMemo
-                tabIndex={-1}
-                key="/"
-                className="special-font focusable"
-                path="/"
-                selected={selected === undefined}
-                onNavigate={(path) => {
-                    props.onClick(path);
-                }}
-            >
-                {d('Home')}
-            </NavLinkMemo>
-            <NavLinkMemo
-                tabIndex={-1}
-                key="/blog"
-                className="special-font focusable"
-                path="/blog"
-                selected={selected === 'blog'}
-                onNavigate={(path) => {
-                    props.onClick(path);
-                }}
-            >
-                {d('Blog')}
-            </NavLinkMemo>
-            <NavLinkMemo
-                tabIndex={-1}
-                key="/about"
-                className="special-font focusable"
-                path="/about"
-                selected={selected === 'about'}
-                onNavigate={(path) => {
-                    props.onClick(path);
-                }}
-            >
-                {d('About')}
-            </NavLinkMemo>
+            {props.links.map((link) => (
+                <NavLinkMemo
+                    tabIndex={-1}
+                    key={link.path}
+                    className="special-font focusable"
+                    path={link.path}
+                    selected={selected === link.path}
+                    onNavigate={(path) => {
+                        props.onClick(path);
+                    }}
+                >
+                    {d(link.label)}
+                </NavLinkMemo>
+            ))}
         </nav>
     );
-}
+};
+
+NavBar.propTypes = {
+    onClick: PropTypes.func,
+    section: PropTypes.string,
+    links: PropTypes.array.isRequired,
+};
 
 const NavLinkMemo = React.memo(NavLink, (p, n) => {
     return p.selected === n.selected && p.disabled === n.disabled && p.path === n.path && p.children === n.children;

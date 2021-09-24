@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 
 // Hook
-export const useWindowWidth = () => {
+export const useWindowWidth = (): number => {
     const isClient = typeof window === 'object'; //Object represents browser window
     const lastWidth = useRef<number>();
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import '../../index.scss';
-import { NavLink } from './index';
+import { NavLink } from '../../components/NavLink/index';
 
-export default {
+const story: ComponentMeta<typeof NavLink> = {
     component: NavLink,
     title: 'Components/NavLink',
     args: {
@@ -13,15 +13,20 @@ export default {
             window.open(path, '_blank');
         },
     },
-} as ComponentMeta<typeof NavLink>;
+};
+
+export default story;
 
 const Template: ComponentStory<typeof NavLink> = (args) => <NavLink {...args} />;
 
-export const Primary = Template.bind({});
+export const NewWindow = Template.bind({});
 
-export const Focusable = Template.bind({});
-Focusable.args = { className: 'special-font focusable' };
+export const NavigateLink = Template.bind({});
 
-export const FocusabeleInFocus = Template.bind({});
-FocusabeleInFocus.args = { className: 'special-font focusable' };
-FocusabeleInFocus.parameters = { pseudo: { focus: true } };
+NavigateLink.args = {
+    path: '#header',
+    children: 'Header',
+    onNavigate: (path) => {
+        window.open(path);
+    },
+};

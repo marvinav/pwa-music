@@ -38,6 +38,6 @@ export const dictionaryContext = createContext<IDictionaryContextValue>({
 });
 
 // Hook, вызовом которого получаем контекст.
-export const useDictionary = () => {
+export const useDictionary = (): IDictionaryContextValue => {
     return useContext<IDictionaryContextValue>(dictionaryContext);
 };

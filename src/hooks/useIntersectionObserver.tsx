@@ -1,6 +1,6 @@
 // https://github.com/billyjacoby/intersection-observer-hooks
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, MutableRefObject } from 'react';
 
 interface IntersactionObserverProps {
     threshold: number;
@@ -8,10 +8,17 @@ interface IntersactionObserverProps {
     rootMargin?: string;
 }
 
-export const useIntersectionObserver = (ref, options: IntersactionObserverProps) => {
+export const useIntersectionObserver = (
+    ref: MutableRefObject<Element>,
+    options: IntersactionObserverProps,
+): [boolean, IntersectionObserver] => {
     const { threshold, root, rootMargin } = options;
     // configure the state
-    const [state, setState] = useState({
+    const [state, setState] = useState<{
+        inView: boolean;
+        triggered: boolean;
+        entry: IntersectionObserver;
+    }>({
         inView: false,
         triggered: false,
         entry: undefined,
@@ -40,7 +47,6 @@ export const useIntersectionObserver = (ref, options: IntersactionObserverProps)
     );
 
     useEffect(() => {
-        // check that the element exists, and has not already been triggered
         if (ref.current) {
             observer.observe(ref.current);
         }

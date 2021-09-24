@@ -86,6 +86,13 @@ if [ $? -ne 0 ]; then
   exit 1;
 fi
 
+npm run test
+
+if [ $? -ne 0 ]; then
+  echo "${RED}${BOLD}Please check all tests"
+  exit 1;
+fi
+
 echo "${NORMAL}"
 
 exit 0;
