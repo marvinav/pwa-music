@@ -1,18 +1,11 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 // web pack plugins
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const devMode = process.env.NODE_ENV !== 'production';
-const AssetsPlugin = require('assets-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-
-const isDevServer = process.env.WEBPACK_DEV_SERVE;
-const isDevelopment = process.env.NODE_ENV !== 'production';
-
-console.log('Build plugin');
 
 /**
  * @type {import('webpack').Configuration}
@@ -82,5 +75,8 @@ var config = {
 
 module.exports = (env, argv) => {
     config.mode = argv.mode;
+    if (argv.mode === 'production') {
+        delete config.devtool;
+    }
     return config;
 };
