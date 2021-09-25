@@ -4,6 +4,7 @@ import { Loading } from './pages/Loading';
 import { BackgroundMemo as Background } from './layouts/Background';
 import { NavBar, NavBarProps } from './layouts/NavBar';
 import { PluginRoute } from './services/PluginRoute';
+import { getByTestId } from '@testing-library/dom';
 
 const NotFound = lazy(() => import(/* webpackChunkName: "NotFound" */ './pages/NotFound'));
 const Home = lazy(() => import(/* webpackChunkName: "Home" */ './pages/Home'));
@@ -36,7 +37,7 @@ const App: React.FC = () => {
     return (
         <React.Fragment>
             <Background particlesConfig={require('../static/assets/particles.json')}></Background>
-            <NavBar links={links} key="nav-bar" onClick={history.push} section={math.params?.section} />
+            <NavBar links={links} key="nav-bar" onClick={history.push} section={`/${math.params?.section ?? ''}`} />
             <Suspense fallback={<Loading />}>
                 <Switch>
                     <Route path="/" exact component={Home}></Route>
