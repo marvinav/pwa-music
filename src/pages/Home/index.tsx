@@ -3,21 +3,20 @@ import { Avatar } from '../../components/Avatar';
 import { Shined } from '../../components/Shined';
 import { gitHubAvatar } from '../../constants';
 import { useDictionary } from '../../contexts/DictionaryContext';
-import { ReactPlugin } from '../../plugins/shared/BasePlugin';
 import './index.scss';
 
 const Home: React.VFC = () => {
     const { d } = useDictionary();
     const AvatarMemo = React.useMemo(() => <Avatar className="avatar" src={gitHubAvatar}></Avatar>, []);
 
-    const [plugin, setPlugin] = React.useState<React.ReactElement>();
+    const [plugin] = React.useState<React.ReactElement>();
 
-    React.useEffect(() => {
-        requirejs(['https://localhost:8080/plugins/yandex-disk/main.js'], (ya: { default: typeof ReactPlugin }) => {
-            const plug = new ya.default();
-            setPlugin(plug.render());
-        });
-    }, []);
+    // React.useEffect(() => {
+    //     requirejs(['https://localhost:8080/plugins/yandex-disk/main.js'], (ya: { default: typeof ReactPlugin }) => {
+    //         const plug = new ya.default();
+    //         setPlugin(plug.render());
+    //     });
+    // }, []);
 
     return (
         <div id="home-container" className="container align-center">
