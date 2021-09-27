@@ -8,9 +8,11 @@ export default {
     component: Window,
     title: 'Layouts/Window',
     decorators: [(story) => <DictionaryProvider>{story()}</DictionaryProvider>],
+    parameters: { layout: 'none' },
     args: {
         title: 'Setting Window',
         children: <div>Test</div>,
+        fullSize: true,
     },
 } as ComponentMeta<typeof Window>;
 

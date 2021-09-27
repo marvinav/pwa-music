@@ -15,14 +15,14 @@ export const Window: React.FC<WindowProps> = (props) => {
             <div className="top-bar">
                 <div className="title">{props.title}</div>
             </div>
-            <div className="view">{props.children}</div>
+            <div className="view paper-1 container">{props.children}</div>
         </div>
     );
 };
 
 function useClassname(props: WindowProps) {
-    const classess = ['window'];
+    const classess = ['window paper-0 container'];
     props.className && classess.push(props.className);
-    props.fullSize && classess.push('fullsize');
+    props.fullSize && classess.push('full-screen');
     return classess.join(' ');
 }

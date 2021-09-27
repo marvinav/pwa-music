@@ -98,7 +98,7 @@
 .paper-0 .shine-shadow,
 .depth-0 .shine-shadow {
     * {
-        filter: drop-shadow(3px 3px var(--background-color-1));
+        filter: drop-shadow(3px 3px var(--background-color));
     }
 }
 
@@ -116,9 +116,18 @@
     flex-direction: column;
     flex-wrap: nowrap;
     gap: 0.5rem;
-
+    box-sizing: border-box;
     &.align-center {
         align-items: center;
+    }
+    overflow-y: auto;
+    word-break: break-all;
+    &:first-child {
+        padding-top: 0.5rem;
+    }
+
+    &:last-child {
+        padding-bottom: 0.5rem;
     }
 }
 
@@ -143,7 +152,6 @@
 
 body {
     @extend .paper-0;
-    @extend .container;
     @extend .full-screen;
     @include headings {
         font-family: var(--special-font-family);
@@ -152,9 +160,13 @@ body {
     span {
         font-family: var(--main-font-family);
     }
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    gap: 0;
 }
 
-.focusable {
+body .focusable {
     box-sizing: border-box;
     border: 3px solid transparent;
     padding: 3px;

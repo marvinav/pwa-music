@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar } from '../../components/Avatar';
+import { Icon } from '../../components/Icon';
 import { Shined } from '../../components/Shined';
 import { gitHubAvatar } from '../../constants';
 import { useDictionary } from '../../contexts/DictionaryContext';
@@ -7,7 +7,7 @@ import './index.scss';
 
 const Home: React.VFC = () => {
     const { d } = useDictionary();
-    const AvatarMemo = React.useMemo(() => <Avatar className="avatar" src={gitHubAvatar}></Avatar>, []);
+    const AvatarMemo = React.useMemo(() => <Icon className="avatar" src={gitHubAvatar}></Icon>, []);
 
     const [plugin] = React.useState<React.ReactElement>();
 

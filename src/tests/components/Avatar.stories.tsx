@@ -3,16 +3,16 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { gitHubAvatar } from '../../constants';
 
-import { Avatar } from '../../components/Avatar/index';
+import { Icon } from '../../components/Icon/index';
 
 export default {
-    component: Avatar,
-    title: 'Components/Avatar',
+    component: Icon,
+    title: 'Components/Icon',
     args: {
         src: gitHubAvatar,
     },
-} as ComponentMeta<typeof Avatar>;
+} as ComponentMeta<typeof Icon>;
 
-const Template: ComponentStory<typeof Avatar> = (args) => <Avatar {...args} />;
+const Template: ComponentStory<typeof Icon> = (args) => <Icon {...args} />;
 
 export const Primary = Template.bind({});
