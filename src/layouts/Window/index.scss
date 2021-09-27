@@ -1,4 +1,4 @@
-nav#nav-bar {
+div#window {
     display: flex;
     position: sticky;
     top: 0px;
@@ -8,7 +8,5 @@ nav#nav-bar {
     align-items: center;
     padding: 5px;
     box-sizing: border-box;
-    .navlink {
-        font-size: 1.5em;
-    }
+    border-color: var(--window-border-color);
 }
