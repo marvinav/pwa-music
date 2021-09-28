@@ -1,9 +1,7 @@
 import React from 'react';
 import './index.scss';
 
-export interface IListProps {}
-
-export const List: React.FC<IListProps> = (props) => {
+export const List: React.FC = (props) => {
     console.log(props.children);
     return (
         <div className="list">
