@@ -45,4 +45,11 @@ export class PluginManager {
     getPlugin(id: string): IPluginMeta {
         return this.plugins.get(id);
     }
+
+    async loadPlugins() {
+        const manifest = await fetch('plugins/yandex-disk/manifest.json');
+        console.log(await manifest.json());
+    }
 }
+
+export const pluginManager = new PluginManager();

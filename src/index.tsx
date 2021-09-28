@@ -5,6 +5,7 @@ import 'regenerator-runtime/runtime';
 import App from './App';
 import AppProvider from './providers/AppProvider';
 import './index.scss';
+import { pluginManager } from './services/PluginManager';
 
 // if ('serviceWorker' in navigator) {
 //     window.addEventListener('load', async function () {
@@ -19,6 +20,8 @@ import './index.scss';
 //         });
 //     });
 // }
+
+pluginManager.loadPlugins();
 
 ReactDOM.render(
     <AppProvider>
