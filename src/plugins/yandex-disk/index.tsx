@@ -2,6 +2,7 @@ import React from 'react';
 import { IBaseManifest, StorageProviderPlugin, View } from '../shared/BasePlugin';
 import { IFile, StorageEntry, StorageProvider } from '../shared/interfaces/StorageProvider';
 import { TestDiv } from './App';
+import { YandexDiskClient } from './YandexDiskClient';
 
 const manifest: IBaseManifest = {
     id: 'yandex-disk',
@@ -35,7 +36,14 @@ export default class YandexDiskPlugin implements StorageProviderPlugin<YandexSto
         {
             ...manifest.views[0],
             render(): React.ReactElement {
-                return <div>route handler</div>;
+                const client = new YandexDiskClient('', 'test-test', 'test-device');
+                return (
+                    <div>
+                        <a href={client.oauthRequestUrlToken} target="_blank" rel="noreferrer">
+                            Auth
+                        </a>
+                    </div>
+                );
             },
         },
     ];
