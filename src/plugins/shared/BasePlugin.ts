@@ -1,5 +1,6 @@
 import { ReactElement } from 'react';
 import { StorageProvider } from './interfaces/StorageProvider';
+import { PluginSettingsConnection } from './models/types';
 
 export type ViewScope = SettingsMainScope | 'home.widget' | 'route.main';
 
