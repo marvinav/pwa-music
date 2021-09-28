@@ -3,20 +3,15 @@ import { Icon } from '../../components/Icon';
 import { Shined } from '../../components/Shined';
 import { gitHubAvatar } from '../../constants';
 import { useDictionary } from '../../contexts/DictionaryContext';
+import { usePlugin } from '../../contexts/PluginContext';
 import './index.scss';
 
 const Home: React.VFC = () => {
     const { d } = useDictionary();
     const AvatarMemo = React.useMemo(() => <Icon className="avatar" src={gitHubAvatar}></Icon>, []);
 
-    const [plugin] = React.useState<React.ReactElement>();
-
-    // React.useEffect(() => {
-    //     requirejs(['https://localhost:8080/plugins/yandex-disk/main.js'], (ya: { default: typeof ReactPlugin }) => {
-    //         const plug = new ya.default();
-    //         setPlugin(plug.render());
-    //     });
-    // }, []);
+    const { getRoute } = usePlugin();
+    const yandexDisk = getRoute('yandex-disk', 'oauth-token-handler');
 
     return (
         <div id="home-container" className="container align-center">
@@ -44,7 +39,7 @@ const Home: React.VFC = () => {
                     );
                 }}
             </Shined>
-            <section id="yandex.disk">{plugin}</section>
+            <section id="yandex.disk">{yandexDisk && yandexDisk._ !== 'loading' ? yandexDisk.render() : null}</section>
             <section id="experience"></section>
         </div>
     );

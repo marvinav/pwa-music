@@ -10,7 +10,7 @@ import { PluginProvider } from './PluginProvider';
 // вложенным в провайдер В, реализующий этот контекст
 const AppProvider: React.FC = (props) => {
     return (
-        <BrowserRouter>
+        <BrowserRouter basename="/">
             <PluginProvider>
                 <DictionaryProvider>{props.children}</DictionaryProvider>
             </PluginProvider>

@@ -12,7 +12,7 @@ const manifest: IBaseManifest = {
     description: 'Yandex Disk Storage Provider',
     entry: 'main.js',
     settings: { _: 'reactView', id: 'settings', scope: 'settings.main' },
-    views: [{ _: 'reactView', id: 'ouath-token-handler', scope: 'route.main' }],
+    views: [{ _: 'reactView', id: 'oauth-token-handler', scope: 'route.main' }],
 };
 
 export default class YandexDiskPlugin implements StorageProviderPlugin<YandexStorageProviderSettings> {
@@ -33,7 +33,7 @@ export default class YandexDiskPlugin implements StorageProviderPlugin<YandexSto
     };
     views?: View[] = [
         {
-            ...manifest[0],
+            ...manifest.views[0],
             render(): React.ReactElement {
                 return <div>route handler</div>;
             },

@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { RouteProps } from 'react-router-dom';
+import { Route, RouteProps, useParams } from 'react-router-dom';
+import { usePlugin } from '../contexts/PluginContext';
 
 /**
  * Обертка над Route.
@@ -8,6 +9,18 @@ import { RouteProps } from 'react-router-dom';
  * Если нет, то пользователь переадресуется на страницу по умолчанию для авторизации.
  * @param props Роутинг в случае успешной авторизации
  */
-export const PluginRoute: React.VFC<RouteProps> = () => {
-    return <div></div>;
+const PluginRouteChildren: React.VFC = () => {
+    const { pluginId, viewId } = useParams<{ pluginId: string; viewId: string }>();
+
+    const { getRoute } = usePlugin();
+
+    const plugin = getRoute(pluginId, viewId);
+
+    console.log({ plugin, pluginId, viewId });
+
+    return <div>{plugin && plugin._ !== 'loading' ? plugin.render() : null}</div>;
+};
+
+export const PluginRoute: React.VFC<RouteProps> = (props) => {
+    return <Route {...props} component={PluginRouteChildren}></Route>;
 };

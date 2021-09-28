@@ -1,10 +1,10 @@
-import React, { createContext, useContext } from 'react';
-
+import { createContext, useContext } from 'react';
+import { View } from '../plugins/shared/BasePlugin';
 /**
  * Plugins of web application.
  */
 export interface IPluginContextValue {
-    getRoute: (pluginId: string, viewId: string) => Promise<React.ReactNode>;
+    getRoute: (pluginId: string, viewId: string) => View;
 }
 
 // Контекст

@@ -40,7 +40,7 @@ const App: React.FC = () => {
             <Suspense fallback={<Loading />}>
                 <Switch>
                     <Route path="/" exact component={Home}></Route>
-                    <PluginRoute path="/plugins/:pluginId"></PluginRoute>
+                    <PluginRoute path="/plugins/:pluginId/:viewId"></PluginRoute>
                     <Route component={NotFound} />
                 </Switch>
             </Suspense>

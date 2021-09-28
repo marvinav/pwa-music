@@ -7,7 +7,7 @@ export type SettingsMainScope = 'settings.main';
 export type HomeWidgetScope = 'home.widget';
 export type RouteMainScope = 'route.main';
 
-export type View = ReactView;
+export type View = ReactView | LoadingView;
 
 export type BaseView = {
     id: string;
@@ -16,7 +16,7 @@ export type BaseView = {
 
 export interface ReactView extends BaseView {
     _: 'reactView';
-    render: (container: Element) => ReactElement;
+    render: () => ReactElement;
 }
 
 export type Permissions = '';
@@ -37,6 +37,10 @@ export abstract class ViewPlugin extends BasePlugin {
     views: View[];
 }
 
+export interface LoadingView extends BaseView {
+    _: 'loading';
+}
+
 export type Plugin<T> = StorageProviderPlugin<T> | ViewPlugin;
 
 export type Manifest = IBaseManifest;
@@ -46,6 +50,7 @@ export interface IBaseManifest {
     name: string;
     author: string;
     description: string;
+    src?: string;
     version: `${number}.${number}.${number}`;
     entry: string;
     type: 'view' | 'storage-provider';

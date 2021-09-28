@@ -49,7 +49,7 @@ export class PluginManager {
     }
 
     async loadPlugins(): Promise<Manifest[]> {
-        const manifestResponse = await fetch('plugins/yandex-disk/manifest.json');
+        const manifestResponse = await fetch('/plugins/yandex-disk/manifest.json');
         return [(await manifestResponse.json()) as Manifest];
     }
 }
