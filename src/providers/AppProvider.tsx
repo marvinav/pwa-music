@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { DictionaryProvider } from './DictionaryProvider';
+import { PluginProvider } from './PluginProvider';
 
 // В этом месте происходит объявление всех провайдеров
 // Порядок вложенности в основном может быть хаотичным
@@ -10,7 +11,9 @@ import { DictionaryProvider } from './DictionaryProvider';
 const AppProvider: React.FC = (props) => {
     return (
         <BrowserRouter>
-            <DictionaryProvider>{props.children}</DictionaryProvider>
+            <PluginProvider>
+                <DictionaryProvider>{props.children}</DictionaryProvider>
+            </PluginProvider>
         </BrowserRouter>
     );
 };

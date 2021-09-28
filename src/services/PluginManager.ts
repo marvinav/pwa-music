@@ -1,3 +1,5 @@
+import { Manifest } from '../plugins/shared/BasePlugin';
+
 interface IPluginMeta {
     id: string;
     url: string;
@@ -46,9 +48,9 @@ export class PluginManager {
         return this.plugins.get(id);
     }
 
-    async loadPlugins() {
-        const manifest = await fetch('plugins/yandex-disk/manifest.json');
-        console.log(await manifest.json());
+    async loadPlugins(): Promise<Manifest[]> {
+        const manifestResponse = await fetch('plugins/yandex-disk/manifest.json');
+        return [(await manifestResponse.json()) as Manifest];
     }
 }
 

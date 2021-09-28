@@ -1,13 +1,26 @@
 import React from 'react';
-import { StorageProviderPlugin, View } from '../shared/BasePlugin';
+import { IBaseManifest, StorageProviderPlugin, View } from '../shared/BasePlugin';
 import { IFile, StorageEntry, StorageProvider } from '../shared/interfaces/StorageProvider';
 import { TestDiv } from './App';
+
+const manifest: IBaseManifest = {
+    id: 'yandex-disk',
+    name: 'Yandex Disk plugin',
+    version: '0.0.1',
+    type: 'storage-provider',
+    author: 'marvinav',
+    description: 'Yandex Disk Storage Provider',
+    entry: 'main.js',
+    settings: { _: 'reactView', id: 'settings', scope: 'settings.main' },
+    views: [{ _: 'reactView', id: 'ouath-token-handler', scope: 'route.main' }],
+};
 
 export default class YandexDiskPlugin implements StorageProviderPlugin<YandexStorageProviderSettings> {
     constructor() {
         console.log('YandexDiskPlugin constructed');
     }
-    settings: Omit<View, 'scope'> & { scope: 'settings.main' } = {
+    type: 'storage-provider';
+    settings: typeof manifest['settings'] & View = {
         scope: 'settings.main',
         _: 'reactView',
         id: 'settings',
@@ -20,21 +33,13 @@ export default class YandexDiskPlugin implements StorageProviderPlugin<YandexSto
     };
     views?: View[] = [
         {
-            _: 'reactView',
-            id: 'oauth-token-handler',
-            scope: 'route.main',
+            ...manifest[0],
             render(): React.ReactElement {
                 return <div>route handler</div>;
             },
         },
     ];
-    manifest: { id: string; name: string; version: string; permissions?: ''; type: 'storage-provider' | 'view' } = {
-        id: 'yandex-disk',
-        name: 'Yandex Disk plugin',
-        version: '0.0.1',
-        permissions: '',
-        type: 'storage-provider',
-    };
+    manifest = manifest;
 }
 interface YandexStorageProviderSettings {
     token: string;

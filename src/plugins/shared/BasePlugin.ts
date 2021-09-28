@@ -22,22 +22,33 @@ export interface ReactView extends BaseView {
 export type Permissions = '';
 
 export abstract class BasePlugin {
-    manifest: {
-        id: string;
-        name: string;
-        version: string;
-        permissions?: Permissions;
-        type: 'storage-provider' | 'view';
-    };
+    manifest: Manifest;
+    settings: Omit<View, 'scope'> & { scope: SettingsMainScope };
+    views?: View[];
 }
 
 export abstract class StorageProviderPlugin<T> extends BasePlugin {
-    settings: Omit<View, 'scope'> & { scope: SettingsMainScope };
+    type: 'storage-provider';
     provider: (settings: T) => StorageProvider<T>;
-    views?: View[];
 }
 
 export abstract class ViewPlugin extends BasePlugin {
-    settings: Omit<View, 'scope'> & { scope: SettingsMainScope };
-    views?: View[];
+    type: 'view';
+    views: View[];
+}
+
+export type Plugin<T> = StorageProviderPlugin<T> | ViewPlugin;
+
+export type Manifest = IBaseManifest;
+
+export interface IBaseManifest {
+    id: string;
+    name: string;
+    author: string;
+    description: string;
+    version: `${number}.${number}.${number}`;
+    entry: string;
+    type: 'view' | 'storage-provider';
+    views?: Omit<View, 'render'>[];
+    settings: Omit<View, 'scope' | 'render'> & { scope: SettingsMainScope };
 }
