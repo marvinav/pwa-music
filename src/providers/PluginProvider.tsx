@@ -2,7 +2,8 @@ import React from 'react';
 import { CorePluginSource } from '../constants';
 
 import { PluginContext, IPluginContextValue } from '../contexts/PluginContext';
-import { LoadingView, Manifest, Plugin, View } from '../plugins/shared/BasePlugin';
+import { PluginSettingsModel } from '../models/PluginSettingsModel';
+import { HandShake, LoadingView, Manifest, Plugin, View } from '../plugins/shared/BasePlugin';
 import { pluginManager } from '../services/PluginManager';
 
 export const PluginProvider: React.FC = (props) => {
@@ -39,7 +40,9 @@ const usePlugin = (): IPluginContextValue => {
                     [createPluginSource(plugin)],
                     function (loadedPlugin: { default: Constructable<Plugin<unknown>> }) {
                         setLoadedPlugins((p) => {
-                            p[pluginId] = new loadedPlugin.default();
+                            p[pluginId] = new loadedPlugin.default({
+                                settings: new PluginSettingsModel(plugin.author, pluginId),
+                            });
                             return { ...p };
                         });
                     },
@@ -61,5 +64,5 @@ const usePlugin = (): IPluginContextValue => {
 };
 
 interface Constructable<T> {
-    new (): T;
+    new (handShake: HandShake<unknown>): T;
 }

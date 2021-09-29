@@ -1,5 +1,6 @@
 import { ReactElement } from 'react';
 import { StorageProvider } from './interfaces/StorageProvider';
+import { PluginSettingsConnection } from './models/types';
 
 export type ViewScope = SettingsMainScope | 'home.widget' | 'route.main';
 
@@ -21,18 +22,25 @@ export interface ReactView extends BaseView {
 
 export type Permissions = '';
 
-export abstract class BasePlugin {
+export type HandShake<T> = { settings: PluginSettingsConnection<T> };
+
+export abstract class BasePlugin<T> {
+    protected readonly handShake: HandShake<T>;
+
+    constructor(handShake: HandShake<T>) {
+        this.handShake = handShake;
+    }
     manifest: Manifest;
     settings: Omit<View, 'scope'> & { scope: SettingsMainScope };
     views?: View[];
 }
 
-export abstract class StorageProviderPlugin<T> extends BasePlugin {
+export abstract class StorageProviderPlugin<T> extends BasePlugin<T> {
     type: 'storage-provider';
     provider: (settings: T) => StorageProvider<T>;
 }
 
-export abstract class ViewPlugin extends BasePlugin {
+export abstract class ViewPlugin<T> extends BasePlugin<T> {
     type: 'view';
     views: View[];
 }
@@ -41,7 +49,7 @@ export interface LoadingView extends BaseView {
     _: 'loading';
 }
 
-export type Plugin<T> = StorageProviderPlugin<T> | ViewPlugin;
+export type Plugin<T> = StorageProviderPlugin<T> | ViewPlugin<T>;
 
 export type Manifest = IBaseManifest;
 

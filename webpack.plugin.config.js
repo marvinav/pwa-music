@@ -11,7 +11,7 @@ const CopyPlugin = require('copy-webpack-plugin');
  * @type {import('webpack').Configuration}
  */
 var config = {
-    entry: [`./src/plugins/yandex-disk/index`],
+    entry: [`./src/plugins/yandex-disk/src/index`],
     plugins: [
         new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
@@ -23,7 +23,7 @@ var config = {
         new CopyPlugin({
             patterns: [
                 { from: 'src/plugins/yandex-disk/manifest.json', to: 'manifest.json' },
-                { from: 'src/plugins/yandex-disk/public', to: 'public' },
+                { from: 'src/plugins/yandex-disk/public', to: 'public', noErrorOnMissing: true },
             ],
         }),
     ],
@@ -74,7 +74,7 @@ var config = {
 };
 
 module.exports = (env, argv) => {
-    config.mode = argv.mode;
+    config.mode = argv.mode ?? 'development';
     if (argv.mode === 'production') {
         delete config.devtool;
     }
