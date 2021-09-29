@@ -1,4 +1,3 @@
-import { ReactElement } from 'react';
 import { StorageProvider } from './interfaces/StorageProvider';
 import { PluginSettingsConnection } from './models/types';
 
@@ -17,7 +16,7 @@ export type BaseView = {
 
 export interface ReactView extends BaseView {
     _: 'reactView';
-    render: () => ReactElement;
+    render: (container: Element) => void;
 }
 
 export type Permissions = '';

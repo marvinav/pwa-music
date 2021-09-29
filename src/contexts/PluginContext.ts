@@ -5,11 +5,15 @@ import { View } from '../plugins/shared/BasePlugin';
  */
 export interface IPluginContextValue {
     getRoute: (pluginId: string, viewId: string) => View;
+    getSettings: (author: string, pluginId: string) => View;
 }
 
 // Контекст
 export const PluginContext = createContext<IPluginContextValue>({
     getRoute: () => {
+        throw new Error('Not implemented');
+    },
+    getSettings: () => {
         throw new Error('Not implemented');
     },
 });

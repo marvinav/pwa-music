@@ -54,12 +54,39 @@ const usePlugin = (): IPluginContextValue => {
         [plugins, loadedPlugins],
     );
 
+    const getSettings = React.useCallback(
+        (author: string, pluginId: string) => {
+            const plugin = plugins?.find((x) => x.id === pluginId);
+            if (!plugin) {
+                return null;
+            }
+            const loaded = loadedPlugins[pluginId];
+            if (!loaded) {
+                requirejs(
+                    [createPluginSource(plugin)],
+                    function (loadedPlugin: { default: Constructable<Plugin<unknown>> }) {
+                        setLoadedPlugins((p) => {
+                            p[pluginId] = new loadedPlugin.default({
+                                settings: new PluginSettingsModel(plugin.author, pluginId),
+                            });
+                            return { ...p };
+                        });
+                    },
+                );
+                return loadingMock;
+            }
+            return loaded.settings as View;
+        },
+        [loadedPlugins, plugins],
+    );
+
     React.useEffect(() => {
         pluginManager.loadPlugins().then(setPlugins);
     }, []);
 
     return {
         getRoute,
+        getSettings,
     };
 };
 

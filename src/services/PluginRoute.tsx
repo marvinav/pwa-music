@@ -11,14 +11,17 @@ import { usePlugin } from '../contexts/PluginContext';
  */
 const PluginRouteChildren: React.VFC = () => {
     const { pluginId, viewId } = useParams<{ pluginId: string; viewId: string }>();
-
+    const ref = React.useRef();
     const { getRoute } = usePlugin();
 
     const plugin = getRoute(pluginId, viewId);
 
-    console.log({ plugin, pluginId, viewId });
-
-    return <div>{plugin && plugin._ !== 'loading' ? plugin.render() : null}</div>;
+    React.useEffect(() => {
+        if (plugin && plugin._ !== 'loading') {
+            plugin.render(ref.current);
+        }
+    }, [plugin]);
+    return <div key={pluginId + viewId} ref={ref}></div>;
 };
 
 export const PluginRoute: React.VFC<RouteProps> = (props) => {

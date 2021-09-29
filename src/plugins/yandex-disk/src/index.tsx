@@ -1,9 +1,9 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { HandShake, IBaseManifest, StorageProviderPlugin, View } from '../../shared/BasePlugin';
 import { IFile, StorageEntry, StorageProvider } from '../../shared/interfaces/StorageProvider';
-import { parseHash } from './helpers/parseHash';
-import { TestDiv } from './views/App';
-import { YandexDiskClient } from './YandexDiskClient';
+import { Settings } from './views/Settings';
+import { OAuthTokenHandler } from './views/OAuthTokenHandler';
 
 const manifest: IBaseManifest = {
     id: 'yandex-disk',
@@ -23,59 +23,45 @@ export default class YandexDiskPlugin extends StorageProviderPlugin<YandexStorag
         console.log('YandexDiskPlugin constructed');
     }
     type: 'storage-provider';
+    private render = (id: 'settings' | 'oauth-token-handler') => {
+        switch (id) {
+            case 'settings':
+                return (container: Element) => {
+                    ReactDOM.render(<Settings handshake={this.handShake} />, container);
+                };
+            case 'oauth-token-handler':
+                return (container: Element) => {
+                    ReactDOM.render(<OAuthTokenHandler handshake={this.handShake} />, container);
+                };
+            default:
+                return;
+        }
+    };
     settings: typeof manifest['settings'] & View = {
         scope: 'settings.main',
         _: 'reactView',
         id: 'settings',
-        render(): React.ReactElement {
-            return <TestDiv></TestDiv>;
-        },
+        render: this.render('settings'),
     };
     provider = (settings: YandexStorageProviderSettings): YandexStorageProvider => {
         return new YandexStorageProvider(settings);
     };
 
-    private renderAuthHandler = () => {
-        const url = document.location.hash;
-        console.log({ parsed: parseHash(url) });
-        this.handShake.settings.get().then((x) => {
-            if (!x) {
-                const parsed = parseHash(url);
-                this.handShake.settings.addOrUpdate({
-                    clientId: '27679647b5984078abdcfdacca641201',
-                    deviceId: 'test-test',
-                    deviceName: 'test-device',
-                    expiresIn: new Date(parsed.expiresIn + new Date().getTime()),
-                    token: parsed.token,
-                    type: parsed.type,
-                });
-            }
-        });
-        const client = new YandexDiskClient('27679647b5984078abdcfdacca641201', 'test-test', 'test-device');
-        return (
-            <div>
-                <a href={client.oauthRequestUrlToken} target="_blank" rel="noreferrer">
-                    Auth
-                </a>
-            </div>
-        );
-    };
-
     views?: View[] = [
         {
             ...manifest.views[0],
-            render: this.renderAuthHandler,
+            render: this.render('oauth-token-handler'),
         },
     ];
     manifest = manifest;
 }
-interface YandexStorageProviderSettings {
-    token: string;
-    type: string;
-    deviceId: string;
-    deviceName: string;
-    clientId: string;
-    expiresIn: Date;
+export interface YandexStorageProviderSettings {
+    token?: string;
+    type?: string;
+    deviceId?: string;
+    deviceName?: string;
+    clientId?: string;
+    expiresIn?: Date;
 }
 class YandexStorageProvider implements StorageProvider<YandexStorageProviderSettings> {
     readonly settings: YandexStorageProviderSettings;

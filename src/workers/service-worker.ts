@@ -3,7 +3,7 @@
 import 'regenerator-runtime/runtime';
 
 import { Assets } from '../services/Assets';
-import { cachedFetch } from '../utils/helpers';
+import { cachedFailbackToNetworkFetch, cachedFetch } from '../utils/helpers';
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -15,10 +15,19 @@ const assets = new Assets();
 
 self.addEventListener('fetch', async (event) => {
     const requestUrl = new URL(event.request.url);
+
     if (requestUrl.hostname === self.location.hostname) {
         event.respondWith(navRegex.test(requestUrl.pathname) ? caches.match('/') : cachedFetch(event.request));
     } else {
-        event.respondWith(fetch(event.request));
+        const search = requestUrl.searchParams.get('my-space');
+        if (!search) {
+            event.respondWith(fetch(event.request));
+        } else if (search === 'network-cache') {
+            event.respondWith(cachedFetch(event.request));
+        } else if (search === 'cache-network') {
+            console.log('failing back to network');
+            event.respondWith(cachedFailbackToNetworkFetch(event.request));
+        }
     }
 });
 
