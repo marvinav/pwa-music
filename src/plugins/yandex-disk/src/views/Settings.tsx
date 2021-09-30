@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { YandexStorageProviderSettings } from '..';
 import { Loading } from '../../../../pages/Loading';
 import { HandShake } from '../../../shared/BasePlugin';
-import { YandexDiskClient } from '../YandexDiskClient';
+import { createOAuthUrl } from '../helpers/createOAuthUrl';
 
 export interface ISettingsProps {
     handshake: HandShake<YandexStorageProviderSettings>;
@@ -28,9 +28,8 @@ export const Settings: React.VFC<ISettingsProps> = (props) => {
                         deviceId,
                         deviceName,
                     }));
-                const client = new YandexDiskClient(clientId, deviceId, deviceName);
                 setLink(
-                    <a href={client.oauthRequestUrlToken} target="_blank" rel="noreferrer">
+                    <a href={createOAuthUrl(clientId, deviceId, deviceName)} target="_blank" rel="noreferrer">
                         Авторизация
                     </a>,
                 );
@@ -49,7 +48,13 @@ export const Settings: React.VFC<ISettingsProps> = (props) => {
         case 'error':
             return <div>Произошла непредвиденная ошибка</div>;
         case 'success':
-            return settings?.token ? <div>Авторизация завершена, теперь вы можете закрыть это окно</div> : link;
+            return settings?.token ? (
+                <React.Fragment>
+                    <div>Авторизация завершена, теперь вы можете закрыть это окно</div>
+                </React.Fragment>
+            ) : (
+                link
+            );
         default:
             return <Loading></Loading>;
     }

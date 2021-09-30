@@ -70,7 +70,7 @@ class YandexStorageProvider implements StorageProvider<YandexStorageProviderSett
         this.settings = settings;
     }
 
-    getFiles(_path: string, _offset: number, _limit: number): Promise<StorageEntry> {
+    getFiles(_path: string): Promise<StorageEntry> {
         throw new Error('Method not implemented.');
     }
 

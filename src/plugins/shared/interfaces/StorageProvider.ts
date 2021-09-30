@@ -17,6 +17,9 @@ export interface IFile {
      */
     preview: string;
 
+    /**
+     * Mime type of file
+     */
     mimeType: string;
 
     /**
@@ -24,9 +27,20 @@ export interface IFile {
      */
     size: number;
 
+    /**
+     * Creation date of file
+     */
     created: Date;
 
+    /**
+     * Last modification date of file
+     */
     modified: Date;
+
+    /**
+     * The hash of file
+     */
+    hash: string;
 }
 
 export interface IDirectory {
@@ -63,7 +77,7 @@ export abstract class StorageProvider<T> {
         this.settings = settings;
     }
 
-    abstract getFiles(path: string, offset: number, limit: number): Promise<StorageEntry>;
+    abstract getFiles(path: string): Promise<StorageEntry>;
 
     abstract downloadFile(file: IFile): File | Blob;
 }
