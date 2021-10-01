@@ -70,13 +70,8 @@ export interface IDirectory {
     modified: Date;
 }
 
-export abstract class StorageProvider<T> {
-    readonly settings: T;
-
-    constructor(settings: T) {
-        this.settings = settings;
-    }
-
+export abstract class StorageProvider {
+    _: 'storageProvider';
     abstract getFiles(path: string): Promise<StorageEntry>;
 
     abstract downloadFile(file: IFile): File | Blob;

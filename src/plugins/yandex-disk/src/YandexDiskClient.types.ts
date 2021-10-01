@@ -1,16 +1,20 @@
+import { YandexDiskClient } from './YandexDiskClient';
+
 /**
  * An error can occur if the request was formed incorrectly, the specified resource doesn't exist on the server, the server is not working, and so on. All errors are returned with HTTP response codes.
  */
 export interface ErrorRespone {
-    message: 'string';
-    description: 'string';
-    error: 'string';
+    _: 'error';
+    message: string;
+    description: string;
+    error: string;
 }
 
 /**
  * The object contains the URL for requesting resource metadata.
  */
 export interface Link {
+    _: 'link';
     /**
      * URL. It may be a URL template; see the templated key.
      */
@@ -28,7 +32,8 @@ export interface Link {
 /**
  * Resource description or metainformation about a file or folder. Included in the response to the request for metainformation.
  */
-export interface Resource {
+export interface IResource {
+    _: 'resource';
     /**
      * Key of a published resource.
      * It is included in the response only if the specified file or folder is published.
@@ -45,7 +50,7 @@ export interface Resource {
      * The resources located in the folder (contains the ResourceList object).
      * It is included in the response only when folder metainformation is requested.
      */
-    _embedded: ResourceList;
+    _embedded?: ResourceList;
 
     /**
      * Link to a small image (preview) for the file. It is included in the response only for files that support graphic formats.
@@ -107,10 +112,71 @@ export interface Resource {
     size: number;
 }
 
+export class Resource implements IResource {
+    _: 'resource';
+    public_key?: string;
+    public_url?: string;
+    _embedded?: ResourceList;
+    preview: string;
+    name: string;
+    custom_properties: Record<string, string>;
+    md5: string;
+    type: 'dir' | 'file';
+    mime_type: string;
+    size: number;
+    created: string;
+    modified: string;
+    path: string;
+    origin_path: string;
+
+    private readonly client: YandexDiskClient;
+    private _embeddedResources: Map<string, IResource>;
+    constructor(res: IResource, client: YandexDiskClient) {
+        Object.assign(this, res);
+        this.client = client;
+    }
+
+    getAllEmbedded = async (offset?: number): Promise<IResource[]> => {
+        if (this.type === 'file') {
+            return null;
+        }
+
+        this._embeddedResources = this._embeddedResources ?? new Map(this._embedded?.items?.map((x) => [x.path, x]));
+        if (this._embeddedResources?.size >= this._embedded?.total) {
+            return Array.from(this._embeddedResources.values());
+        }
+        const response = await this.client.getMetainformation(this.path, {
+            limit: this._embedded?.total ?? 20,
+            offset: offset ?? this._embedded?.items?.length ?? 0,
+            sort: 'modified',
+            reverseSort: true,
+        });
+        if (response._ === 'error') {
+            throw new Error(response.error);
+        }
+        if (!this._embedded) {
+            this._embedded = response._embedded;
+        }
+        if (response._embedded.items.length === 0 && response._embedded.total > 0) {
+            // Collect from start if response does not contain items but dir in reality has them
+            await this.getAllEmbedded(offset + 20);
+        }
+        response._embedded.items.forEach((x) => {
+            this._embeddedResources.set(x.path, x);
+        });
+        this._embedded.total = response._embedded.total;
+        if (this._embeddedResources.size < this._embedded.total) {
+            await this.getAllEmbedded();
+        }
+        return Array.from(this._embeddedResources.values());
+    };
+}
+
 /**
  * The list of resources in the folder. Contains Resource objects and list properties.
  */
 export interface ResourceList {
+    _: 'resourceList';
     /**
      * The field used for sorting the list.
      */
@@ -126,7 +192,7 @@ export interface ResourceList {
      * Array of resources (Resource) contained in the folder.
      * Regardless of the requested sorting, resources in the array are ordered by type: first all the subfolders are listed, then all the files.
      */
-    items: Resource[];
+    items: IResource[];
 
     /**
      * The maximum number of items in the items array; set in the request.
@@ -154,10 +220,11 @@ export interface ResourceList {
  * Flat list of all files on Yandex.Disk in alphabetical order.
  */
 export interface FilesResourceList {
+    _: 'filesResourceList';
     /**
      * Array of recently uploaded files ( Resource ).
      */
-    items: Resource[];
+    items: IResource[];
     /**
      * The maximum number of items in the items array; set in the request.
      */
@@ -172,10 +239,11 @@ export interface FilesResourceList {
  * A list of files recently added to Yandex.Disk, sorted by upload date (from later to earlier).
  */
 export interface LastUploadedResourceList {
+    _: 'lastUploadedResourceList';
     /**
      * Array of recently uploaded files ( Resource ).
      */
-    items: Resource[];
+    items: IResource[];
 
     /**
      * The maximum number of items in the items array; set in the request.
@@ -187,10 +255,11 @@ export interface LastUploadedResourceList {
  * List of files published on Yandex.Disk.
  */
 export interface PublicResourcesList {
+    _: 'publicResourcesList';
     /**
      * Array of recently uploaded files ( Resource ).
      */
-    items: Resource[];
+    items: IResource[];
 
     /**
      * The maximum number of items in the items array; set in the request.
@@ -212,6 +281,7 @@ export interface PublicResourcesList {
  * Data about free and used space on Yandex.Disk
  */
 export interface Disk {
+    _: 'disk';
     /**
      * The cumulative size of the files in the Trash, in bytes.
      */
@@ -237,6 +307,7 @@ export interface Disk {
  * The status of the operation. Operations are launched when you copy, move, or delete non-empty folders. The URL for requesting status is returned in response to these types of requests.
  */
 export interface Operation {
+    _: 'operation';
     status: 'success' | 'failure' | 'in-progress';
 }
 

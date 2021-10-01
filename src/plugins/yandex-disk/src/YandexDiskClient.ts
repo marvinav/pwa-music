@@ -5,7 +5,7 @@ import {
     LastUploadedResourceList,
     Link,
     MediaType,
-    Resource,
+    IResource,
 } from './YandexDiskClient.types';
 
 export class YandexDiskClient {
@@ -14,7 +14,7 @@ export class YandexDiskClient {
         this.token = token;
     }
 
-    makeRequest(endpoint: string): {
+    private makeRequest(endpoint: string): {
         url: string;
         headers: { 'Content-Type': 'application/json'; Authorization: string };
     } {
@@ -27,13 +27,30 @@ export class YandexDiskClient {
         };
     }
 
+    private mapResponse = async <T extends { _: 'error' | string }>(
+        response: Promise<T | ErrorRespone>,
+        type: T['_'],
+    ): Promise<T | ErrorRespone> => {
+        const res = await response;
+        if ((res as ErrorRespone).error) {
+            return {
+                ...(res as ErrorRespone),
+                _: 'error',
+            };
+        }
+        return {
+            ...(res as T),
+            _: type,
+        };
+    };
+
     /**
      * The API returns general information about a user's Disk: the available space, system folder addresses, and so on.
      */
     getUserDisk = async (): Promise<ErrorRespone | Disk> => {
         const { url, headers } = this.makeRequest('');
         const response = await fetch(url, { headers });
-        return response.json() as Promise<ErrorRespone | Disk>;
+        return this.mapResponse<Disk>(response.json(), 'disk');
     };
 
     /**
@@ -43,7 +60,7 @@ export class YandexDiskClient {
     getMetainformation = async (
         path: string,
         options: {
-            fields?: (keyof Resource)[];
+            fields?: (keyof IResource)[];
             limit: number;
             offset?: number;
             preview_crop?: boolean;
@@ -53,20 +70,20 @@ export class YandexDiskClient {
         } = {
             limit: 20,
         },
-    ): Promise<ErrorRespone | Resource> => {
+    ): Promise<ErrorRespone | IResource> => {
         const { url, headers } = this.makeRequest('resources');
         const uri = new URL(url);
         uri.searchParams.set('path', path);
         uri.searchParams.set('limit', options.limit.toString());
         options.fields && uri.searchParams.set('fields', options.fields.join(','));
         options.offset && uri.searchParams.set('offset', options.offset.toString());
-        options.sort && uri.searchParams.set('sort', `${options.reverseSort ? '-' : ''}${options.sort}`);
+        uri.searchParams.set('sort', `${options.reverseSort ?? true ? '-' : ''}${options.sort ?? 'modified'}`);
         if (options.preview_crop) {
             uri.searchParams.set('preview_crop', `true`);
             options.preview_size && uri.searchParams.set('preview_size', options.preview_size);
         }
         const response = await fetch(uri.toString(), { headers });
-        return response.json() as Promise<Resource | ErrorRespone>;
+        return this.mapResponse<IResource>(response.json(), 'resource');
     };
 
     /**
@@ -77,7 +94,7 @@ export class YandexDiskClient {
             limit?: number;
             media_type?: MediaType[];
             offset?: number;
-            fields?: (keyof Resource)[];
+            fields?: (keyof IResource)[];
             preview_size?: string;
             preview_crop?: boolean;
         } = {},
@@ -91,7 +108,7 @@ export class YandexDiskClient {
         query.preview_size && uri.searchParams.set('preview_size', query.preview_size);
         query.preview_crop && uri.searchParams.set('preview_crop', 'true');
         const response = await fetch(uri.toString(), { headers });
-        return response.json() as Promise<ErrorRespone | FilesResourceList>;
+        return this.mapResponse<FilesResourceList>(response.json(), 'filesResourceList');
     };
 
     /**
@@ -100,7 +117,7 @@ export class YandexDiskClient {
     getLatestUploaded = async (query: {
         limit: number;
         media_type: MediaType[];
-        fields?: (keyof Resource)[];
+        fields?: (keyof IResource)[];
         preview_size?: string;
         preview_crop?: boolean;
     }): Promise<ErrorRespone | LastUploadedResourceList> => {
@@ -112,7 +129,7 @@ export class YandexDiskClient {
         query.preview_size && uri.searchParams.set('preview_size', query.preview_size);
         query.preview_crop && uri.searchParams.set('preview_crop', 'true');
         const response = await fetch(uri.toString(), { headers });
-        return response.json() as Promise<ErrorRespone | LastUploadedResourceList>;
+        return this.mapResponse<LastUploadedResourceList>(response.json(), 'lastUploadedResourceList');
     };
 
     /**
@@ -121,8 +138,8 @@ export class YandexDiskClient {
     addMetaForAResource = async (
         path: string,
         custom_properties: Record<string, string>,
-        fields: (keyof Resource)[],
-    ): Promise<ErrorRespone | Resource> => {
+        fields: (keyof IResource)[],
+    ): Promise<ErrorRespone | IResource> => {
         const { url, headers } = this.makeRequest('resources/');
         const uri = new URL(url);
         uri.searchParams.set('path', path);
@@ -132,7 +149,7 @@ export class YandexDiskClient {
             method: 'PATCH',
             body: JSON.stringify({ custom_properties }),
         });
-        return response.json() as Promise<ErrorRespone | Resource>;
+        return this.mapResponse<IResource>(response.json(), 'resource');
     };
 
     /**
@@ -141,7 +158,7 @@ export class YandexDiskClient {
     uploadUrlRequest = async (
         path: string,
         overwrite = false,
-        fields?: (keyof Resource)[],
+        fields?: (keyof IResource)[],
     ): Promise<ErrorRespone | Link> => {
         const { url, headers } = this.makeRequest('resources/upload');
         const uri = new URL(url);
@@ -151,7 +168,7 @@ export class YandexDiskClient {
         const response = await fetch(uri.toString(), {
             headers,
         });
-        return response.json() as Promise<ErrorRespone | Link>;
+        return this.mapResponse<Link>(response.json(), 'link');
     };
 
     uploadFile = async (link: Link, file: File): Promise<number> => {

@@ -4,6 +4,8 @@ import { HandShake, IBaseManifest, StorageProviderPlugin, View } from '../../sha
 import { IFile, StorageEntry, StorageProvider } from '../../shared/interfaces/StorageProvider';
 import { Settings } from './views/Settings';
 import { OAuthTokenHandler } from './views/OAuthTokenHandler';
+import { YandexDiskClient } from './YandexDiskClient';
+import { Resource } from './YandexDiskClient.types';
 
 const manifest: IBaseManifest = {
     id: 'yandex-disk',
@@ -20,7 +22,6 @@ const manifest: IBaseManifest = {
 export default class YandexDiskPlugin extends StorageProviderPlugin<YandexStorageProviderSettings> {
     constructor(handShake: HandShake<YandexStorageProviderSettings>) {
         super(handShake);
-        console.log('YandexDiskPlugin constructed');
     }
     type: 'storage-provider';
     private render = (id: 'settings' | 'oauth-token-handler') => {
@@ -43,7 +44,20 @@ export default class YandexDiskPlugin extends StorageProviderPlugin<YandexStorag
         id: 'settings',
         render: this.render('settings'),
     };
-    provider = (settings: YandexStorageProviderSettings): YandexStorageProvider => {
+
+    provider = async (): Promise<YandexStorageProvider> => {
+        const settings = await this.handShake.settings.get();
+
+        if (!settings || !settings.token || settings.expiresIn < new Date()) {
+            return;
+        }
+
+        const client = new YandexDiskClient(settings.token);
+        const res = await client.getMetainformation('/');
+        if (res._ === 'resource') {
+            const resource = new Resource(res, client);
+            console.log(await resource.getAllEmbedded());
+        }
         return new YandexStorageProvider(settings);
     };
 
@@ -63,14 +77,24 @@ export interface YandexStorageProviderSettings {
     clientId?: string;
     expiresIn?: Date;
 }
-class YandexStorageProvider implements StorageProvider<YandexStorageProviderSettings> {
+class YandexStorageProvider implements StorageProvider {
+    readonly _ = 'storageProvider';
     readonly settings: YandexStorageProviderSettings;
+    readonly client: YandexDiskClient;
 
     constructor(settings: YandexStorageProviderSettings) {
         this.settings = settings;
+        this.client = new YandexDiskClient(settings.token);
     }
 
-    getFiles(_path: string): Promise<StorageEntry> {
+    async getFiles(_path: string): Promise<StorageEntry> {
+        const response = await this.client.getMetainformation(_path);
+        if (response._ === 'error') {
+            throw new Error(response.message);
+        }
+        if (response._embedded.items.length != response._embedded.limit) {
+            //TODO: collect all nested
+        }
         throw new Error('Method not implemented.');
     }
 

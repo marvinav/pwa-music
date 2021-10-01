@@ -34,9 +34,14 @@ export abstract class BasePlugin<T> {
     views?: View[];
 }
 
+export interface Error {
+    _: 'error';
+    message?: string;
+}
+
 export abstract class StorageProviderPlugin<T> extends BasePlugin<T> {
-    type: 'storage-provider';
-    provider: (settings: T) => StorageProvider<T>;
+    readonly _: 'storage-provider';
+    provider: () => Promise<StorageProvider | Error>;
 }
 
 export abstract class ViewPlugin<T> extends BasePlugin<T> {
