@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { HandShake, IBaseManifest, StorageProviderPlugin, View } from '../../shared/BasePlugin';
-import { IFile, StorageEntry, StorageProvider } from '../../shared/interfaces/StorageProvider';
+import { StorageProvider } from '../../shared/interfaces/StorageProvider';
 import { Settings } from './views/Settings';
 import { OAuthTokenHandler } from './views/OAuthTokenHandler';
 import { YandexDiskClient } from './YandexDiskClient';
 import { Resource } from './YandexDiskClient.types';
+import { IFile, StorageEntry } from '../../shared/models/fileSystem';
 
 const manifest: IBaseManifest = {
     id: 'yandex-disk',
@@ -56,7 +57,7 @@ export default class YandexDiskPlugin extends StorageProviderPlugin<YandexStorag
         const res = await client.getMetainformation('/');
         if (res._ === 'resource') {
             const resource = new Resource(res, client);
-            console.log(await resource.getAllEmbedded());
+            await resource.getAllEmbedded();
         }
         return new YandexStorageProvider(settings);
     };

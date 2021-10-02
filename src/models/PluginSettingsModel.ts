@@ -1,10 +1,5 @@
 import localforage from 'localforage';
-import PouchDb from 'pouchdb';
 import { PluginSettingsConnection } from '../plugins/shared/models/types';
-
-const db = new PouchDb<{ name: string }>('settings');
-db.put({ name: '123' });
-db.find({name: })
 
 export class PluginSettingsModel<T> extends PluginSettingsConnection<T> {
     private readonly pluginStorageKey: string;

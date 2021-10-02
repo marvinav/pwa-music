@@ -1,3 +1,4 @@
+import { StorageEntry } from '../../shared/models/fileSystem';
 import { YandexDiskClient } from './YandexDiskClient';
 
 /**
@@ -135,6 +136,31 @@ export class Resource implements IResource {
         Object.assign(this, res);
         this.client = client;
     }
+
+    mapToFileSystem = (): StorageEntry => {
+        if (this.type === 'dir') {
+            return {
+                _: 'directory',
+                created: new Date(this.created).getTime(),
+                modified: new Date(this.modified).getTime(),
+                name: this.name,
+                path: this.path,
+                preview: this.preview,
+                size: this.size,
+            };
+        }
+        return {
+            _: 'file',
+            created: new Date(this.created).getTime(),
+            modified: new Date(this.modified).getTime(),
+            name: this.name,
+            path: this.path,
+            preview: this.preview,
+            size: this.size,
+            hash: this.md5,
+            mimeType: this.mime_type,
+        };
+    };
 
     getAllEmbedded = async (offset?: number): Promise<IResource[]> => {
         if (this.type === 'file') {

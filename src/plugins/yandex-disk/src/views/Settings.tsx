@@ -6,6 +6,7 @@ import { HandShake } from '../../../shared/BasePlugin';
 import { createOAuthUrl } from '../helpers/createOAuthUrl';
 import { YandexDiskClient } from '../YandexDiskClient';
 import { IResource, Resource } from '../YandexDiskClient.types';
+import { FileSystemDb } from '../../../../models/FileSystem.Dexie';
 
 export interface ISettingsProps {
     handshake: HandShake<YandexStorageProviderSettings>;
@@ -23,16 +24,28 @@ export const Settings: React.VFC<ISettingsProps> = (props) => {
                 const clientId = loadedSettings?.clientId ?? `27679647b5984078abdcfdacca641201`;
                 const deviceId = loadedSettings?.deviceId ?? `${Math.random() * 10000}`;
                 const deviceName = loadedSettings?.deviceName ?? navigator.userAgent.substr(0, 8);
-
-                // if (loadedSettings?.token) {
-                //     const client = new YandexDiskClient(loadedSettings.token);
-                //     const res = await client.getMetainformation('/');
-                //     if (res._ === 'resource') {
-                //         const resource = new Resource(res, client);
-                //         const embended = await resource.getAllEmbedded();
-                //         getNested(embended, client);
-                //     }
-                // }
+                const fileSystem = new FileSystemDb('yandex-disk', 'disk:/');
+                if (loadedSettings?.token) {
+                    const client = new YandexDiskClient(loadedSettings.token);
+                    const res = await client.getMetainformation('/');
+                    if (res._ === 'resource') {
+                        const resource = new Resource(res, client);
+                        console.log(await fileSystem.addOrUpdateEntry(res.path, res.name, resource.mapToFileSystem()));
+                        const embended = await resource.getAllEmbedded();
+                        embended.forEach(async (x) => {
+                            await fileSystem.addOrUpdateEntry(
+                                x.path,
+                                x.name,
+                                new Resource(x, client).mapToFileSystem(),
+                            );
+                            if (x.name === 'Music') {
+                                getNested([x], client, async (cb) => {
+                                    await fileSystem.addOrUpdateEntry(cb.path, cb.name, resource.mapToFileSystem());
+                                });
+                            }
+                        });
+                    }
+                }
 
                 !loadedSettings?.clientId &&
                     (await props.handshake.settings.addOrUpdate({
@@ -77,12 +90,14 @@ Settings.propTypes = {
     handshake: PropTypes.any,
 };
 
-function getNested(res: IResource[], client: YandexDiskClient) {
-    console.log(res);
+function getNested(res: IResource[], client: YandexDiskClient, callback?: (nested: Resource) => Promise<void>) {
     res.forEach(async (x) => {
+        const resorce = new Resource(x, client);
+        const nested = await resorce.getAllEmbedded();
+
+        callback && (await callback(resorce));
         if (x.type === 'dir') {
-            const embendedInFun = await new Resource(x, client).getAllEmbedded();
-            getNested(embendedInFun, client);
+            getNested(nested, client);
         }
     });
 }
