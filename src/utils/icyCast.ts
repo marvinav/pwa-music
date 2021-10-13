@@ -54,6 +54,7 @@ export async function icyCast(
     url: string,
     requestInit: RequestInit = {},
     processBuffer: (buff: Uint8Array, icyHeaders: string) => Promise<void>,
+    onDone: () => void,
 ): Promise<Response['headers']> {
     requestInit = requestInit ?? {};
     requestInit.keepalive = requestInit.keepalive === undefined ? true : requestInit.keepalive;
@@ -67,44 +68,89 @@ export async function icyCast(
     const bodyReader = response.body.getReader();
     let bufferArray = [];
     let length = 0;
+    let recieved = 0;
+    let send = 0;
+    let state: 'full' | 'not_contain' | 'part' = 'not_contain';
+
     const read = () => {
         bodyReader.read().then(async ({ value, done }) => {
             try {
-                bufferArray.push(value);
-                length += value.length;
+                // Add new buffer to collected inside one chunk
+                if (value && value.length > 0) {
+                    bufferArray.push(value);
+                    length += value.length;
+                    recieved += value.length;
+                }
+
+                const mergedArray = new Uint8Array(length);
+
+                // If current buffer doesn`t contain all metadata when skip
                 if (metaInt && length < metaInt) {
+                    state = 'not_contain';
                     if (!done) {
                         read();
-                        return;
+                    } else {
+                        let offset = 0;
+                        bufferArray.forEach((x) => {
+                            mergedArray.set(x, offset);
+                            offset += x.length;
+                        });
+                        send += mergedArray.length;
+                        processBuffer && (await processBuffer(mergedArray, icyHeaders));
+                        onDone();
                     }
+                    return;
                 }
-                const mergedArray = new Uint8Array(length);
+
                 let offset = 0;
                 bufferArray.forEach((x) => {
                     mergedArray.set(x, offset);
                     offset += x.length;
                 });
-                const icyHeaderLengh = mergedArray[metaInt];
-                processBuffer && (await processBuffer(mergedArray.slice(0, metaInt), icyHeaders));
+                const icyHeaderLengh = mergedArray[metaInt] ?? 0;
+                // If current buffer doesn`t contain all metadata when skip
+                if (length < metaInt + icyHeaderLengh * 16 + 1) {
+                    state = 'part';
+                    if (!done) {
+                        read();
+                    } else {
+                        let offset = 0;
+                        bufferArray.forEach((x) => {
+                            mergedArray.set(x, offset);
+                            offset += x.length;
+                        });
+                        send += mergedArray.length;
+                        processBuffer && (await processBuffer(mergedArray, icyHeaders));
+                        onDone();
+                    }
+                    return;
+                }
+
                 if (icyHeaderLengh > 0) {
                     icyHeaders = String.fromCharCode.apply(
                         null,
                         mergedArray.slice(metaInt + 1, metaInt + 1 + icyHeaderLengh * 16),
                     );
                 }
+                send += mergedArray.slice(0, metaInt).length;
+                processBuffer && (await processBuffer(mergedArray.slice(0, metaInt), icyHeaders));
 
                 const newArray = mergedArray.slice(metaInt + 1 + icyHeaderLengh * 16);
-
                 bufferArray = newArray.length > 0 ? [newArray] : [];
-
                 length = newArray.length ?? 0;
 
                 if (!done) {
                     read();
+                } else {
+                    send += newArray.slice(0, metaInt).length;
+                    newArray.length > 0 && processBuffer && (await processBuffer(newArray, icyHeaders));
+                    onDone();
                 }
             } catch (ex) {
                 if (!done) {
                     read();
+                } else {
+                    onDone();
                 }
             }
         });
