@@ -1,60 +1,8 @@
-function createPlayer(minBuffSize = 16000 * 4) {
-    const context = new AudioContext();
-    const gainNode = context.createGain();
-    gainNode.connect(context.destination);
-    context.suspend();
-    let totalDuration = 0;
-    let buffs = [];
-    let length = 0;
-    /**
-     * @type Uint8Array
-     */
-    let prevChunk = new Uint8Array(0);
-    /**
-     * @type {(buff: Uint8Array) => Promise<void>} buff
-     */
-    const play = async (buff) => {
-        try {
-            buffs.push(buff);
-
-            length += buff.length;
-            if (length < minBuffSize) {
-                return;
-            }
-            const mergedBuff = new Uint8Array(length + prevChunk.length);
-            mergedBuff.set(prevChunk, 0);
-            let offset = prevChunk.length;
-            buffs.forEach((x) => {
-                mergedBuff.set(x, offset);
-                offset += x.length;
-            });
-            const au = await context.decodeAudioData(mergedBuff.buffer);
-            const source = context.createBufferSource();
-            source.connect(gainNode);
-            source.connect(context.destination);
-            source.buffer = au;
-            const prevChunkDur = prevChunk.length > 0 ? (await context.decodeAudioData(prevChunk.buffer)).duration : 0;
-            source.start(totalDuration - prevChunkDur);
-
-            prevChunk = buff;
-            // To prevent 'clicks' and 'gaps' between two chunks
-            gainNode.gain.setValueAtTime(0, totalDuration - prevChunkDur);
-            gainNode.gain.setValueAtTime(1, totalDuration);
-            totalDuration += au.duration - prevChunkDur;
-        } catch (err) {
-            console.log(err);
-        }
-        buffs = [];
-        length = 0;
-    };
-    return { play };
-}
-
 export async function icyCast(
     url: string,
     requestInit: RequestInit = {},
     processBuffer: (buff: Uint8Array, icyHeaders: string) => Promise<void>,
-    onDone: () => void,
+    onDone: (params: { recieved: number; send: number }) => void,
 ): Promise<Response['headers']> {
     requestInit = requestInit ?? {};
     requestInit.keepalive = requestInit.keepalive === undefined ? true : requestInit.keepalive;
@@ -70,7 +18,6 @@ export async function icyCast(
     let length = 0;
     let recieved = 0;
     let send = 0;
-    let state: 'full' | 'not_contain' | 'part' = 'not_contain';
 
     const read = () => {
         bodyReader.read().then(async ({ value, done }) => {
@@ -96,7 +43,7 @@ export async function icyCast(
                         });
                         send += mergedArray.length;
                         processBuffer && (await processBuffer(mergedArray, icyHeaders));
-                        onDone();
+                        onDone({ recieved, send });
                     }
                     return;
                 }
@@ -119,7 +66,7 @@ export async function icyCast(
                         });
                         send += mergedArray.length;
                         processBuffer && (await processBuffer(mergedArray, icyHeaders));
-                        onDone();
+                        onDone({ recieved, send });
                     }
                     return;
                 }
@@ -149,6 +96,7 @@ export async function icyCast(
                             newArray.slice(metaInt + 1, metaInt + 1 + headerSize),
                         );
                     }
+                    send += newArray.slice(0, metaInt).length;
                     processBuffer && (await processBuffer(newArray.slice(0, metaInt), icyHeaders));
                     newArray = newArray.slice(metaInt + 1 + headerSize);
                     bufferArray = newArray.length > 0 ? [newArray] : [];
@@ -162,47 +110,17 @@ export async function icyCast(
                     newArray.length > 0 &&
                         processBuffer &&
                         (await processBuffer(newArray.slice(0, metaInt), icyHeaders));
-                    onDone();
+                    onDone({ recieved, send });
                 }
             } catch (ex) {
                 if (!done) {
                     read();
                 } else {
-                    onDone();
+                    onDone({ recieved, send });
                 }
             }
         });
     };
     read();
     return response.headers;
-}
-export async function saveByteArray(byte: Uint8Array[]): Promise<void> {
-    const blob = new Blob(byte, { type: 'media/mp3' });
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    const fileName = 'test.mp3';
-    link.download = fileName;
-    link.click();
-}
-export function playerWithSave() {
-    const player = createPlayer();
-    const songs: { [key: string]: { buffs: Uint8Array[] } } = {};
-
-    const play: (buff: Uint8Array, title: string) => Promise<void> = async (buff: Uint8Array, title: string) => {
-        player.play(new Uint8Array(buff));
-        if (title) {
-            const curSong = songs[title];
-            if (!curSong) {
-                songs[title] = {
-                    buffs: [buff],
-                };
-            } else {
-                curSong.buffs.push(buff);
-            }
-        }
-        console.log(title);
-    };
-    return {
-        play,
-    };
 }

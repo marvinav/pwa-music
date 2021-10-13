@@ -117,7 +117,7 @@ test('Read file bu chunks 0.1', async () => {
     let totalLength = 0;
     const recievedBuffer = new Uint8Array(testSample.length);
     const wrap = async () => {
-        return new Promise<void>(function (resolve, reject) {
+        return new Promise<{ recieved: number; send: number }>(function (resolve, _reject) {
             icyCast(
                 'https://localhost',
                 null,
@@ -133,7 +133,9 @@ test('Read file bu chunks 0.1', async () => {
         });
     };
 
-    await wrap();
+    const { recieved, send } = await wrap();
+    expect(recieved).toBe(icyBuffer.length);
+    expect(send).toBe(testSample.length);
 
     expect(sendBytesLengh).toBe(icyBuffer.length);
     expect(totalLength).toBe(testSample.length);
@@ -220,7 +222,7 @@ test('Read file bu chunks 1.5', async () => {
     let totalLength = 0;
     const recievedBuffer = new Uint8Array(testSample.length);
     const wrap = async () => {
-        return new Promise<void>(function (resolve, reject) {
+        return new Promise<{ recieved: number; send: number }>(function (resolve, _reject) {
             icyCast(
                 'https://localhost',
                 null,
@@ -236,7 +238,9 @@ test('Read file bu chunks 1.5', async () => {
         });
     };
 
-    await wrap();
+    const { recieved, send } = await wrap();
+    expect(recieved).toBe(icyBuffer.length);
+    expect(send).toBe(testSample.length);
 
     expect(sendBytesLengh).toBe(icyBuffer.length);
     expect(totalLength).toBe(testSample.length);
@@ -323,7 +327,7 @@ test('Read file all in one chunk', async () => {
     let totalLength = 0;
     const recievedBuffer = new Uint8Array(testSample.length);
     const wrap = async () => {
-        return new Promise<void>(function (resolve, reject) {
+        return new Promise<{ recieved: number; send: number }>(function (resolve, _reject) {
             icyCast(
                 'https://localhost',
                 null,
@@ -339,8 +343,9 @@ test('Read file all in one chunk', async () => {
         });
     };
 
-    await wrap();
-
+    const { recieved, send } = await wrap();
+    expect(recieved).toBe(icyBuffer.length);
+    expect(send).toBe(testSample.length);
     expect(sendBytesLengh).toBe(icyBuffer.length);
     expect(totalLength).toBe(testSample.length);
     for (let i = 0; i < recievedBuffer.length; i++) {
