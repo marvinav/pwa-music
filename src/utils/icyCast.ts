@@ -86,7 +86,6 @@ export async function icyCast(
 
                 // If current buffer doesn`t contain all metadata when skip
                 if (metaInt && length < metaInt) {
-                    state = 'not_contain';
                     if (!done) {
                         read();
                     } else {
@@ -110,7 +109,6 @@ export async function icyCast(
                 const icyHeaderLengh = mergedArray[metaInt] ?? 0;
                 // If current buffer doesn`t contain all metadata when skip
                 if (length < metaInt + icyHeaderLengh * 16 + 1) {
-                    state = 'part';
                     if (!done) {
                         read();
                     } else {
@@ -135,15 +133,35 @@ export async function icyCast(
                 send += mergedArray.slice(0, metaInt).length;
                 processBuffer && (await processBuffer(mergedArray.slice(0, metaInt), icyHeaders));
 
-                const newArray = mergedArray.slice(metaInt + 1 + icyHeaderLengh * 16);
+                let newArray = mergedArray.slice(metaInt + 1 + icyHeaderLengh * 16);
                 bufferArray = newArray.length > 0 ? [newArray] : [];
                 length = newArray.length ?? 0;
+
+                // If lasted buffer contains metas
+                while (length > metaInt) {
+                    const headerSize = newArray[metaInt] * 16;
+                    if (headerSize + metaInt + 1 > length) {
+                        break;
+                    }
+                    if (headerSize > 0) {
+                        icyHeaders = String.fromCharCode.apply(
+                            null,
+                            newArray.slice(metaInt + 1, metaInt + 1 + headerSize),
+                        );
+                    }
+                    processBuffer && (await processBuffer(newArray.slice(0, metaInt), icyHeaders));
+                    newArray = newArray.slice(metaInt + 1 + headerSize);
+                    bufferArray = newArray.length > 0 ? [newArray] : [];
+                    length = newArray.length;
+                }
 
                 if (!done) {
                     read();
                 } else {
                     send += newArray.slice(0, metaInt).length;
-                    newArray.length > 0 && processBuffer && (await processBuffer(newArray, icyHeaders));
+                    newArray.length > 0 &&
+                        processBuffer &&
+                        (await processBuffer(newArray.slice(0, metaInt), icyHeaders));
                     onDone();
                 }
             } catch (ex) {
