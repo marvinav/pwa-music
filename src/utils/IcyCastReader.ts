@@ -158,7 +158,7 @@ export class IcyCastReader {
 
     async start(processBuffer?: IcyCastReader['processBuffer'], onDone?: IcyCastReader['onDone']): Promise<Headers> {
         if (this._state != 'initialized') {
-            throw new Error('Cast can`t be started only once');
+            throw new Error('Cast can be started only once');
         }
         this._state = 'started';
         this.processBuffer = processBuffer;

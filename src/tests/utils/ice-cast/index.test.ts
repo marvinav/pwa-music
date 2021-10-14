@@ -120,9 +120,7 @@ test('Read file all in one chunk class', async () => {
     const wrap = async () => {
         return new Promise<{ received: number; send: number }>(function (resolve, _reject) {
             cast.start(async (b, h) => {
-                if (totalLength > icyInt) {
-                    expect(h).toBe(totalLength >= secondTitleStart ? secondTitleName : firstTitleName);
-                }
+                expect(h).toBe(totalLength >= secondTitleStart ? secondTitleName : firstTitleName);
                 receivedBuffer.set(b, totalLength);
                 totalLength += b.length;
             }, resolve);
