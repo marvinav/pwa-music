@@ -31,6 +31,7 @@ var devServer = {
     historyApiFallback: true,
     https: true,
     hot: true,
+    port: 4242,
 };
 
 /**
@@ -109,6 +110,7 @@ var config = {
             }
             return `scripts/[name].[chunkhash].chunk.js`;
         },
+        devtoolModuleFilenameTemplate: 'file:///[absolute-resource-path]', // map to source with absolute file path not webpack:// protocol
         path: path.resolve(__dirname, 'dist'),
         publicPath: '/',
     },
@@ -117,7 +119,7 @@ var config = {
 
 module.exports = (env, argv) => {
     config.mode = argv.mode;
-    config.devtool = argv.mode === 'development' ? 'eval' : false;
+    config.devtool = argv.mode === 'development' ? 'source-map' : false;
     if (isDevelopment) {
         config.plugins.push(new ReactRefreshWebpackPlugin());
     }
