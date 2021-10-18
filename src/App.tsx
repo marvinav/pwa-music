@@ -7,15 +7,21 @@ import { PluginRoute } from './services/PluginRoute';
 
 const NotFound = lazy(() => import(/* webpackChunkName: "NotFound" */ './pages/NotFound'));
 const Home = lazy(() => import(/* webpackChunkName: "Home" */ './pages/Home'));
+const MusicPlayer = lazy(() => import(/* webpackChunkName: "MusicPlayer" */ './pages/MusicPlayer'));
 
 // Входная точка приложения.
 // Корень всего сайта.
 
 const links: NavBarProps['links'] = [
     {
+        id: 'music-player',
+        label: 'Player',
+        path: '/',
+    },
+    {
         id: 'home',
         label: 'Home',
-        path: '/',
+        path: '/home',
     },
     {
         id: 'about',
@@ -39,7 +45,8 @@ const App: React.FC = () => {
             <NavBar links={links} key="nav-bar" onClick={history.push} section={`/${math.params?.section ?? ''}`} />
             <Suspense fallback={<Loading />}>
                 <Switch>
-                    <Route path="/" exact component={Home}></Route>
+                    <Route path="/" exact component={MusicPlayer}></Route>
+                    <Route path="/home" component={Home}></Route>
                     <PluginRoute path="/plugins/:pluginId/:viewId"></PluginRoute>
                     <Route component={NotFound} />
                 </Switch>
