@@ -7,7 +7,7 @@ import AppProvider from './providers/AppProvider';
 import './index.scss';
 import { pluginManager } from './services/PluginManager';
 
-if (false && 'serviceWorker' in navigator) {
+if ('serviceWorker' in navigator) {
     window.addEventListener('load', async function () {
         navigator.serviceWorker.getRegistration().then(async function (registration) {
             if (registration) {
