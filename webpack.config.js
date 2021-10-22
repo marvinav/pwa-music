@@ -9,6 +9,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const devMode = process.env.NODE_ENV !== 'production';
 const AssetsPlugin = require('assets-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const pkg = require('./package.json');
+const webpack = require('webpack');
 
 const isDevServer = process.env.WEBPACK_DEV_SERVE;
 const isDevelopment = process.env.NODE_ENV !== 'production';
@@ -120,6 +122,15 @@ var config = {
 module.exports = (env, argv) => {
     config.mode = argv.mode;
     config.devtool = argv.mode === 'development' ? 'source-map' : false;
+    config.plugins.push(
+        new webpack.DefinePlugin({
+            webpack_env: {
+                SERVICE_WORKER: process.env.SERVICE_WORKER ?? true,
+                MODE: JSON.stringify(config.mode),
+                VERSION: JSON.stringify(pkg.version),
+            },
+        }),
+    );
     if (isDevelopment) {
         config.plugins.push(new ReactRefreshWebpackPlugin());
     }
