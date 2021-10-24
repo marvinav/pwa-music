@@ -53,6 +53,7 @@ Requirements to file system implementation
 ### Base functionality
 - [ ] Play music
 - [ ] Show metadata of music file (Album/Artist/Song/Year and et al)
+  - [ ] Media Session API
 - [ ] Previous, next, pause/stop
 - [ ] Media control integrations
 - [ ] Playlists
