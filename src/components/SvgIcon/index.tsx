@@ -2,7 +2,6 @@ import React from 'react';
 import './index.scss';
 import PropTypes from 'prop-types';
 import { sanitize } from 'dompurify';
-import { nanoid } from 'nanoid';
 import '../index.scss';
 
 export interface SVGIconProps {
@@ -21,9 +20,8 @@ export interface SVGIconProps {
  * @returns Return div container with nested SVG element.
  */
 export const SvgIcon: React.VFC<SVGIconProps> = (props) => {
-    const [id] = React.useState(nanoid());
     const [ell] = React.useState(
-        replaceFill(new DOMParser().parseFromString(sanitize(props.src), 'image/svg+xml').firstElementChild, true, id),
+        replaceFill(new DOMParser().parseFromString(sanitize(props.src), 'image/svg+xml').firstElementChild),
     );
 
     return (
@@ -35,7 +33,7 @@ export const SvgIcon: React.VFC<SVGIconProps> = (props) => {
     );
 };
 
-function replaceFill(doc: SVGSVGElement | Element, root?: boolean, id?: string) {
+function replaceFill(doc: SVGSVGElement | Element) {
     if (doc.nodeName === 'svg') {
         doc.setAttribute('preserveAspectRatio', 'none');
         doc.setAttribute('width', '100%');
@@ -46,9 +44,6 @@ function replaceFill(doc: SVGSVGElement | Element, root?: boolean, id?: string) 
     }
     for (const ch in doc.children) {
         replaceFill(doc.children[ch]);
-    }
-    if (root) {
-        doc.setAttribute('id', id);
     }
     return doc as SVGSVGElement;
 }
