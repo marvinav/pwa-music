@@ -24,8 +24,8 @@
     --main-font-family: 'Roboto', sans-serif;
     --special-font-family: 'Press Start 2P', cursive;
     --border-radius: 5px;
-    --window-border-color: red;
-    --window-border-thick: 2px;
+    --window-border-color: rgb(158, 86, 86);
+    --window-border-thick: 1px;
 }
 
 // depth-1
@@ -68,31 +68,51 @@
     margin: 12px;
 }
 
-.rounded {
+@mixin bordered {
+    border: var(--window-border-thick) solid var(--window-border-color);
+}
+
+@mixin rounded {
     border-radius: var(--border-radius);
 }
+.rounded {
+    @include rounded;
+}
 // Layers
-
-.depth-0 {
+@mixin depth-0 {
     background-color: var(--background-color);
     color: var(--color-1);
 }
 
-.depth-1 {
+@mixin depth-1 {
     background-color: var(--background-color-1);
     color: var(--color-1);
 }
+.depth-0 {
+    @include depth-0;
+}
 
-.paper-0 {
+.depth-1 {
+    @include depth-1;
+}
+
+@mixin paper-0 {
     @extend .depth-0;
+    @extend .p-s;
+    @extend .m-0;
+}
+.paper-0 {
+    @include paper-0;
+}
+
+@mixin paper-1 {
+    @extend .depth-1;
     @extend .p-s;
     @extend .m-0;
 }
 
 .paper-1 {
-    @extend .depth-1;
-    @extend .p-s;
-    @extend .m-0;
+    @include paper-1;
 }
 
 .paper-0 .shine-shadow,

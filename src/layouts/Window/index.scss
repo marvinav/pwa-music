@@ -1,7 +1,7 @@
 div.window {
     display: flex;
     flex-direction: column;
-    position: sticky;
+    position: fixed;
     justify-content: center;
     gap: 1em;
     align-items: center;

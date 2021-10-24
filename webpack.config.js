@@ -98,6 +98,14 @@ var config = {
                     filename: (m) => m.filename,
                 },
             },
+            {
+                type: 'asset/source',
+                resourceQuery: /raw/,
+            },
+            {
+                type: 'asset/inline',
+                resourceQuery: /inline/,
+            },
         ],
     },
     resolve: {
