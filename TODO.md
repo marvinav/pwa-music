@@ -65,6 +65,25 @@ Requirements to file system implementation
   - [ ] ogg
 - [ ] Select storage type 
 
+
+```mermaid
+flowchart TD;
+    subgraph MusicPlayer
+      id1(AudioContext);
+      id2(GainNode);  
+      id3>Media Session Events];
+    end
+    subgraph MusicProvider
+      id4[(Tracks)];
+      id5(Sound Effects);
+      id6(Track metadata);
+    end
+    id8(Consumer);
+  id8-- Play next track, get track information, change provider--> MusicPlayer
+  MusicProvider-- Provide next track, track information--> MusicPlayer
+  id8 -.Consume provider through player.-> MusicProvider
+```
+
 ## Notes
 
 - [ ] Take notes in markdown
