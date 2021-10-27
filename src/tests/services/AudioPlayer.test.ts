@@ -167,12 +167,12 @@ describe('Audio Player', () => {
     });
 
     it('Play music with loop-one mode', async () => {
-        const { mockPause, mockPlay, mockStop, modeChangedSub, player, trackEndSub, trackStartSub } = createPlayer();
+        const { mockPlay, modeChangedSub, player } = createPlayer();
         await player.setPlaylist(playlistThird);
         expect(player.playlist.tracks.length).toBe(3);
         player.setMode('loop-one');
         expect(player.mode).toBe('loop-one');
-        const track = await player.play({ trackNumber: 0, relative: false });
+        // const track = await player.play({ trackNumber: 0, relative: false });
         expect(mockPlay).toBeCalledTimes(1);
         expect(modeChangedSub).toBeCalledTimes(1);
     });
