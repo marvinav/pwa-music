@@ -19,7 +19,6 @@ const MusicPlayer: React.VFC = () => {
 };
 
 const ControlPanel: React.VFC = () => {
-    const [isPlay, setIsPlay] = React.useState(false);
     return (
         <div className="control-panel">
             <SvgIcon src={next} className="button previous" />
