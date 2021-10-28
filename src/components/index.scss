@@ -1,0 +1,23 @@
+@use '../index' as main;
+
+[data-title]:hover:after {
+    opacity: 1;
+    transition: all 0.1s ease 0.5s;
+    visibility: visible;
+}
+
+[data-title]:after {
+    content: attr(data-title);
+    position: absolute;
+    white-space: nowrap;
+    opacity: 0;
+    z-index: 99999;
+    visibility: hidden;
+    @include main.rounded;
+    @include main.paper-0;
+    @include main.bordered;
+}
+
+[data-title] {
+    position: relative;
+}

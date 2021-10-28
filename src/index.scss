@@ -24,6 +24,8 @@
     --main-font-family: 'Roboto', sans-serif;
     --special-font-family: 'Press Start 2P', cursive;
     --border-radius: 5px;
+    --window-border-color: rgb(158, 86, 86);
+    --window-border-thick: 1px;
 }
 
 // depth-1
@@ -66,37 +68,57 @@
     margin: 12px;
 }
 
-.rounded {
+@mixin bordered {
+    border: var(--window-border-thick) solid var(--window-border-color);
+}
+
+@mixin rounded {
     border-radius: var(--border-radius);
 }
+.rounded {
+    @include rounded;
+}
 // Layers
-
-.depth-0 {
+@mixin depth-0 {
     background-color: var(--background-color);
     color: var(--color-1);
 }
 
-.depth-1 {
+@mixin depth-1 {
     background-color: var(--background-color-1);
     color: var(--color-1);
 }
+.depth-0 {
+    @include depth-0;
+}
 
-.paper-0 {
+.depth-1 {
+    @include depth-1;
+}
+
+@mixin paper-0 {
     @extend .depth-0;
     @extend .p-s;
     @extend .m-0;
 }
+.paper-0 {
+    @include paper-0;
+}
 
-.paper-1 {
+@mixin paper-1 {
     @extend .depth-1;
     @extend .p-s;
     @extend .m-0;
 }
 
+.paper-1 {
+    @include paper-1;
+}
+
 .paper-0 .shine-shadow,
 .depth-0 .shine-shadow {
     * {
-        filter: drop-shadow(3px 3px var(--background-color-1));
+        filter: drop-shadow(3px 3px var(--background-color));
     }
 }
 
@@ -114,9 +136,18 @@
     flex-direction: column;
     flex-wrap: nowrap;
     gap: 0.5rem;
-
+    box-sizing: border-box;
     &.align-center {
         align-items: center;
+    }
+    overflow-y: auto;
+    word-break: break-all;
+    &:first-child {
+        padding-top: 0.5rem;
+    }
+
+    &:last-child {
+        padding-bottom: 0.5rem;
     }
 }
 
@@ -141,7 +172,6 @@
 
 body {
     @extend .paper-0;
-    @extend .container;
     @extend .full-screen;
     @include headings {
         font-family: var(--special-font-family);
@@ -150,9 +180,13 @@ body {
     span {
         font-family: var(--main-font-family);
     }
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    gap: 0;
 }
 
-.focusable {
+body .focusable {
     box-sizing: border-box;
     border: 3px solid transparent;
     padding: 3px;

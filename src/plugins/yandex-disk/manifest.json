@@ -1,0 +1,15 @@
+{
+    "id": "yandex-disk",
+    "author": "marvinav",
+    "description": "Storage provaider for Yandex.Disk",
+    "entry": "main.js",
+    "type": "storage-provider",
+    "views": [
+        {
+            "_": "reactView",
+            "id": "oauth-token-handler",
+            "scope": "route.main"
+        }
+    ],
+    "settings": { "scope": "settings.main", "_": "reactView", "id": "settings" }
+}

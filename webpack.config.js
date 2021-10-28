@@ -9,6 +9,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const devMode = process.env.NODE_ENV !== 'production';
 const AssetsPlugin = require('assets-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const pkg = require('./package.json');
+const webpack = require('webpack');
 
 const isDevServer = process.env.WEBPACK_DEV_SERVE;
 const isDevelopment = process.env.NODE_ENV !== 'production';
@@ -28,17 +30,19 @@ var devServer = {
     },
     static: path.resolve(__dirname, 'dist/'),
     host: 'localhost',
+    historyApiFallback: true,
     https: true,
     hot: true,
+    port: 4242,
 };
 
 /**
  * @type {import('webpack').Configuration}
  */
 var config = {
-    entry: [`./src/index.tsx`],
+    entry: [`./src/index`],
     plugins: [
-        new CleanWebpackPlugin(),
+        new CleanWebpackPlugin({ cleanOnceBeforeBuildPatterns: ['*/**', , '*.*', '!plugins/**'] }),
         new MiniCssExtractPlugin({
             filename: `static/styles/[chunkhash].css`,
         }),
@@ -94,6 +98,14 @@ var config = {
                     filename: (m) => m.filename,
                 },
             },
+            {
+                type: 'asset/source',
+                resourceQuery: /raw/,
+            },
+            {
+                type: 'asset/inline',
+                resourceQuery: /inline/,
+            },
         ],
     },
     resolve: {
@@ -108,15 +120,25 @@ var config = {
             }
             return `scripts/[name].[chunkhash].chunk.js`;
         },
+        devtoolModuleFilenameTemplate: 'file:///[absolute-resource-path]', // map to source with absolute file path not webpack:// protocol
         path: path.resolve(__dirname, 'dist'),
-        publicPath: 'auto',
+        publicPath: '/',
     },
     devServer,
 };
 
 module.exports = (env, argv) => {
     config.mode = argv.mode;
-    config.devtool = argv.mode === 'development' ? 'eval' : false;
+    config.devtool = argv.mode === 'development' ? 'source-map' : false;
+    config.plugins.push(
+        new webpack.DefinePlugin({
+            webpack_env: {
+                SERVICE_WORKER: process.env.SERVICE_WORKER ?? true,
+                MODE: JSON.stringify(config.mode),
+                VERSION: JSON.stringify(pkg.version),
+            },
+        }),
+    );
     if (isDevelopment) {
         config.plugins.push(new ReactRefreshWebpackPlugin());
     }

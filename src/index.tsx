@@ -5,8 +5,10 @@ import 'regenerator-runtime/runtime';
 import App from './App';
 import AppProvider from './providers/AppProvider';
 import './index.scss';
+import { pluginManager } from './services/PluginManager';
+import { env } from './utils/env';
 
-if ('serviceWorker' in navigator) {
+if (env.SERVICE_WORKER && 'serviceWorker' in navigator) {
     window.addEventListener('load', async function () {
         navigator.serviceWorker.getRegistration().then(async function (registration) {
             if (registration) {
@@ -19,6 +21,8 @@ if ('serviceWorker' in navigator) {
         });
     });
 }
+
+pluginManager.loadPlugins();
 
 ReactDOM.render(
     <AppProvider>

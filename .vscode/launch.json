@@ -6,41 +6,40 @@
     "configurations": [
         {
             "name": "Unsafe Chrome",
-            "type": "chrome",
+            "request": "launch",
+            "type": "pwa-chrome",
+            "webRoot": "${workspaceFolder}",
+            // Because we ran webworker there should be apply some hacks
             "runtimeArgs": [
                 "--user-data-dir=/tmp/foo",
                 "--ignore-certificate-errors",
-                "--unsafely-treat-insecure-origin-as-secure=https://localhost:8080",
-                "https://localhost:8080"
+                "--unsafely-treat-insecure-origin-as-secure=https://localhost:4242",
+                "https://localhost:4242"
             ],
-            "url": "https://localhost:8080",
             "skipFiles": [
                 "<node_internals>/**",
-                "node_modules/**",
-                "dist/**"
+                "${workspaceFolder}/node_modules/**"
             ],
-            "sourceMaps": true,
-            "cleanUp": "wholeBrowser",
-            "webRoot": "${workspaceFolder}/dist",
-            "smartStep": true,
-            "pathMapping": {
-                "///webpack-internal": "${workspaceFolder}"
+            "url": "https://localhost:4242",
+            "sourceMapPathOverrides": {
+                "webpack:///./*": "${webRoot}/*"
             },
+            "sourceMaps": true,
         },
         {
-            "name": "Laung Edge",
+            "type": "chrome",
             "request": "launch",
-            "type": "edge",
-            "webRoot": "${workspaceFolder}/dist",
-            "url": "https://localhost:3000/home",
-            "skipFiles": [
-                "!**/node_modules/**",
-                "!**/dist/**"
-            ],
-            "pathMapping": {
-                "///webpack-internal": "${workspaceFolder}"
-            },
+            "name": "Chrome for Storybook",
+            "breakOnLoad": true,
+            "url": "http://localhost:6006",
             "sourceMaps": true,
-        },
-    ]
+            "webRoot": "${workspaceFolder}",
+            "sourceMapPathOverrides": {
+                "webpack:///*": "${webRoot}/*",
+                "webpack:///./*": "${webRoot}/*",
+                "webpack:///src/*": "${webRoot}/*",
+                "webpack:///./~/*": "${webRoot}/node_modules/*"
+            }
+        }
+    ],
 }

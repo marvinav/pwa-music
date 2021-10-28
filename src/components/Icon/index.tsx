@@ -1,7 +1,8 @@
 import React from 'react';
 import './index.scss';
 import PropTypes from 'prop-types';
-export interface AvatarProps {
+
+export interface IconProps {
     /**
      * Will be passed in `src` attribute of nested `img`
      */
@@ -11,10 +12,8 @@ export interface AvatarProps {
     size?: 'xs' | 's' | 'normal' | 'l' | 'xl';
 }
 
-export const Avatar: React.VFC<AvatarProps> = (props) => {
+export const Icon: React.VFC<IconProps> = (props) => {
     const ref = React.useRef<HTMLImageElement>();
-
-    const className = useClassName({ className: props.className, size: props.size });
 
     return (
         <img
@@ -24,32 +23,28 @@ export const Avatar: React.VFC<AvatarProps> = (props) => {
                 }
             }}
             ref={ref}
-            className={className}
+            className={useClassName(props)}
             src={props.src}
         ></img>
     );
 };
 
-Avatar.defaultProps = {
+Icon.defaultProps = {
     size: 'normal',
 };
 
-Avatar.propTypes = {
+Icon.propTypes = {
     className: PropTypes.string,
     onErrorSrc: PropTypes.string,
     size: PropTypes.oneOf(['xs', 's', 'normal', 'l', 'xl']),
     src: PropTypes.string.isRequired,
 };
 
-function useClassName(props: { className: string; size?: string }) {
-    const { className, size } = props;
+function useClassName(props: IconProps) {
+    const classes: string[] = ['icon-container'];
 
-    const classes: string[] = ['avatar-container'];
+    props.className && classes.push(props.className);
+    classes.push(props.size ?? 'normal');
 
-    if (className) {
-        classes.push(className);
-    }
-
-    classes.push(size ?? 'normal');
     return classes.join(' ');
 }

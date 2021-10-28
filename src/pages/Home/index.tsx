@@ -1,13 +1,25 @@
+import localforage from 'localforage';
 import React from 'react';
-import { Avatar } from '../../components/Avatar';
+import { Icon } from '../../components/Icon';
 import { Shined } from '../../components/Shined';
 import { gitHubAvatar } from '../../constants';
 import { useDictionary } from '../../contexts/DictionaryContext';
+import { usePlugin } from '../../contexts/PluginContext';
 import './index.scss';
 
 const Home: React.VFC = () => {
     const { d } = useDictionary();
-    const AvatarMemo = React.useMemo(() => <Avatar className="avatar" src={gitHubAvatar}></Avatar>, []);
+    const AvatarMemo = React.useMemo(() => <Icon className="avatar" src={gitHubAvatar}></Icon>, []);
+    const ref = React.useRef();
+
+    const { getSettings } = usePlugin();
+    const yandexDisk = getSettings('marvinav', 'yandex-disk');
+
+    React.useEffect(() => {
+        if (yandexDisk && yandexDisk._ !== 'loading') {
+            yandexDisk.render(ref.current);
+        }
+    }, [yandexDisk]);
 
     return (
         <div id="home-container" className="container align-center">
@@ -35,8 +47,21 @@ const Home: React.VFC = () => {
                     );
                 }}
             </Shined>
-            <section id="education"></section>
-            <section id="experience"></section>
+            <section id="yandex.disk" ref={ref}></section>
+            <section id="experience">
+                <button
+                    onClick={async (_e) => {
+                        const response = await fetch(
+                            'https://downloader.disk.yandex.ru/disk/cae8fc945b1a4a1f1c0f879bc96940d787ef3c58f8f126a00e12fcb94341956b/61572b8c/dYt8G3le4c_Tth3j_xK2tw0uvQQTw0BpOOb3vUYcOATEBT1jmUxt9u9Cjkzx_wS4-PpZXbtFjLFWhibmGF5X0Q%3D%3D?uid=216702572&filename=Kuramae%20Station%20-%20Digital%20Dreams%20Analog%20Tube.mp3&disposition=attachment&hash=&limit=0&content_type=audio%2Fmpeg&owner_uid=216702572&fsize=595948&hid=dc0daf90d0cf7289f69b4dc3570e23ca&media_type=audio&tknv=v2&etag=5eb559e4d69cae2ebb600a3d61bbe7c2',
+                        );
+                        console.log({ status: response.status });
+                        const result = await localforage.setItem('file', response.blob());
+                        const audio = new Audio(URL.createObjectURL(result));
+                        await audio.play();
+                        audio.pause();
+                    }}
+                ></button>
+            </section>
         </div>
     );
 };

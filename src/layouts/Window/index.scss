@@ -1,0 +1,16 @@
+div.window {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    justify-content: center;
+    gap: 1em;
+    align-items: center;
+    padding: 5px;
+    box-sizing: border-box;
+    border-color: var(--window-border-color);
+    width: 450px;
+    left: 50%;
+    height: 450px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
