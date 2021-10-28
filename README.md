@@ -1,5 +1,5 @@
-# My Space
+# PWA Music
 
-Powerfull startpage for browser.
+Powerfull startpage.
 
 # Music Player
