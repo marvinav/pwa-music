@@ -41,71 +41,9 @@ export interface Playlist {
     tracks: Track[];
 }
 
-export abstract class IAudioPlayer {
-    /**
-     * Playlist track change mode
-     */
-    abstract get mode(): 'loop' | 'loop-one' | 'none';
-
-    /**
-     * Get music player playlist
-     */
-    abstract get playlist(): Playlist;
-
-    /**
-     * Get player current state
-     * @returns Player state
-     */
-    abstract get currentState(): {
-        trackNumber?: number;
-        track?: Track;
-        position?: number;
-        state: 'play' | 'stop' | 'pause';
-    };
-
-    /**
-     * Set music player playlist
-     */
-    abstract setPlaylist: (playlist: Playlist) => Promise<void>;
-
-    /**
-     * Play track
-     * @param track Number of track to play. Default 0.
-     * @returns Track metadata
-     */
-    abstract play: (track: { trackNumber: number; relative: boolean }) => Promise<Track>;
-
-    /**
-     * Stop
-     */
-    abstract stop: () => void;
-
-    /**
-     * Pause
-     */
-    abstract pause: () => void;
-
-    /**
-     * Get file metadata by tracknumber
-     * @returns Track metadata
-     */
-    abstract getMetadata: (trackNumber: number) => Track;
-
-    /**
-     * Subscribe to playlist event
-     * @returns subscription id
-     */
-    abstract subscribe: (event: Events, action: () => Promise<void>, id?: string) => string;
-
-    /**
-     * Unsubscribe from playlist event
-     */
-    abstract unsubscribe: (event: Events, subscriptionId: string) => void;
-}
-
 export interface TrackProcessor<T extends Track> {
     type: T['mimeType'];
-    play: (context: AudioContext, track: T, onEnd?: () => void) => Promise<void>;
+    play: (context: AudioContext, track: T, onEnd?: () => Promise<void>) => Promise<void>;
     stop: () => Promise<void>;
     pause: () => Promise<void>;
 }
@@ -113,8 +51,8 @@ export interface TrackProcessor<T extends Track> {
 /**
  * @class AudioPlayer
  */
-export class AudioPlayer extends IAudioPlayer {
-    private _mode: IAudioPlayer['mode'] = 'none';
+export class AudioPlayer {
+    private _mode: AudioPlayer['mode'] = 'none';
     private _defaultContext = new AudioContext();
     private _playlist: Playlist;
     private readonly _processors: Record<Track['mimeType'], TrackProcessor<Track>> | Record<string, never>;
@@ -136,18 +74,27 @@ export class AudioPlayer extends IAudioPlayer {
     private _state: 'play' | 'stop' | 'pause';
 
     constructor(processors?: AudioPlayer['_processors']) {
-        super();
         this._processors = processors ?? {};
     }
 
-    get mode(): IAudioPlayer['mode'] {
+    /**
+     * Playlist track change mode
+     */
+    get mode(): 'loop' | 'loop-one' | 'none' {
         return this._mode;
     }
 
+    /**
+     * Get music player playlist
+     */
     get playlist(): Playlist {
         return this._playlist;
     }
 
+    /**
+     * Get player current state
+     * @returns Player state
+     */
     get currentState(): {
         trackNumber?: number;
         track?: Track;
@@ -162,7 +109,7 @@ export class AudioPlayer extends IAudioPlayer {
         };
     }
 
-    setMode(mode: IAudioPlayer['mode']): void {
+    setMode(mode: AudioPlayer['mode']): void {
         this._mode = mode;
         this.notify('mode-changed');
     }
@@ -215,14 +162,13 @@ export class AudioPlayer extends IAudioPlayer {
         if (!track.relative) {
             _track = this._playlist.tracks[track.trackNumber];
         } else {
-            trackNumber = this._currenTrack?.trackNumber
-                ? this.getNextTrack(this._currenTrack?.trackNumber, track.trackNumber)
-                : 0;
+            trackNumber = this._currenTrack ? this.getNextTrack(this._currenTrack.trackNumber, track.trackNumber) : 0;
+            console.log({ trackNumber });
             _track = this._playlist.tracks[trackNumber];
         }
 
         if (!_track) {
-            this.stop();
+            await this.stop();
             return null;
         }
 
@@ -234,9 +180,10 @@ export class AudioPlayer extends IAudioPlayer {
             throw new Error('Preprocessor is not found');
         }
 
-        await this._processors[_track.mimeType].play(this._defaultContext, _track, () => {
+        await this._processors[_track.mimeType].play(this._defaultContext, _track, async () => {
+            this._currenTrack = null;
             this.notify('track-end');
-            this.play({ trackNumber: 1, relative: true });
+            await this.play({ trackNumber: 1, relative: true });
         });
 
         this.notify('track-start');
@@ -244,11 +191,11 @@ export class AudioPlayer extends IAudioPlayer {
         return _track;
     };
 
-    stop = (): void => {
+    stop = async (): Promise<void> => {
         this._state = 'stop';
 
         if (this._currenTrack) {
-            this._processors[this._currenTrack.track.mimeType].stop();
+            await this._processors[this._currenTrack.track.mimeType].stop();
             this._currenTrack = null;
             this.notify('track-end');
         }

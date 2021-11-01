@@ -1,5 +1,5 @@
 import 'regenerator-runtime/runtime';
-import { AudioPlayer } from '../../services/AudioPlayer';
+import { AudioPlayer, Mp3Track, TrackProcessor } from '../../services/AudioPlayer';
 
 const playlist: AudioPlayer['_playlist'] = {
     name: 'Test First',
@@ -19,10 +19,22 @@ const playlistSecond: AudioPlayer['_playlist'] = {
     path: 'test/second',
     tracks: [
         {
-            mediaMetadata: { title: '', album: '', artist: '', artwork: [] },
+            mediaMetadata: { title: '1', album: '', artist: '', artwork: [] },
             recordable: false,
             mimeType: 'mp3',
-            path: 'test/second/mp3',
+            path: 'test/second/mp3/1',
+        },
+        {
+            mediaMetadata: { title: '2', album: '', artist: '', artwork: [] },
+            recordable: false,
+            mimeType: 'mp3',
+            path: 'test/second/mp3/2',
+        },
+        {
+            mediaMetadata: { title: '3', album: '', artist: '', artwork: [] },
+            recordable: false,
+            mimeType: 'mp3',
+            path: 'test/second/mp3/3',
         },
     ],
 };
@@ -132,40 +144,61 @@ describe('Audio Player', () => {
     });
 
     //TODO:
-    // it('Add preprocessor and play music', async () => {
-    //     const player = new AudioPlayer();
-    //     const mockPlay = jest.fn<Promise<void>, Parameters<TrackProcessor<Mp3Track>['play']>>(async (c, t, onEnd?) => {
-    //         expect(c).toBe(mockAudioContext);
-    //         expect(t).toBe(playlistSecond.tracks[0]);
-    //         onEnd();
-    //         return null;
-    //     });
+    it('Play music mode=none', async () => {
+        const player = new AudioPlayer();
+        const mockSubscription = jest.fn();
+        const trackEndSubId = player.subscribe('track-end', mockSubscription);
 
-    //     const mockPause = jest.fn<Promise<void>, Parameters<TrackProcessor<Mp3Track>['pause']>>(async () => {
-    //         return null;
-    //     });
+        let currentTrack: number;
+        let onEndBox;
 
-    //     const mockStop = jest.fn<Promise<void>, Parameters<TrackProcessor<Mp3Track>['stop']>>(async () => {
-    //         return null;
-    //     });
-    //     const preprocessor: TrackProcessor<Mp3Track> = {
-    //         type: 'mp3',
-    //         play: mockPlay,
-    //         pause: mockPause,
-    //         stop: mockStop,
-    //     };
+        const mockPlay = jest.fn<Promise<void>, Parameters<TrackProcessor<Mp3Track>['play']>>(async (c, t, onEnd?) => {
+            expect(c).toBe(mockAudioContext);
+            expect(t).toBe(playlistSecond.tracks[currentTrack]);
+            onEndBox = async () => {
+                currentTrack++;
+                await onEnd();
+            };
+            return null;
+        });
 
-    //     player.addProcessor(preprocessor);
-    //     await player.setPlaylist(playlistSecond);
-    //     expect(player.playlist.tracks.length).toBe(1);
-    //     const track = await player.play({ trackNumber: 0, relative: false });
-    //     expect(mockPlay).toBeCalledTimes(1);
-    //     expect(track).toBe(playlistSecond.tracks[0]);
-    //     const nullishTrack = await player.play({ trackNumber: 100, relative: false });
-    //     expect(nullishTrack).toBeNull();
-    //     const relativeTrack = await player.play({ trackNumber: 100, relative: true });
-    //     expect(relativeTrack).toBe(playlistSecond.tracks[0]);
-    // });
+        const mockPause = jest.fn<Promise<void>, Parameters<TrackProcessor<Mp3Track>['pause']>>(async () => {
+            return null;
+        });
+
+        const mockStop = jest.fn<Promise<void>, Parameters<TrackProcessor<Mp3Track>['stop']>>(async () => {
+            return null;
+        });
+
+        const preprocessor: TrackProcessor<Mp3Track> = {
+            type: 'mp3',
+            play: mockPlay,
+            pause: mockPause,
+            stop: mockStop,
+        };
+
+        player.addProcessor(preprocessor);
+        await player.setPlaylist(playlistSecond);
+        player.setMode('none');
+        expect(player.playlist.tracks.length).toBe(3);
+        currentTrack = 0;
+        const track = await player.play({ trackNumber: currentTrack, relative: false });
+        expect(mockPlay).toBeCalledTimes(1);
+        expect(track).toBe(playlistSecond.tracks[currentTrack]);
+        expect(player.currentState.trackNumber).toBe(0);
+        await onEndBox();
+        expect(mockSubscription).toBeCalledTimes(1);
+        expect(currentTrack).toBe(1);
+        await onEndBox();
+        expect(mockSubscription).toBeCalledTimes(2);
+        expect(currentTrack).toBe(2);
+        await onEndBox();
+        // 3 (first track end, second track end, third track end)
+        expect(mockSubscription).toBeCalledTimes(3);
+        expect(currentTrack).toBe(2);
+        expect(mockStop).toBeCalledTimes(4);
+        expect(player.currentState.state).toBe('stop');
+    });
 
     //TODO:
     // it('Play music with loop-one mode', async () => {
