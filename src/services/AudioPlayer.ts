@@ -2,7 +2,22 @@ import { nanoid } from 'nanoid';
 
 export type Track = IcyCastTrack | Mp3Track;
 
-export type Events = 'mode-changed' | 'playlist-changed' | 'track-start' | 'track-end';
+export type Events = 'mode-changed' | 'playlist-changed' | 'track-start' | 'track-end' | 'state-changed';
+
+export type WithoutOptionEvent = null;
+
+export type ModeChangedEvent = AudioPlayer['_mode'];
+
+export type StateChangedEvent = AudioPlayer['_state'];
+
+export type GetEventOption<T extends Events> = T extends 'state-changed'
+    ? StateChangedEvent
+    : T extends 'mode-changed'
+    ? ModeChangedEvent
+    : null;
+
+export type EventHandler<T extends Events> = (ev: T, option: GetEventOption<T>) => Promise<void> | void;
+
 export interface BaseTrack {
     /**
      * Absolute file to path
@@ -56,13 +71,16 @@ export class AudioPlayer {
     private _defaultContext = new AudioContext();
     private _playlist: Playlist;
     private readonly _processors: Record<Track['mimeType'], TrackProcessor<Track>> | Record<string, never>;
+
     private _subscriptions: {
-        [key: string]: Map<string, () => Promise<void>>;
+        [key in Events | 'all']: Map<string, EventHandler<key extends Events ? key : Events>>;
     } = {
         'playlist-changed': new Map(),
         'track-end': new Map(),
         'track-start': new Map(),
         'mode-changed': new Map(),
+        'state-changed': new Map(),
+        all: new Map(),
     };
 
     private _currenTrack: {
@@ -95,23 +113,19 @@ export class AudioPlayer {
      * Get player current state
      * @returns Player state
      */
-    get currentState(): {
-        trackNumber?: number;
-        track?: Track;
-        position?: number;
+    get state(): {
+        track: AudioPlayer['_currenTrack'];
         state: 'play' | 'stop' | 'pause';
     } {
         return {
             state: this._state,
-            trackNumber: this._currenTrack?.trackNumber,
-            track: this._currenTrack?.track,
-            position: this._currenTrack.position,
+            track: this._currenTrack,
         };
     }
 
     setMode(mode: AudioPlayer['mode']): void {
         this._mode = mode;
-        this.notify('mode-changed');
+        this.notify('mode-changed', mode);
     }
 
     addProcessor(processor: TrackProcessor<Track>): void {
@@ -142,7 +156,7 @@ export class AudioPlayer {
         }
 
         this._playlist = playlist;
-        this.notify('playlist-changed');
+        this.notify('playlist-changed', undefined);
     };
 
     /**
@@ -154,7 +168,7 @@ export class AudioPlayer {
      * - If mode is not respected and index of track is out of range, when {@link AudioPlayer.stop stop} will be called.
      * - If mode is `none`, respected and positive out of range, when will be called {@link AudioPlayer.stop stop}
      * - If mode is `none`, respected and negative out of range, when first track in playlist will be selected.
-     * - If mode is respected and {@link AudioPlayer#currentState.track} equal `null`, when first track in playlist will be selected.
+     * - If mode is respected and {@link AudioPlayer#state.track} equal `null`, when first track in playlist will be selected.
      */
     play = async (track: { trackNumber: number; relative: boolean }): Promise<Track> => {
         let _track: Track;
@@ -163,7 +177,6 @@ export class AudioPlayer {
             _track = this._playlist.tracks[track.trackNumber];
         } else {
             trackNumber = this._currenTrack ? this.getNextTrack(this._currenTrack.trackNumber, track.trackNumber) : 0;
-            console.log({ trackNumber });
             _track = this._playlist.tracks[trackNumber];
         }
 
@@ -181,24 +194,22 @@ export class AudioPlayer {
         }
 
         await this._processors[_track.mimeType].play(this._defaultContext, _track, async () => {
-            this._currenTrack = null;
-            this.notify('track-end');
+            this.notify('track-end', null);
             await this.play({ trackNumber: 1, relative: true });
         });
 
-        this.notify('track-start');
+        this.notify('track-start', null);
 
         return _track;
     };
 
     stop = async (): Promise<void> => {
         this._state = 'stop';
-
         if (this._currenTrack) {
             await this._processors[this._currenTrack.track.mimeType].stop();
             this._currenTrack = null;
-            this.notify('track-end');
         }
+        this.notify('state-changed', this._state);
     };
 
     pause = (): void => {
@@ -211,14 +222,36 @@ export class AudioPlayer {
         return this._playlist.tracks[trackNumber];
     };
 
-    subscribe = (event: Events, action: () => Promise<void>, id?: string): string => {
+    /**
+     * Subscribe to playlist events
+     * @param event Type of event to subscribe
+     * @param eventHandler Callback then subscription fired
+     * @param id Custom subscription id. If not set, random id will be generated
+     * @returns Return subscription id
+     */
+    subscribe = <T extends Events | 'all'>(
+        ev: T,
+        eventHandler: T extends Events ? EventHandler<T> : EventHandler<Events>,
+        id?: string,
+    ): string => {
         const _id = id ?? nanoid();
-        this._subscriptions[event].set(_id, action);
+        this._subscriptions[ev].set(_id, eventHandler);
         return _id;
     };
 
-    unsubscribe = (event: Events, subscriptionId: string): void => {
-        this._subscriptions[event].delete(subscriptionId);
+    /**
+     * @param ev If missed, than remove subscription from all events
+     * @returns number of delted subscriptions
+     */
+    unsubscribe = (subscriptionId: string, ev?: Events | 'all'): number => {
+        if (ev) {
+            return this._subscriptions[ev].delete(subscriptionId) ? 1 : 0;
+        }
+        let deletedSubscriptions = 0;
+        for (const event in Object.getOwnPropertyNames(this._subscriptions)) {
+            this._subscriptions[event as Events].delete(subscriptionId) && deletedSubscriptions++;
+        }
+        return deletedSubscriptions;
     };
 
     /**
@@ -232,9 +265,12 @@ export class AudioPlayer {
     /**
      * Notify subscribers about event
      */
-    private notify = (event: Events) => {
+    private notify = <T extends Events>(event: T, option: GetEventOption<T>) => {
+        this._subscriptions['all']?.forEach((action) => {
+            action(event, option);
+        });
         this._subscriptions[event]?.forEach((action) => {
-            action();
+            action(event, option);
         });
     };
 
