@@ -1,5 +1,7 @@
 import { nanoid } from 'nanoid';
 
+//TODO: move types to delcaration file
+
 export type Track = IcyCastTrack | Mp3Track;
 
 export type Events = 'mode-changed' | 'playlist-changed' | 'track-start' | 'track-end' | 'state-changed';
@@ -148,7 +150,7 @@ export class AudioPlayer {
         });
 
         if (playlist.path !== this._playlist?.path || currentTrack < 0) {
-            await this.resetState();
+            await this.stop();
         }
 
         if (currentTrack > -1) {
@@ -198,23 +200,33 @@ export class AudioPlayer {
             await this.play({ trackNumber: 1, relative: true });
         });
 
-        this.notify('track-start', null);
+        if (this._state != 'play') {
+            this._state = 'play';
+            this.notify('state-changed', 'play');
+        }
 
+        this.notify('track-start', null);
         return _track;
     };
 
     stop = async (): Promise<void> => {
-        this._state = 'stop';
         if (this._currenTrack) {
             await this._processors[this._currenTrack.track.mimeType].stop();
             this._currenTrack = null;
         }
-        this.notify('state-changed', this._state);
+        if (this._state != 'stop') {
+            this._state = 'stop';
+            this.notify('state-changed', this._state);
+        }
     };
 
-    pause = (): void => {
+    pause = async (): Promise<void> => {
         if (this._currenTrack) {
-            this._processors[this._currenTrack.track.mimeType].pause();
+            await this._processors[this._currenTrack.track.mimeType].pause();
+        }
+        if (this._state != 'pause') {
+            this._state = 'pause';
+            this.notify('state-changed', 'pause');
         }
     };
 
@@ -252,14 +264,6 @@ export class AudioPlayer {
             this._subscriptions[event as Events].delete(subscriptionId) && deletedSubscriptions++;
         }
         return deletedSubscriptions;
-    };
-
-    /**
-     * Reset audio player state
-     */
-    private resetState = async () => {
-        this._state = 'stop';
-        this._currenTrack = null;
     };
 
     /**

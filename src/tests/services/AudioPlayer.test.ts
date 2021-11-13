@@ -138,6 +138,14 @@ describe('Audio Player', () => {
         expect(player.state.state).toBe('stop');
         expect(player.state.track).toBeNull();
         expect(mockStop).toBeCalledTimes(1);
+        const trackAfterStop = await player.play({ trackNumber: 1, relative: false });
+        expect(trackAfterStop).toBe(playlistSecond.tracks[1]);
+        expect(player.state.state).toBe('play');
+        await onEndBox(); // End 2, play 3
+        await onEndBox(); // End 3, stop playlist
+        expect(player.state.state).toBe('stop');
+        expect(player.state.track).toBeNull();
+        expect(mockStop).toBeCalledTimes(2);
     });
 
     //TODO:
