@@ -40,6 +40,11 @@ export interface BaseTrack {
      * Flag if it can be recorder
      */
     recordable: boolean;
+
+    /**
+     * The mime type of file
+     */
+    mimeType: string;
 }
 
 export interface Mp3Track extends BaseTrack {

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Window } from '../../layouts/Window';
 import { SvgIcon } from '../../components/SvgIcon';
 import './index.scss';
@@ -8,12 +9,13 @@ import './index.scss';
 import next from '../../../static/assets/player/next-solid.svg?raw';
 import pause from '../../../static/assets/player/pause-solid.svg?raw';
 import play from '../../../static/assets/player/play-solid.svg?raw';
+import { Track } from '../../services/AudioPlayer/types';
 
 const MusicPlayer: React.VFC = () => {
     return (
         <Window title="player" className="music-player">
             <ControlPanel />
-            <div className="playlist"></div>
+            <Playlist />
         </Window>
     );
 };
@@ -21,12 +23,48 @@ const MusicPlayer: React.VFC = () => {
 const ControlPanel: React.VFC = () => {
     return (
         <div className="control-panel">
-            <SvgIcon size="normal" src={next} className="button previous" />
-            <SvgIcon size="normal" src={play} className="button play" />
-            <SvgIcon size="normal" src={pause} className="button pause" />
-            <SvgIcon size="normal" src={next} className="button next" />
+            <SvgIcon size="normal" src={next} className="focusable svg previous" />
+            <SvgIcon size="normal" src={play} className="focusable button svg play" />
+            <SvgIcon size="normal" src={pause} className="focusable button svg pause" />
+            <SvgIcon size="normal" src={next} className="focusable button svg next" />
         </div>
     );
+};
+
+const Playlist: React.VFC<{ tracks?: Track[] }> = (props) => {
+    return (
+        <div className="playlist">
+            {props.tracks?.map((x) => {
+                return <PlaylistItem key={x.path} track={x}></PlaylistItem>;
+            })}
+        </div>
+    );
+};
+
+Playlist.propTypes = {
+    tracks: PropTypes.array,
+};
+
+Playlist.defaultProps = {
+    tracks: [],
+};
+
+const PlaylistItem: React.VFC<{ track: Track }> = (props) => {
+    return (
+        <section className="playlist item">
+            <span>{props.track.path}</span>
+        </section>
+    );
+};
+
+PlaylistItem.propTypes = {
+    track: (props, _propName, componentName) => {
+        if (!props['path']) {
+            return new Error(
+                'Invalid prop `' + 'path' + '` supplied to' + ' `' + componentName + '`. Validation failed.',
+            );
+        }
+    },
 };
 
 export default MusicPlayer;
