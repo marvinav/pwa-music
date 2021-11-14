@@ -21,10 +21,10 @@ const MusicPlayer: React.VFC = () => {
 const ControlPanel: React.VFC = () => {
     return (
         <div className="control-panel">
-            <SvgIcon src={next} className="button previous" />
-            <SvgIcon src={play} className="button play" />
-            <SvgIcon src={pause} className="button pause" />
-            <SvgIcon src={next} className="button next" />
+            <SvgIcon size="normal" src={next} className="button previous" />
+            <SvgIcon size="normal" src={play} className="button play" />
+            <SvgIcon size="normal" src={pause} className="button pause" />
+            <SvgIcon size="normal" src={next} className="button next" />
         </div>
     );
 };
