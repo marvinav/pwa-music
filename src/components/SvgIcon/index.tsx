@@ -3,15 +3,14 @@ import './index.scss';
 import PropTypes from 'prop-types';
 import { sanitize } from 'dompurify';
 import '../index.scss';
+import { BaseComponentProps, useBaseClassName } from '..';
 
-export interface SVGIconProps {
+export interface SVGIconProps extends BaseComponentProps {
     /**
      * Will be passed in `src` attribute of nested `img`
      */
     src: string;
-    className?: string;
     tooltip?: string;
-    size?: 'xs' | 's' | 'normal' | 'l' | 'xl';
 }
 
 /**
@@ -56,13 +55,10 @@ SvgIcon.propTypes = {
     className: PropTypes.string,
     src: PropTypes.string.isRequired,
     tooltip: PropTypes.string,
+    rounded: PropTypes.bool,
 };
 
 function useClassName(props: SVGIconProps) {
-    const classes: string[] = ['svg-icon-container'];
-
-    props.className && classes.push(props.className);
-    classes.push(props.size ?? 'normal');
-
-    return classes.join(' ');
+    const baseClassName = useBaseClassName(props, 'svg-icon-container');
+    return baseClassName;
 }

@@ -1,19 +1,19 @@
 import React from 'react';
 import './index.scss';
 import PropTypes from 'prop-types';
+import { BaseComponentProps, useBaseClassName } from '..';
 
-export interface IconProps {
+export interface IconProps extends BaseComponentProps {
     /**
      * Will be passed in `src` attribute of nested `img`
      */
     src: string;
-    className?: string;
     onErrorSrc?: string;
-    size?: 'xs' | 's' | 'normal' | 'l' | 'xl';
 }
 
 export const Icon: React.VFC<IconProps> = (props) => {
     const ref = React.useRef<HTMLImageElement>();
+    const className = useClassName(props);
 
     return (
         <img
@@ -23,7 +23,7 @@ export const Icon: React.VFC<IconProps> = (props) => {
                 }
             }}
             ref={ref}
-            className={useClassName(props)}
+            className={className}
             src={props.src}
         ></img>
     );
@@ -41,10 +41,7 @@ Icon.propTypes = {
 };
 
 function useClassName(props: IconProps) {
-    const classes: string[] = ['icon-container'];
+    const baseClassName = useBaseClassName(props, 'icon-container');
 
-    props.className && classes.push(props.className);
-    classes.push(props.size ?? 'normal');
-
-    return classes.join(' ');
+    return baseClassName;
 }

@@ -1,3 +1,6 @@
 .svg-icon-container {
-    border-radius: 50%;
+    display: flex;
+    .rounded {
+        border-radius: 50%;
+    }
 }
