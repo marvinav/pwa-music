@@ -1,7 +1,8 @@
 import React from 'react';
 import './index.scss';
 import PropTypes from 'prop-types';
-import { BaseComponentProps, useBaseClassName } from '..';
+import { BaseComponentProps } from '../types';
+import { useBaseClassName } from '../utils/useBaseClassName';
 
 export interface IconProps extends BaseComponentProps {
     /**

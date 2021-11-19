@@ -3,7 +3,8 @@ import './index.scss';
 import PropTypes from 'prop-types';
 import { sanitize } from 'dompurify';
 import '../index.scss';
-import { BaseComponentProps, useBaseClassName } from '..';
+import { BaseComponentProps } from '../types';
+import { useBaseClassName } from '../utils/useBaseClassName';
 
 export interface SVGIconProps extends BaseComponentProps {
     /**

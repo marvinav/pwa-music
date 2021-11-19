@@ -1,11 +1,5 @@
 import React from 'react';
-
-export interface BaseComponentProps {
-    rounded?: boolean;
-    className?: string;
-    size?: 'xs' | 's' | 'normal' | 'l' | 'xl';
-    button?: boolean;
-}
+import { BaseComponentProps } from '../types';
 
 export const useBaseClassName = <T extends BaseComponentProps>(props: T, containerName?: string): string => {
     const [className, setClassName] = React.useState<string>();
