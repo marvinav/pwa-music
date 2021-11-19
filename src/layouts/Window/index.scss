@@ -3,7 +3,7 @@ div.window {
     flex-direction: column;
     position: fixed;
     justify-content: center;
-    gap: 1em;
+    gap: var(--padding-s);
     align-items: center;
     padding: 5px;
     box-sizing: border-box;

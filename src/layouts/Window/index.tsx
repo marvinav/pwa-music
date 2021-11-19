@@ -32,7 +32,7 @@ export const Window: React.FC<WindowProps> = (props) => {
 };
 
 function useClassname(props: WindowProps) {
-    const classess = ['window paper-0 focusable'];
+    const classess = ['window paper-0 focusable rounded'];
     props.className && classess.push(props.className);
     props.fullSize && classess.push('full-screen');
     return classess.join(' ');
