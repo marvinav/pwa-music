@@ -13,4 +13,30 @@ div.window {
     height: 450px;
     top: 50%;
     transform: translate(-50%, -50%);
+
+    .top-bar {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        .control-button {
+            display: flex;
+            gap: var(--padding-small);
+            .svg-icon-container {
+                border-radius: 50%;
+                overflow: hidden;
+                padding: 3px;
+                box-sizing: border-box;
+                color: transparent;
+                &.minimize {
+                    background: yellow;
+                }
+                &.close {
+                    background: red;
+                }
+                &:hover {
+                    color: black;
+                }
+            }
+        }
+    }
 }
