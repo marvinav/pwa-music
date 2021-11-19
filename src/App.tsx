@@ -4,6 +4,7 @@ import { Loading } from './pages/Loading';
 import { BackgroundMemo as Background } from './layouts/Background';
 import { NavBar, NavBarProps } from './layouts/NavBar';
 import { PluginRoute } from './services/PluginRoute';
+import AnimatedBackground from '../static/assets/backgrounds/11.gif';
 
 const NotFound = lazy(() => import(/* webpackChunkName: "NotFound" */ './pages/NotFound'));
 const Home = lazy(() => import(/* webpackChunkName: "Home" */ './pages/Home'));
@@ -41,7 +42,11 @@ const App: React.FC = () => {
 
     return (
         <React.Fragment>
-            <Background particlesConfig={require('../static/assets/particles.json')}></Background>
+            <Background
+                type="img"
+                imgSrc={AnimatedBackground}
+                particlesConfig={require('../static/assets/backgrounds/particles.json')}
+            ></Background>
             <NavBar links={links} key="nav-bar" onClick={history.push} section={`/${math.params?.section ?? ''}`} />
             <Suspense fallback={<Loading />}>
                 <Switch>
