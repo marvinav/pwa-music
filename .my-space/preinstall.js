@@ -1,5 +1,10 @@
 const path = require('path');
 const fs = require('fs');
+const { exit } = require('process');
+
+if (process.env.NETLIFY) {
+    exit();
+}
 
 const projectRoot = path.join(__dirname, '..');
 const gitHooks = path.join(projectRoot, '.git/hooks');
