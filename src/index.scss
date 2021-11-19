@@ -26,6 +26,9 @@
     --border-radius: 5px;
     --window-border-color: rgb(158, 86, 86);
     --window-border-thick: 1px;
+    --padding-s: 6px;
+    --padding-m: 9px;
+    --padding-b: 12px;
 }
 
 // depth-1
@@ -36,36 +39,24 @@
 
 // Paddings and margins
 
-.p-0 {
+.p-0,
+.m-0 {
     padding: 0;
 }
 
-.m-0 {
-    margin: 0;
-}
-
-.p-s {
-    padding: 6px;
-}
-
+.p-s,
 .m-s {
-    margin: 6px;
+    padding: var(--padding-s);
 }
 
-.p-m {
-    padding: 9px;
-}
-
+.p-m,
 .m-m {
-    margin: 9px;
+    padding: var(--padding-m);
 }
 
-.p-b {
-    padding: 12px;
-}
-
+.p-b,
 .m-b {
-    margin: 12px;
+    padding: var(--padding-b);
 }
 
 @mixin bordered {
