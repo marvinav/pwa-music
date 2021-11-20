@@ -11,17 +11,33 @@ import pause from '../../../static/assets/player/pause-solid.svg?raw';
 import play from '../../../static/assets/player/play-solid.svg?raw';
 import { Track } from '../../services/AudioPlayer/types';
 import { BaseComponentProps } from '../../components/types';
+import { Playlist as PlaylistType } from '../../services/AudioPlayer/types';
+import { Player } from '../../services/AudioPlayer';
+
+const playlist: PlaylistType = {
+    name: 'Only radio',
+    path: 'cache',
+    tracks: [
+        {
+            recordable: true,
+            mimeType: 'icy-cast',
+            path: 'http://radio.plaza.one/mp3_96',
+            mediaMetadata: { album: '', artist: '', artwork: null, title: 'Nightwave Plaza' },
+        },
+    ],
+};
+Player.setPlaylist(playlist);
 
 const MusicPlayer: React.VFC = () => {
     return (
         <Window title="player" className="music-player">
             <ControlPanel />
-            <Playlist />
+            <Playlist tracks={playlist.tracks} />
         </Window>
     );
 };
 
-const SvgControlClasses: BaseComponentProps['classes'] = ['button'];
+const SvgControlClasses: BaseComponentProps['classes'] = ['button', 'rectangle-size-normal'];
 
 const ControlPanel: React.VFC = () => {
     return (
@@ -62,7 +78,8 @@ const PlaylistItem: React.VFC<{ track: Track }> = (props) => {
 
 PlaylistItem.propTypes = {
     track: (props, _propName, componentName) => {
-        if (!props['path']) {
+        console.log({ props, _propName, componentName });
+        if (!props[_propName]?.['path']) {
             return new Error(
                 'Invalid prop `' + 'path' + '` supplied to' + ' `' + componentName + '`. Validation failed.',
             );

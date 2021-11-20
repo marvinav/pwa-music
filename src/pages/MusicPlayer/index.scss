@@ -1,3 +1,6 @@
 .control-panel {
     display: flex;
+    .previous {
+        transform: rotate(180deg);
+    }
 }

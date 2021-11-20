@@ -1,4 +1,4 @@
-import { AudioPlayer as AudioPlayerImplementation } from '.';
+import { AudioPlayer as AudioPlayerImplementation } from './AudioPlayer';
 
 export type AudioPlayer = AudioPlayerImplementation;
 
