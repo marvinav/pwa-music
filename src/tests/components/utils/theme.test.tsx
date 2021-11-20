@@ -1,7 +1,7 @@
 import { defaultThemeVariables } from '../../../components/types';
-import { iterateThroughProps, setThemeVariables, useThemeVariables } from '../../../components/utils/theme';
+import { iterateThemeVariables, setThemeVariables, useThemeVariables } from '../../../components/utils/themeVariables';
 
-it('iterate through properties', () => {
+it('Iterate theme variables', () => {
     const obj = {
         a: {
             aa: {
@@ -19,7 +19,7 @@ it('iterate through properties', () => {
         b: 'b',
     };
     const called: { key: string; val: string }[] = [];
-    iterateThroughProps(obj, (parents, val) => {
+    iterateThemeVariables(obj, (parents, val) => {
         called.push({ key: parents.join('-'), val });
     });
 

@@ -1,4 +1,137 @@
-@use '../index' as main;
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto&display=swap');
+
+// Paddings and margins
+
+.padding-0 {
+    padding: 0;
+}
+
+.padding-s {
+    padding: var(--padding-s);
+}
+
+.padding-normal {
+    padding: var(--padding-normal);
+}
+
+.padding-l {
+    padding: var(--padding-l);
+}
+
+.margin-0 {
+    padding: 0;
+}
+
+.margin-s {
+    padding: var(--padding-s);
+}
+
+.margin-normal {
+    padding: var(--padding-normal);
+}
+
+.margin-l {
+    padding: var(--padding-l);
+}
+
+@mixin bordered {
+    border: var(--window-border-thick) solid var(--window-border-color);
+}
+
+@mixin rounded {
+    border-radius: var(--border-radius);
+}
+.rounded {
+    @include rounded;
+}
+
+// Layers
+@mixin depth-0 {
+    background-color: var(--background-color);
+    color: var(--color-1);
+}
+
+@mixin depth-1 {
+    background-color: var(--background-color-1);
+    color: var(--color-1);
+}
+.depth-0 {
+    @include depth-0;
+}
+
+.depth-1 {
+    @include depth-1;
+}
+
+@mixin paper-0 {
+    @extend .depth-0;
+    @extend .padding-s;
+    @extend .margin-0;
+}
+.paper-0 {
+    @include paper-0;
+}
+
+@mixin paper-1 {
+    @extend .depth-1;
+    @extend .padding-s;
+    @extend .margin-0;
+}
+
+.paper-1 {
+    @include paper-1;
+}
+
+.paper-0 .shine-shadow,
+.depth-0 .shine-shadow {
+    * {
+        filter: drop-shadow(3px 3px var(--background-color));
+    }
+}
+
+.paper-1 .shine-shadow,
+.depth-1 .shine-shadow {
+    filter: drop-shadow(3px 3px var(--background-color-1));
+}
+
+// Fonts
+
+.main-font {
+    font-family: var(--main-font-family);
+}
+
+.special-font {
+    font-family: var(--special-font-family);
+}
+
+// Rectangle sizes
+
+.rectangle-size-xs {
+    width: var(--size-xs);
+    height: var(--size-xs);
+}
+
+.rectangle-size-s {
+    width: var(--size-s);
+    height: var(--size-s);
+}
+
+.rectangle-size-normal {
+    width: var(--size-normal);
+    height: var(--size-normal);
+}
+
+.rectangle-size-l {
+    width: var(--size-l);
+    height: var(--size-l);
+}
+
+.rectangle-size-xl {
+    width: var(--size-xl);
+    height: var(--size-xl);
+}
+
+// Tooltip
 
 [data-title]:hover:after {
     opacity: 1;
@@ -13,33 +146,11 @@
     opacity: 0;
     z-index: 99999;
     visibility: hidden;
-    @include main.rounded;
-    @include main.paper-0;
-    @include main.bordered;
+    @include rounded;
+    @include paper-0;
+    @include bordered;
 }
 
 [data-title] {
     position: relative;
-}
-
-.xs {
-    width: 8px;
-    height: 8px;
-}
-.s {
-    width: 16px;
-    height: 16px;
-}
-.normal {
-    width: 32px;
-    height: 32px;
-}
-.l {
-    width: 64px;
-    height: 64px;
-}
-
-.xl {
-    width: 128px;
-    height: 128px;
 }

@@ -4,7 +4,7 @@ export const useThemeVariables = (props?: ThemeVariableProps): void => {
     const unionProps = JSON.parse(JSON.stringify(defaultThemeVariables)) as typeof defaultThemeVariables;
 
     props &&
-        iterateThroughProps(props, (parentProps, value) => {
+        iterateThemeVariables(props, (parentProps, value) => {
             let buff = unionProps;
             parentProps.forEach((x, ind) => {
                 if (ind + 1 === parentProps.length) {
@@ -19,12 +19,12 @@ export const useThemeVariables = (props?: ThemeVariableProps): void => {
 };
 
 export const setThemeVariables = (props: ThemeVariableProps): void => {
-    iterateThroughProps(props, (parentProps, value) => {
+    iterateThemeVariables(props, (parentProps, value) => {
         document.documentElement.style.setProperty(`--${parentProps.join('-')}`, value);
     });
 };
 
-export const iterateThroughProps = (
+export const iterateThemeVariables = (
     obj: Record<string, unknown>,
     action: (parentProps: string[], value: string) => void,
 ): void => {
