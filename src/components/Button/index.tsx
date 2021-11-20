@@ -1,12 +1,13 @@
 import React, { HTMLAttributes } from 'react';
 import PropTypes from 'prop-types';
 import './index.scss';
-import { BaseComponentProps, useBaseClassName } from '..';
+import { BaseComponentProps } from '../types';
+import { useBaseClassName } from '../utils/useBaseClassName';
 
 export const Button: React.VFC<
     React.DetailedHTMLProps<HTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & BaseComponentProps
 > = (props) => {
-    const baseClassName = useBaseClassName(props);
+    const baseClassName = useBaseClassName(props, 'button-container');
 
     return (
         <button

@@ -10,6 +10,7 @@ import next from '../../../static/assets/player/next-solid.svg?raw';
 import pause from '../../../static/assets/player/pause-solid.svg?raw';
 import play from '../../../static/assets/player/play-solid.svg?raw';
 import { Track } from '../../services/AudioPlayer/types';
+import { BaseComponentProps } from '../../components/types';
 
 const MusicPlayer: React.VFC = () => {
     return (
@@ -20,13 +21,15 @@ const MusicPlayer: React.VFC = () => {
     );
 };
 
+const SvgControlClasses: BaseComponentProps['classes'] = ['button'];
+
 const ControlPanel: React.VFC = () => {
     return (
         <div className="control-panel">
-            <SvgIcon size="normal" src={next} className="focusable svg previous" />
-            <SvgIcon size="normal" src={play} className="focusable button svg play" />
-            <SvgIcon size="normal" src={pause} className="focusable button svg pause" />
-            <SvgIcon size="normal" src={next} className="focusable button svg next" />
+            <SvgIcon src={next} classes={SvgControlClasses} className="previous" />
+            <SvgIcon src={play} classes={SvgControlClasses} className="play" />
+            <SvgIcon src={pause} classes={SvgControlClasses} className="pause" />
+            <SvgIcon src={next} classes={SvgControlClasses} className="next" />
         </div>
     );
 };

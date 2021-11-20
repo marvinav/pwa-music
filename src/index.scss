@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto&display=swap');
+@use './components/index.scss' as components;
+
 //region Mixins
 
 @mixin headings {
@@ -14,111 +15,14 @@
 
 //endregion Mixins
 
-// Style Variables
-
-:root {
-    --background-color: black;
-    --color: yellow;
-    --color-selected: rgb(82, 82, 58);
-    --border-color-focus: rgb(194, 194, 19);
-    --main-font-family: 'Roboto', sans-serif;
-    --special-font-family: 'Press Start 2P', cursive;
-    --border-radius: 5px;
-    --window-border-color: rgb(158, 86, 86);
-    --window-border-thick: 1px;
-    --padding-s: 6px;
-    --padding-m: 9px;
-    --padding-b: 12px;
-}
-
-// depth-1
-:root {
-    --background-color-1: rgb(58, 41, 41);
-    --color-1: yellow;
-}
-
-// Paddings and margins
-
-.p-0,
-.m-0 {
-    padding: 0;
-}
-
-.p-s,
-.m-s {
-    padding: var(--padding-s);
-}
-
-.p-m,
-.m-m {
-    padding: var(--padding-m);
-}
-
-.p-b,
-.m-b {
-    padding: var(--padding-b);
-}
-
-@mixin bordered {
-    border: var(--window-border-thick) solid var(--window-border-color);
-}
-
-@mixin rounded {
-    border-radius: var(--border-radius);
-}
-.rounded {
-    @include rounded;
-}
-// Layers
-@mixin depth-0 {
-    background-color: var(--background-color);
-    color: var(--color-1);
-}
-
-@mixin depth-1 {
-    background-color: var(--background-color-1);
-    color: var(--color-1);
-}
-.depth-0 {
-    @include depth-0;
-}
-
-.depth-1 {
-    @include depth-1;
-}
-
-@mixin paper-0 {
-    @extend .depth-0;
-    @extend .p-s;
-    @extend .m-0;
-}
-.paper-0 {
-    @include paper-0;
-}
-
-@mixin paper-1 {
-    @extend .depth-1;
-    @extend .p-s;
-    @extend .m-0;
-}
-
-.paper-1 {
-    @include paper-1;
-}
-
-.paper-0 .shine-shadow,
-.depth-0 .shine-shadow {
-    * {
-        filter: drop-shadow(3px 3px var(--background-color));
-    }
-}
-
-.paper-1 .shine-shadow,
-.depth-1 .shine-shadow {
-    filter: drop-shadow(3px 3px var(--background-color-1));
-}
-
 // Layouts
+
+.full-screen {
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+}
 
 .container {
     width: 100%;
@@ -150,19 +54,11 @@
     }
 }
 
-.full-screen {
-    width: 100vw;
-    height: 100vh;
-    padding: 0;
-    margin: 0;
-}
-
 #root {
     display: contents;
 }
 
 body {
-    @extend .paper-0;
     @extend .full-screen;
     @include headings {
         font-family: var(--special-font-family);
@@ -199,16 +95,6 @@ body .focusable {
     to {
         border-color: var(--border-color-focus);
     }
-}
-
-// Fonts
-
-.main-font {
-    font-family: var(--main-font-family);
-}
-
-.special-font {
-    font-family: var(--special-font-family);
 }
 
 // Scrollbar

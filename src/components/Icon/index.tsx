@@ -1,7 +1,8 @@
 import React from 'react';
 import './index.scss';
 import PropTypes from 'prop-types';
-import { BaseComponentProps, useBaseClassName } from '..';
+import { BaseComponentProps } from '../types';
+import { useBaseClassName } from '../utils/useBaseClassName';
 
 export interface IconProps extends BaseComponentProps {
     /**
@@ -13,7 +14,8 @@ export interface IconProps extends BaseComponentProps {
 
 export const Icon: React.VFC<IconProps> = (props) => {
     const ref = React.useRef<HTMLImageElement>();
-    const className = useClassName(props);
+
+    const baseClassName = useBaseClassName(props, 'icon-container');
 
     return (
         <img
@@ -23,25 +25,14 @@ export const Icon: React.VFC<IconProps> = (props) => {
                 }
             }}
             ref={ref}
-            className={className}
+            className={baseClassName}
             src={props.src}
         ></img>
     );
 };
 
-Icon.defaultProps = {
-    size: 'normal',
-};
-
 Icon.propTypes = {
     className: PropTypes.string,
     onErrorSrc: PropTypes.string,
-    size: PropTypes.oneOf(['xs', 's', 'normal', 'l', 'xl']),
     src: PropTypes.string.isRequired,
 };
-
-function useClassName(props: IconProps) {
-    const baseClassName = useBaseClassName(props, 'icon-container');
-
-    return baseClassName;
-}
