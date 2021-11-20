@@ -5,9 +5,8 @@ div.window {
     justify-content: center;
     gap: var(--padding-s);
     align-items: center;
-    padding: 5px;
+    padding: var(--padding-s);
     box-sizing: border-box;
-    border-color: var(--window-border-color);
     width: 450px;
     left: 50%;
     height: 450px;

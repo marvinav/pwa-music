@@ -5,6 +5,7 @@ import { BackgroundMemo as Background } from './layouts/Background';
 import { NavBar, NavBarProps } from './layouts/NavBar';
 import { PluginRoute } from './services/PluginRoute';
 import AnimatedBackground from '../static/assets/backgrounds/11.gif';
+import { useThemeVariables } from './components/utils/themeVariables';
 
 const NotFound = lazy(() => import(/* webpackChunkName: "NotFound" */ './pages/NotFound'));
 const Home = lazy(() => import(/* webpackChunkName: "Home" */ './pages/Home'));
@@ -39,7 +40,7 @@ const links: NavBarProps['links'] = [
 const App: React.FC = () => {
     const math = useRouteMatch<{ section: string }>('/:section?');
     const history = useHistory();
-
+    useThemeVariables();
     return (
         <React.Fragment>
             <Background

@@ -23,13 +23,9 @@ export const SvgIcon: React.VFC<SVGIconProps> = (props) => {
     const [ell] = React.useState(
         replaceFill(new DOMParser().parseFromString(sanitize(props.src), 'image/svg+xml').firstElementChild),
     );
-
+    const baseClassName = useBaseClassName(props, 'svg-icon-container');
     return (
-        <div
-            data-title={props.tooltip}
-            className={useClassName(props)}
-            dangerouslySetInnerHTML={{ __html: ell.outerHTML }}
-        />
+        <div data-title={props.tooltip} className={baseClassName} dangerouslySetInnerHTML={{ __html: ell.outerHTML }} />
     );
 };
 
@@ -48,18 +44,8 @@ function replaceFill(doc: SVGSVGElement | Element) {
     return doc as SVGSVGElement;
 }
 
-SvgIcon.defaultProps = {
-    size: 'normal',
-};
-
 SvgIcon.propTypes = {
     className: PropTypes.string,
     src: PropTypes.string.isRequired,
     tooltip: PropTypes.string,
-    rounded: PropTypes.bool,
 };
-
-function useClassName(props: SVGIconProps) {
-    const baseClassName = useBaseClassName(props, 'svg-icon-container');
-    return baseClassName;
-}

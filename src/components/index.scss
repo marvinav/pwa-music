@@ -41,20 +41,22 @@
 @mixin rounded {
     border-radius: var(--border-radius);
 }
+
 .rounded {
     @include rounded;
 }
 
 // Layers
 @mixin depth-0 {
-    background-color: var(--background-color);
-    color: var(--color-1);
+    background-color: var(--layer-background-0);
+    color: var(--layer-color-primary-0);
 }
 
 @mixin depth-1 {
-    background-color: var(--background-color-1);
-    color: var(--color-1);
+    background-color: var(--layer-background-1);
+    color: var(--layer-color-primary-1);
 }
+
 .depth-0 {
     @include depth-0;
 }
@@ -63,37 +65,53 @@
     @include depth-1;
 }
 
-@mixin paper-0 {
+@mixin layer-0 {
     @extend .depth-0;
     @extend .padding-s;
     @extend .margin-0;
 }
-.paper-0 {
-    @include paper-0;
+
+.layer-0 {
+    @include layer-0;
 }
 
-@mixin paper-1 {
+@mixin layer-1 {
     @extend .depth-1;
     @extend .padding-s;
     @extend .margin-0;
 }
 
-.paper-1 {
-    @include paper-1;
+.layer-1 {
+    @include layer-1;
 }
 
-.paper-0 .shine-shadow,
+.layer-0 .shine-shadow,
 .depth-0 .shine-shadow {
     * {
         filter: drop-shadow(3px 3px var(--background-color));
     }
 }
 
-.paper-1 .shine-shadow,
+.layer-1 .shine-shadow,
 .depth-1 .shine-shadow {
-    filter: drop-shadow(3px 3px var(--background-color-1));
+    filter: drop-shadow(3px 3px var(--background-color-color));
 }
 
+.layer-0,
+.depth-0 {
+    &.bordered {
+        border: var(--layer-border-0);
+        box-shadow: var(--layer-shadow-0);
+    }
+}
+
+.layer-1,
+.depth-1 {
+    &.bordered {
+        border: var(--layer-border-1);
+        box-shadow: var(--layer-shadow-1);
+    }
+}
 // Fonts
 
 .main-font {
@@ -147,7 +165,7 @@
     z-index: 99999;
     visibility: hidden;
     @include rounded;
-    @include paper-0;
+    @include layer-0;
     @include bordered;
 }
 

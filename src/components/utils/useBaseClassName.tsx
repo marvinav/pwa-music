@@ -1,19 +1,16 @@
 import React from 'react';
 import { BaseComponentProps } from '../types';
 
-export const useBaseClassName = <T extends BaseComponentProps>(props: T, containerName?: string): string => {
-    const [className, setClassName] = React.useState<string>();
+export const useBaseClassName = <T extends BaseComponentProps>(
+    props: T,
+    containerName: `${string}-container` | `layer-${0 | 1}`,
+): string => {
+    const joinedClassName = React.useMemo(() => {
+        const joined: string[] = [containerName];
+        props.className && joined.push(props.className);
+        props.classes && joined.push(props.classes.join(' '));
+        return joined.join(' ');
+    }, [props.classes, props.className, containerName]);
 
-    React.useEffect(() => {
-        const result = [];
-        containerName && result.push(containerName);
-        props.rounded && result.push('rounded');
-        props.className && result.push(props.className);
-        props.size && result.push(props.size);
-        props.button && result.push('button');
-
-        setClassName(result.join(' '));
-    }, [props.rounded, props.className, props.size, props.button, containerName]);
-
-    return className;
+    return joinedClassName;
 };

@@ -1,20 +1,71 @@
+export type Size = 'xs' | 's' | 'normal' | 'l' | 'xl';
+
 export interface BaseComponentProps {
-    rounded?: boolean;
     className?: string;
-    size?: 'xs' | 's' | 'normal' | 'l' | 'xl';
-    button?: boolean;
+    classes?: (`bordered` | `size-${Size}` | `rectangle-size-${Size}` | 'rounded' | 'button')[];
 }
 
 export type DeepPartial<T> = T extends Record<string, unknown> ? { [P in keyof T]?: DeepPartial<T[P]> } : T;
 
 export const defaultThemeVariables = {
-    background: {
-        color: 'black',
+    layer: {
+        color: {
+            primary: {
+                0: 'yellow',
+                1: 'blue',
+            },
+            secondary: {
+                0: 'red',
+                1: 'brown',
+            },
+        },
+        background: {
+            0: 'black',
+            1: 'gray',
+        },
+        border: {
+            0: 'solid 1px red',
+            1: 'solid 2px black',
+        },
+        shadow: {
+            0: 'none',
+            1: 'none',
+        },
+    },
+    button: {
+        background: {
+            primary: '',
+            submit: '',
+            danger: '',
+            disabled: '',
+            focused: '',
+        },
+        color: {
+            primary: '',
+            submit: '',
+            danger: '',
+            disabled: '',
+            focused: '',
+        },
+        border: {
+            primary: '',
+            submit: '',
+            danger: '',
+            disabled: '',
+            focused: '',
+        },
+        shadow: {
+            primary: '',
+            submit: '',
+            danger: '',
+            disabled: '',
+            focused: '',
+        },
     },
     border: {
+        radius: '5px',
         color: {
             focus: 'rgb(194, 194, 19)',
-            radius: '5px',
         },
     },
     size: {
@@ -28,16 +79,6 @@ export const defaultThemeVariables = {
         s: '6px',
         m: '9px',
         b: '12px',
-    },
-    color: {
-        color: 'yellow',
-        selected: 'rgb(82, 82, 58)',
-    },
-    window: {
-        border: {
-            color: 'rgb(158, 86, 86)',
-            thick: '1px',
-        },
     },
     font: {
         family: { main: "'Roboto', sans-serif", special: "'Press Start 2P', cursive" },

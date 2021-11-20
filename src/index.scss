@@ -59,7 +59,6 @@
 }
 
 body {
-    @extend .paper-0;
     @extend .full-screen;
     @include headings {
         font-family: var(--special-font-family);
