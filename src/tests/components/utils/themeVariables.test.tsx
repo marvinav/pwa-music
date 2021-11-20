@@ -41,26 +41,31 @@ describe('Use theme variable', () => {
         called = [];
         useThemeVariables();
         expect(called.find((x) => x.property === '--size-xs').value).toBe('8px');
-        expect(called.find((x) => x.property === '--border-color-radius').value).toBe('5px');
+        expect(called.find((x) => x.property === '--font-family-main').value).toBe("'Roboto', sans-serif");
     });
 
     it('Not default', () => {
         called = [];
         useThemeVariables({
-            background: { color: 'not-default' },
+            layer: {
+                color: {
+                    primary: {
+                        0: 'not-red',
+                    },
+                },
+            },
             font: {
                 family: {
                     main: 'not-main',
                 },
             },
         });
-        expect(called.find((x) => x.property === '--background-color').value).toBe('not-default');
+        expect(called.find((x) => x.property === '--layer-color-primary-0').value).toBe('not-red');
         expect(called.find((x) => x.property === '--font-family-main').value).toBe('not-main');
         expect(called.find((x) => x.property === '--font-family-special').value).toBe(
             defaultThemeVariables.font.family.special,
         );
         expect(called.find((x) => x.property === '--size-xs').value).toBe('8px');
-        expect(called.find((x) => x.property === '--border-color-radius').value).toBe('5px');
     });
 });
 
@@ -70,13 +75,18 @@ it('Set theme variables', () => {
         called.push({ property, value });
     };
     setThemeVariables({
-        background: { color: 'not-default' },
+        layer: {
+            background: {
+                '0': 'not-default',
+            },
+        },
         font: {
             family: {
                 main: 'not-main',
             },
         },
     });
-    expect(called.find((x) => x.property === '--background-color').value).toBe('not-default');
+    expect(called.find((x) => x.property === '--layer-background-0').value).toBe('not-default');
     expect(called.find((x) => x.property === '--font-family-main').value).toBe('not-main');
+    expect(called.length).toBe(2);
 });
