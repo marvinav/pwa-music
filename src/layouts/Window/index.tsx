@@ -30,7 +30,7 @@ export const Window: React.FC<WindowProps> = (props) => {
                     <SvgIcon src={close} classes={IconClasses} className="close"></SvgIcon>
                 </div>
             </div>
-            <Layer className="view container" level={'layer-1'} classes={['margin-s']}>
+            <Layer className="view container" level={'layer-1'}>
                 {props.children}
             </Layer>
         </Layer>
