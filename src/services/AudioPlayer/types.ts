@@ -27,7 +27,7 @@ export interface BaseTrack {
     path: string;
 
     /**
-     * Total duration of file.
+     * Total duration of file in ms.
      */
     duration?: number;
 

@@ -10,9 +10,12 @@ export const Layer: React.FC<React.DetailedHTMLProps<HTMLAttributes<HTMLDivEleme
     props,
 ) => {
     const baseClassName = useBaseClassName(props, props.level);
+    const standartProps = { ...props };
+
+    delete standartProps.level;
 
     return (
-        <div {...props} className={baseClassName}>
+        <div {...standartProps} className={baseClassName}>
             {props.children}
         </div>
     );

@@ -4,3 +4,36 @@
         transform: rotate(180deg);
     }
 }
+
+.playlist {
+    --duration-width: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-xs);
+}
+
+.playlist-item {
+    user-select: none;
+    display: grid;
+    grid-template-areas:
+        'title duration'
+        'artist duration';
+    grid-template-columns: 1fr var(--duration-width);
+    align-items: center;
+    .title,
+    .artist {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+    .title {
+        grid-area: title;
+    }
+    .artist {
+        grid-area: artist;
+    }
+    .duration {
+        grid-area: duration;
+        justify-self: center;
+    }
+}

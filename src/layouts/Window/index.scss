@@ -20,6 +20,7 @@ div.window {
         .control-button {
             display: flex;
             gap: var(--padding-s);
+            align-items: center;
             .svg-icon-container {
                 border-radius: 50%;
                 overflow: hidden;
