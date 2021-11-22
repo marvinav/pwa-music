@@ -2,7 +2,7 @@ import React from 'react';
 import { Window } from '../../layouts/Window';
 import './index.scss';
 
-import { Playlist as PlaylistType } from '../../services/AudioPlayer/types';
+import { Playlist as PlaylistType, Track } from '../../services/AudioPlayer/types';
 import { Player } from '../../services/AudioPlayer';
 import { Playlist } from './components/Playlist';
 import { ControlPanel } from './components/ControlPanel';
@@ -34,10 +34,12 @@ const playlist: PlaylistType = {
 Player.setPlaylist(playlist);
 
 const MusicPlayer: React.VFC = () => {
+    const [selectedTrack, setSelectedTrack] = React.useState<Track>(null);
+
     return (
         <Window title="player" className="music-player">
             <ControlPanel />
-            <Playlist tracks={playlist.tracks} />
+            <Playlist setSelectedTrack={setSelectedTrack} selectedTrack={selectedTrack} tracks={playlist.tracks} />
         </Window>
     );
 };

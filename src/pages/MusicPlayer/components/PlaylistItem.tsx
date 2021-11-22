@@ -1,10 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useMemo } from 'react';
 import { Track } from '../../../services/AudioPlayer/types';
 import { convertDurationToHumanRead } from '../helpers/convertDurationToHumanRead';
 
-export const PlaylistItem: React.VFC<{ track: Track }> = (props) => {
-    const { track } = props;
+export const PlaylistItem: React.VFC<{ track: Track; selected: boolean; onDoubleClick: () => void }> = (props) => {
+    const { track, selected } = props;
+
+    const className = selected ? 'playlist-item selected' : 'playlist-item';
 
     const duration = useMemo(() => {
         return convertDurationToHumanRead(track?.duration);
@@ -12,9 +15,9 @@ export const PlaylistItem: React.VFC<{ track: Track }> = (props) => {
 
     return (
         <section
-            className="playlist-item"
+            className={className}
             onDoubleClick={(_ev) => {
-                // TODO: play this track
+                props.onDoubleClick();
             }}
         >
             <span className="title">{track.mediaMetadata?.title ?? track.path}</span>
@@ -25,6 +28,7 @@ export const PlaylistItem: React.VFC<{ track: Track }> = (props) => {
 };
 
 PlaylistItem.propTypes = {
+    onDoubleClick: PropTypes.func,
     track: (props, _propName, componentName) => {
         if (!props[_propName]?.['path']) {
             return new Error(

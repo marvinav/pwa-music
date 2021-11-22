@@ -1,4 +1,7 @@
+@use '../../components/index.scss' as components;
+
 .control-panel {
+    @extend .padding-s;
     display: flex;
     .previous {
         transform: rotate(180deg);
@@ -9,10 +12,10 @@
     --duration-width: 40px;
     display: flex;
     flex-direction: column;
-    gap: var(--size-xs);
 }
 
 .playlist-item {
+    @extend .padding-s;
     user-select: none;
     display: grid;
     grid-template-areas:
@@ -20,6 +23,7 @@
         'artist duration';
     grid-template-columns: 1fr var(--duration-width);
     align-items: center;
+    gap: var(--size-xs);
     .title,
     .artist {
         text-overflow: ellipsis;
@@ -31,9 +35,17 @@
     }
     .artist {
         grid-area: artist;
+        font-size: 0.7em;
     }
     .duration {
         grid-area: duration;
         justify-self: center;
+    }
+
+    // States
+    &.selected,
+    &:hover {
+        background-color: var(--button-background-focused);
+        color: var(--button-color-focused);
     }
 }

@@ -5,7 +5,6 @@ export function convertDurationToHumanRead(duration: number): string {
     const min = duration / 60000;
     const sec = (min - Math.trunc(min)) * 60;
 
-    console.log({ cd: duration, min, sec });
     return `${formatTime(min)}:${formatTime(sec)}`;
 }
 
