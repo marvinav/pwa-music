@@ -1,4 +1,5 @@
 import React from 'react';
+import { svgIconContainer } from '../../components/SvgIcon/index.css';
 
 import { render } from '@testing-library/react';
 
@@ -8,9 +9,11 @@ import story, { SvgIconSave } from './SvgIcon.stories';
 
 it('SVG Icon', () => {
     const args = { ...story.args, ...SvgIconSave.args };
-    const { container } = render(<SvgIconSave {...args}></SvgIconSave>);
+    const component = <SvgIconSave {...args}></SvgIconSave>;
+    const { container } = render(component);
     const paths = container.querySelectorAll('path');
     const svg = container.querySelector('svg');
+    expect(container.getElementsByClassName(svgIconContainer).item(0).className).toBe(svgIconContainer);
     expect(svg.getAttribute('id')).toBeNull();
     expect(svg.getAttribute('preserveAspectRatio')).toBe('none');
     paths.forEach((x) => {
