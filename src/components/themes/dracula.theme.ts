@@ -55,9 +55,6 @@ export const draculaTheme: GlobalThemeContract = {
             focused: 'none',
         },
     },
-    border: {
-        radius: '5px',
-    },
     size: {
         xs: '8px',
         s: '16px',
@@ -67,8 +64,8 @@ export const draculaTheme: GlobalThemeContract = {
     },
     padding: {
         s: '6px',
-        m: '9px',
-        b: '12px',
+        normal: '9px',
+        l: '12px',
     },
     font: {
         family: { main: "'Roboto', sans-serif", special: "'Press Start 2P', cursive" },

@@ -1,5 +1,5 @@
 import { createGlobalThemeContract } from '@vanilla-extract/css';
-import type { MapLeafNodes } from '@vanilla-extract/private';
+import type { MapLeafNodes, CSSVarFunction } from '@vanilla-extract/private';
 
 type DeepPartial<T> = T extends Record<string, unknown> ? { [P in keyof T]?: DeepPartial<T[P]> } : T;
 
@@ -59,9 +59,6 @@ export const globalThemeContract = createGlobalThemeContract(
                 focused: null,
             },
         },
-        border: {
-            radius: null,
-        },
         size: {
             xs: null,
             s: null,
@@ -71,8 +68,8 @@ export const globalThemeContract = createGlobalThemeContract(
         },
         padding: {
             s: null,
-            m: null,
-            b: null,
+            normal: null,
+            l: null,
         },
         font: {
             family: { main: null, special: null },
@@ -81,4 +78,7 @@ export const globalThemeContract = createGlobalThemeContract(
     (_value, path) => path.join('-'),
 );
 
+export const globalThemeVars = globalThemeContract as GlobalThemeContract;
+
+export type GlobalThemeVars = DeepPartial<MapLeafNodes<typeof globalThemeContract, CSSVarFunction>>;
 export type GlobalThemeContract = DeepPartial<MapLeafNodes<typeof globalThemeContract, string>>;
