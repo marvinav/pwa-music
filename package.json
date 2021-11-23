@@ -14,7 +14,7 @@
         "preinstall": "node .my-space/preinstall.js",
         "prettier": "prettier --check \"src\"",
         "prettier-fix": "prettier -w \"src\"",
-        "start": "WEBPACK_DEV_SERVE=true webpack serve --mode=development",
+        "start": "WEBPACK_DEV_SERVE=true NODE_ENV=development webpack serve --mode=development",
         "chrome": "google-chrome --user-data-dir=/tmp/foo --ignore-certificate-errors --unsafely-treat-insecure-origin-as-secure=https://localhost:8080 https://localhost:8080",
         "storybook": "start-storybook -p 6006",
         "build-storybook": "build-storybook"
@@ -26,6 +26,9 @@
     "license": "MIT",
     "dependencies": {
         "@types/pouchdb": "^6.4.0",
+        "@vanilla-extract/babel-plugin": "^1.1.2",
+        "@vanilla-extract/css": "^1.6.3",
+        "@vanilla-extract/webpack-plugin": "^2.1.1",
         "dexie": "^3.0.3",
         "dompurify": "^2.3.3",
         "localforage": "^1.10.0",

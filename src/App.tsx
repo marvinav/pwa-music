@@ -11,6 +11,8 @@ const NotFound = lazy(() => import(/* webpackChunkName: "NotFound" */ './pages/N
 // const Home = lazy(() => import(/* webpackChunkName: "Home" */ './pages/Home'));
 const MusicPlayer = lazy(() => import(/* webpackChunkName: "MusicPlayer" */ './pages/MusicPlayer'));
 
+import * as Style from './index.css';
+console.log(Style);
 // Входная точка приложения.
 // Корень всего сайта.
 // const links: NavBarProps['links'] = [

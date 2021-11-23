@@ -3,7 +3,7 @@ import { BaseComponentProps } from '../types';
 
 export const useBaseClassName = <T extends BaseComponentProps>(
     props: T,
-    containerName: `${string}-container` | `layer-${0 | 1}`,
+    containerName: `${string}-container` | `layer-${0 | 1}` | string,
 ): string => {
     const joinedClassName = React.useMemo(() => {
         const joined: string[] = [containerName];

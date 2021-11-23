@@ -1,5 +1,4 @@
 import React from 'react';
-import './index.scss';
 
 export const List: React.FC = (props) => {
     return (
