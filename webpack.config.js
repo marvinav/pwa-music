@@ -102,7 +102,7 @@ var config = {
                         loader: 'postcss-loader',
                         options: {
                             postcssOptions: {
-                                plugins: [require('cssnano')({ preset: 'default' })],
+                                plugins: !devMode ? [require('cssnano')({ preset: 'default' })] : undefined,
                             },
                         },
                     },
