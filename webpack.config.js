@@ -98,6 +98,14 @@ var config = {
                             url: false, // Required as image imports should be handled via JS/TS import statements
                         },
                     },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            postcssOptions: {
+                                plugins: [require('cssnano')({ preset: 'default' })],
+                            },
+                        },
+                    },
                 ],
             },
             {
