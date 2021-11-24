@@ -2,24 +2,22 @@
 
 import { style } from '@vanilla-extract/css';
 import { globalThemeVars } from './themes/theme.css';
-import { Size } from './types';
-
-type PaddinSize = '0' | 's' | 'normal' | 'l';
+import { DeviceSize, PaddinSize, Size } from './types';
 
 const sizes: PaddinSize[] = ['0', 's', 'normal', 'l'];
+
 const padding = {} as Record<PaddinSize, string>;
 const margin = {} as Record<PaddinSize, string>;
-
 sizes.map((x) => {
     padding[x] = style({ padding: x === '0' ? '0' : globalThemeVars.padding[x] });
     margin[x] = style({ padding: x === '0' ? '0' : globalThemeVars.padding[x] });
 });
 
+export { padding, margin };
+
 export const rounded = style({
     borderRadius: '5px',
 });
-
-export { padding, margin };
 
 export const mainFont = style({
     fontFamily: globalThemeVars.font.family.main,
@@ -30,7 +28,6 @@ export const specialFont = style({
 });
 
 const recSizes: Size[] = ['xs', 's', 'normal', 'l', 'xl'];
-
 const rectangle = {} as Record<Size, string>;
 
 recSizes.forEach((x) => {
@@ -41,6 +38,15 @@ recSizes.forEach((x) => {
 });
 
 export { rectangle };
+
+export const mediaQueries: Record<DeviceSize, string> = {
+    s: '(min-width: 576px)',
+    m: '(min-width: 768px)',
+    l: '(min-width: 992px)',
+    xl: '(min-width: 1200x)',
+    xxl: '(min-width: 1400px)',
+};
+
 // // Layers
 
 // .layer-0 .shine-shadow,

@@ -18,17 +18,14 @@ export interface WindowProps {
     className?: string;
 }
 
-const minimizeClassName = `${icons} minimize`;
-const closeClassName = `${icons} close`;
-
 export const Window: React.FC<WindowProps> = (props) => {
     return (
         <Layer level={0} className={useClassname(props)}>
             <div className={topBar}>
                 <div className="title">{props.title}</div>
                 <div className={controlButton}>
-                    <SvgIcon src={minus} className={minimizeClassName}></SvgIcon>
-                    <SvgIcon src={close} className={closeClassName}></SvgIcon>
+                    <SvgIcon src={minus} className={icons({ action: 'minimize' })}></SvgIcon>
+                    <SvgIcon src={close} className={icons({ action: 'close' })}></SvgIcon>
                 </div>
             </div>
             <Layer level={1} className={container()}>
