@@ -19,13 +19,11 @@ const playlist: PlaylistType = {
         {
             recordable: true,
             mimeType: 'icy-cast',
-            path: 'http://radio.plaza.one/mp3_916',
+            path: 'http://playerservices.streamtheworld.com/api/livestream-redirect/KINK.mp3',
             duration: 100,
             mediaMetadata: {
-                album: '',
                 artist: 'Left Coast 70s: Mellow album rock from the Seventies. Yacht friendly.',
                 artwork: null,
-                title: 'Mellow album  Mellow album  Mellow album  Mellow album  Mellow album ',
             },
         },
     ],
@@ -34,6 +32,13 @@ Player.setPlaylist(playlist);
 
 const MusicPlayer: React.VFC = () => {
     const [selectedTrack, setSelectedTrack] = React.useState<Track>(null);
+
+    React.useEffect(() => {
+        if (selectedTrack) {
+            Player.playlist.path != playlist.path && Player.setPlaylist(playlist);
+            Player.play({ trackNumber: playlist.tracks.findIndex((x) => x === selectedTrack), relative: false });
+        }
+    }, [selectedTrack]);
 
     return (
         <Window title="player" className="music-player">
