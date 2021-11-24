@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { rectangle } from '../../components/index.css';
+import { rectangle, rounded } from '../../components/index.css';
 import { globalThemeVars } from '../../components/themes/theme.css';
 
 export const icons = style([
@@ -36,18 +36,21 @@ export const topBar = style({
     justifyContent: 'space-between',
 });
 
-export const window = style({
-    display: 'flex',
-    flexDirection: 'column',
-    position: 'fixed',
-    justifyContent: 'center',
-    gap: globalThemeVars.padding.s,
-    alignItems: 'center',
-    padding: globalThemeVars.padding.s,
-    boxSizing: 'border-box',
-    width: '450px',
-    left: '50%',
-    height: '450px',
-    top: '50%',
-    transform: 'translate(-50%, -50%)',
-});
+export const window = style([
+    {
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'fixed',
+        justifyContent: 'center',
+        gap: globalThemeVars.padding.s,
+        alignItems: 'center',
+        padding: globalThemeVars.padding.s,
+        boxSizing: 'border-box',
+        width: '450px',
+        left: '50%',
+        height: '450px',
+        top: '50%',
+        transform: 'translate(-50%, -50%)',
+    },
+    rounded,
+]);

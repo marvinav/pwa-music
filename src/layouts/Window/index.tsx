@@ -7,6 +7,7 @@ import close from '../../../static/assets/window/close.svg?raw';
 import minus from '../../../static/assets/window/minus.svg?raw';
 import { Layer } from '../../components/Layer';
 import { controlButton, icons, topBar, window } from './index.css';
+import { container } from '../../components/utils/container.css';
 
 export interface WindowProps {
     title: string;
@@ -22,7 +23,7 @@ const closeClassName = `${icons} close`;
 
 export const Window: React.FC<WindowProps> = (props) => {
     return (
-        <Layer level={0} classes={['rounded', 'bordered']} className={useClassname(props)}>
+        <Layer level={0} className={useClassname(props)}>
             <div className={topBar}>
                 <div className="title">{props.title}</div>
                 <div className={controlButton}>
@@ -30,7 +31,7 @@ export const Window: React.FC<WindowProps> = (props) => {
                     <SvgIcon src={close} className={closeClassName}></SvgIcon>
                 </div>
             </div>
-            <Layer className="view container" level={1}>
+            <Layer level={1} className={container()}>
                 {props.children}
             </Layer>
         </Layer>

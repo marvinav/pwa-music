@@ -1,4 +1,6 @@
 import { style } from '@vanilla-extract/css';
+import { recipe } from '@vanilla-extract/recipes';
+
 import { padding } from '../../components/index.css';
 import { globalThemeVars } from '../../components/themes/theme.css';
 
@@ -15,7 +17,7 @@ export const previous = style({
 
 export const playlist = style({
     vars: {
-        'duration-width': '40px',
+        '--duration-width': '40px',
     },
     display: 'flex',
     flexDirection: 'column',
@@ -41,19 +43,30 @@ export const duration = style({
     justifySelf: 'center',
 });
 
-export const playlistItem = style([
-    style({
-        userSelect: 'none',
-        display: 'grid',
-        gridTemplateAreas: "'title duration' 'artist duration'",
-        gridTemplateColumns: `1fr var(--duration-width)`,
-        alignItems: 'center',
-        gap: globalThemeVars.size.xs,
-        selectors: {
-            '&.selected, &:hover': {
+export const playlistItem = recipe({
+    variants: {
+        selected: {
+            true: {
                 backgroundColor: globalThemeVars.button.background.focused,
                 color: globalThemeVars.button.color.focused,
             },
         },
-    }),
-]);
+    },
+    base: [
+        {
+            userSelect: 'none',
+            display: 'grid',
+            gridTemplateAreas: "'title duration' 'artist duration'",
+            gridTemplateColumns: `1fr var(--duration-width)`,
+            alignItems: 'center',
+            gap: globalThemeVars.size.xs,
+            selectors: {
+                '&:hover': {
+                    backgroundColor: globalThemeVars.button.background.focused,
+                    color: globalThemeVars.button.color.focused,
+                },
+            },
+        },
+        padding.s,
+    ],
+});

@@ -15,12 +15,8 @@ sizes.map((x) => {
     margin[x] = style({ padding: x === '0' ? '0' : globalThemeVars.padding[x] });
 });
 
-export const roundedMixin = {
-    // borderRadius: globalThemeVars.border.radius,
-};
-
 export const rounded = style({
-    ...roundedMixin,
+    borderRadius: '5px',
 });
 
 export { padding, margin };
