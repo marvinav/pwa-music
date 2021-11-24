@@ -12,16 +12,10 @@ module.exports = {
         builder: 'webpack5',
     },
     webpackFinal: async (config, { configType }) => {
-        config.module.rules.push(
-            {
-                test: /\.(scss)$/i,
-                use: ['style-loader', 'css-loader', 'sass-loader'],
-            },
-            {
-                type: 'asset/source',
-                resourceQuery: /raw/,
-            },
-        );
+        config.module.rules.push({
+            type: 'asset/source',
+            resourceQuery: /raw/,
+        });
         config.output.devtoolModuleFilenameTemplate = 'file:///[absolute-resource-path]';
         return config;
     },

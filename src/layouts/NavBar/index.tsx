@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { useRef } from 'react';
 import { NavLink } from '../../components/NavLink';
 import { useDictionary } from '../../contexts/DictionaryContext';
-
-import './index.scss';
+import { nav } from './index.css';
+import { navlink } from '../../components/NavLink/index.css';
 
 export interface NavBarProps {
     onClick: (path: string) => void;
@@ -24,8 +24,8 @@ export const NavBar: React.VFC<NavBarProps> = (props) => {
 
     return (
         <nav
+            className={nav}
             ref={ref}
-            id="nav-bar"
             tabIndex={0}
             onKeyDown={(e) => {
                 if (e.code === 'ArrowRight') {
@@ -53,7 +53,7 @@ export const NavBar: React.VFC<NavBarProps> = (props) => {
                 <NavLinkMemo
                     tabIndex={-1}
                     key={link.path}
-                    className="special-font focusable"
+                    className={navlink}
                     path={link.path}
                     selected={selected === link.path}
                     onNavigate={(path) => {

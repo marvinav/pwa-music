@@ -47,7 +47,8 @@ var config = {
         new CleanWebpackPlugin({ cleanOnceBeforeBuildPatterns: ['*/**', , '*.*', '!plugins/**'] }),
         new VanillaExtractPlugin({ identifiers: isDevelopment ? 'debug' : 'short' }),
         new MiniCssExtractPlugin({
-            filename: `static/styles/[chunkhash].css`,
+            filename: devMode ? '[name].css' : 'static/styles/[chunkhash].css',
+            chunkFilename: devMode ? '[id].css' : 'static/styles/[chunkhash].css',
         }),
         new HtmlWebpackPlugin({
             template: 'static/index.html',
@@ -98,20 +99,7 @@ var config = {
                             url: false, // Required as image imports should be handled via JS/TS import statements
                         },
                     },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            postcssOptions: {
-                                plugins: !devMode ? [require('cssnano')({ preset: 'default' })] : undefined,
-                            },
-                        },
-                    },
                 ],
-            },
-            {
-                // Загрузчик scss
-                test: /\.(scss)$/i,
-                use: [devMode ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
             },
             {
                 // Загрузчик картинок

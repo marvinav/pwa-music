@@ -1,13 +1,12 @@
 import React from 'react';
 import { SvgIcon } from '../../components/SvgIcon';
-import './index.scss';
 
 import close from '../../../static/assets/window/close.svg?raw';
 // import minimize from '../../../static/assets/window/minimize.svg?raw';
 // import maximize from '../../../static/assets/window/maximize.svg?raw';
 import minus from '../../../static/assets/window/minus.svg?raw';
-import { BaseComponentProps } from '../../components/types';
 import { Layer } from '../../components/Layer';
+import { controlButton, icons, topBar, window } from './index.css';
 
 export interface WindowProps {
     title: string;
@@ -18,19 +17,20 @@ export interface WindowProps {
     className?: string;
 }
 
-const IconClasses: BaseComponentProps['classes'] = ['rectangle-size-s', 'rounded', 'button'];
+const minimizeClassName = `${icons} minimize`;
+const closeClassName = `${icons} close`;
 
 export const Window: React.FC<WindowProps> = (props) => {
     return (
-        <Layer level={'layer-0'} classes={['rounded', 'bordered']} className={useClassname(props)}>
-            <div className="top-bar">
+        <Layer level={0} classes={['rounded', 'bordered']} className={useClassname(props)}>
+            <div className={topBar}>
                 <div className="title">{props.title}</div>
-                <div className="control-button">
-                    <SvgIcon src={minus} classes={IconClasses} className="minimize"></SvgIcon>
-                    <SvgIcon src={close} classes={IconClasses} className="close"></SvgIcon>
+                <div className={controlButton}>
+                    <SvgIcon src={minus} className={minimizeClassName}></SvgIcon>
+                    <SvgIcon src={close} className={closeClassName}></SvgIcon>
                 </div>
             </div>
-            <Layer className="view container" level={'layer-1'}>
+            <Layer className="view container" level={1}>
                 {props.children}
             </Layer>
         </Layer>
@@ -38,7 +38,7 @@ export const Window: React.FC<WindowProps> = (props) => {
 };
 
 function useClassname(props: WindowProps) {
-    const classess = ['window'];
+    const classess = [window];
     props.className && classess.push(props.className);
     props.fullSize && classess.push('full-screen');
     return classess.join(' ');

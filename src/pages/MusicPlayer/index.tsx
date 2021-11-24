@@ -1,6 +1,5 @@
 import React from 'react';
 import { Window } from '../../layouts/Window';
-import './index.scss';
 
 import { Playlist as PlaylistType, Track } from '../../services/AudioPlayer/types';
 import { Player } from '../../services/AudioPlayer';

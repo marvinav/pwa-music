@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Track } from '../../../services/AudioPlayer/types';
+import { playlist } from '../index.css';
 import { PlaylistItem } from './PlaylistItem';
 
 export const Playlist: React.VFC<{
@@ -11,7 +12,7 @@ export const Playlist: React.VFC<{
     const ref = React.useRef();
 
     return (
-        <div className="playlist" ref={ref}>
+        <div className={playlist} ref={ref}>
             {props.tracks?.map((x) => {
                 return (
                     <PlaylistItem

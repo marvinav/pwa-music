@@ -7,13 +7,14 @@ import { BaseComponentProps } from '../../../components/types';
 import next from '../../../../static/assets/player/next-solid.svg?raw';
 import pause from '../../../../static/assets/player/pause-solid.svg?raw';
 import play from '../../../../static/assets/player/play-solid.svg?raw';
+import { controlPanel, previous } from '../index.css';
 
 const SvgControlClasses: BaseComponentProps['classes'] = ['button', 'rectangle-size-normal'];
 
 export const ControlPanel: React.VFC = () => {
     return (
-        <div className="control-panel">
-            <SvgIcon src={next} classes={SvgControlClasses} className="previous" />
+        <div className={controlPanel}>
+            <SvgIcon src={next} classes={SvgControlClasses} className={previous} />
             <SvgIcon src={play} classes={SvgControlClasses} className="play" />
             <SvgIcon src={pause} classes={SvgControlClasses} className="pause" />
             <SvgIcon src={next} classes={SvgControlClasses} className="next" />

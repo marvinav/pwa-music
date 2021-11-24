@@ -5,7 +5,6 @@ import { Shined } from '../../components/Shined';
 import { gitHubAvatar } from '../../constants';
 import { useDictionary } from '../../contexts/DictionaryContext';
 import { usePlugin } from '../../contexts/PluginContext';
-import './index.scss';
 
 const Home: React.VFC = () => {
     const { d } = useDictionary();

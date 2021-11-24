@@ -1,6 +1,6 @@
 import React, { HTMLAttributes } from 'react';
 import PropTypes from 'prop-types';
-import './index.scss';
+import { navlink } from './index.css';
 
 type NavLinkProps = React.PropsWithChildren<
     React.DetailedHTMLProps<HTMLAttributes<HTMLSpanElement>, HTMLSpanElement> & {
@@ -62,7 +62,7 @@ NavLink.propTypes = {
 };
 
 function className(props: { selected?: boolean; disabled?: boolean; className?: string }) {
-    const main = ['navlink'];
+    const main = [navlink];
     props.className && main.push(props.className);
     props.selected && main.push('selected');
     props.disabled && main.push('disabled');
