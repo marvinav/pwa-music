@@ -7,14 +7,27 @@ import next from '../../../../static/assets/player/next-solid.svg?raw';
 import pause from '../../../../static/assets/player/pause-solid.svg?raw';
 import play from '../../../../static/assets/player/play-solid.svg?raw';
 import { controlPanel, playerStateButtons } from '../index.css';
+import { Player } from '../../../services/AudioPlayer';
 
 export const ControlPanel: React.VFC = () => {
     return (
         <div className={controlPanel}>
-            <SvgIcon src={next} className={playerStateButtons({ action: 'previous' })} />
-            <SvgIcon src={play} className={playerStateButtons()} />
-            <SvgIcon src={pause} className={playerStateButtons()} />
-            <SvgIcon src={next} className={playerStateButtons()} />
+            <SvgIcon
+                onClick={() => Player.play({ trackNumber: -1, relative: true })}
+                src={next}
+                className={playerStateButtons({ action: 'previous' })}
+            />
+            <SvgIcon
+                onClick={() => Player.play({ trackNumber: 0, relative: true })}
+                src={play}
+                className={playerStateButtons()}
+            />
+            <SvgIcon onClick={() => Player.pause()} src={pause} className={playerStateButtons()} />
+            <SvgIcon
+                onClick={() => Player.play({ trackNumber: 1, relative: true })}
+                src={next}
+                className={playerStateButtons()}
+            />
         </div>
     );
 };

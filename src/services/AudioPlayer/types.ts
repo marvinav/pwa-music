@@ -34,7 +34,7 @@ export interface BaseTrack {
     /**
      * Media Metadata
      */
-    mediaMetadata: MediaMetadata;
+    mediaMetadata: Partial<MediaMetadata>;
 
     /**
      * Flag if it can be recorder

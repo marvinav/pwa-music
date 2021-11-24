@@ -19,13 +19,11 @@ const playlist: PlaylistType = {
         {
             recordable: true,
             mimeType: 'icy-cast',
-            path: 'http://radio.plaza.one/mp3_916',
+            path: 'http://playerservices.streamtheworld.com/api/livestream-redirect/KINK.mp3',
             duration: 100,
             mediaMetadata: {
-                album: '',
                 artist: 'Left Coast 70s: Mellow album rock from the Seventies. Yacht friendly.',
                 artwork: null,
-                title: 'Mellow album  Mellow album  Mellow album  Mellow album  Mellow album ',
             },
         },
     ],
@@ -35,10 +33,35 @@ Player.setPlaylist(playlist);
 const MusicPlayer: React.VFC = () => {
     const [selectedTrack, setSelectedTrack] = React.useState<Track>(null);
 
+    React.useEffect(() => {
+        Player.playlist.path != playlist.path && Player.setPlaylist(playlist);
+        const id = Player.subscribe('track-start', (_ev) => {
+            setSelectedTrack((x) => {
+                if (x?.path === Player?.state?.track?.track?.path) {
+                    return x;
+                }
+                return Player.playlist.tracks.find((x) => x.path === Player.state.track.track.path);
+            });
+        });
+        return () => {
+            Player.unsubscribe(id);
+        };
+    }, []);
+
+    const playTrack = React.useCallback(async (track: Track) => {
+        const result = await Player.play({
+            trackNumber: Player.playlist.tracks.findIndex((x) => x.path === track.path),
+            relative: false,
+        });
+        if (result) {
+            setSelectedTrack(track);
+        }
+    }, []);
+
     return (
         <Window title="player" className="music-player">
             <ControlPanel />
-            <Playlist setSelectedTrack={setSelectedTrack} selectedTrack={selectedTrack} tracks={playlist.tracks} />
+            <Playlist setSelectedTrack={playTrack} selectedTrack={selectedTrack} tracks={playlist.tracks} />
         </Window>
     );
 };
