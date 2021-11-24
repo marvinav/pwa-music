@@ -8,9 +8,8 @@ export const useBaseClassName = <U, T extends BaseComponentProps<U>>(
     const joinedClassName = React.useMemo(() => {
         const joined: string[] = [containerName];
         props.className && joined.push(props.className);
-        props.classes && joined.push(props.classes.join(' '));
         return joined.join(' ');
-    }, [props.classes, props.className, containerName]);
+    }, [props.className, containerName]);
 
     return joinedClassName;
 };

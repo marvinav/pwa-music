@@ -1,7 +1,7 @@
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
-import { padding } from '../../components/index.css';
+import { padding, rectangle } from '../../components/index.css';
 import { globalThemeVars } from '../../components/themes/theme.css';
 
 export const controlPanel = style([
@@ -11,8 +11,13 @@ export const controlPanel = style([
     padding.s,
 ]);
 
-export const previous = style({
-    transform: 'rotate(180deg)',
+export const playerStateButtons = recipe({
+    base: rectangle.normal,
+    variants: {
+        action: {
+            previous: { transform: 'rotate(180deg)' },
+        },
+    },
 });
 
 export const playlist = style({
