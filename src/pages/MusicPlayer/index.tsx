@@ -34,16 +34,34 @@ const MusicPlayer: React.VFC = () => {
     const [selectedTrack, setSelectedTrack] = React.useState<Track>(null);
 
     React.useEffect(() => {
-        if (selectedTrack) {
-            Player.playlist.path != playlist.path && Player.setPlaylist(playlist);
-            Player.play({ trackNumber: playlist.tracks.findIndex((x) => x === selectedTrack), relative: false });
+        Player.playlist.path != playlist.path && Player.setPlaylist(playlist);
+        const id = Player.subscribe('track-start', (_ev) => {
+            setSelectedTrack((x) => {
+                if (x?.path === Player?.state?.track?.track?.path) {
+                    return x;
+                }
+                return Player.playlist.tracks.find((x) => x.path === Player.state.track.track.path);
+            });
+        });
+        return () => {
+            Player.unsubscribe(id);
+        };
+    }, []);
+
+    const playTrack = React.useCallback(async (track: Track) => {
+        const result = await Player.play({
+            trackNumber: Player.playlist.tracks.findIndex((x) => x.path === track.path),
+            relative: false,
+        });
+        if (result) {
+            setSelectedTrack(track);
         }
-    }, [selectedTrack]);
+    }, []);
 
     return (
         <Window title="player" className="music-player">
             <ControlPanel />
-            <Playlist setSelectedTrack={setSelectedTrack} selectedTrack={selectedTrack} tracks={playlist.tracks} />
+            <Playlist setSelectedTrack={playTrack} selectedTrack={selectedTrack} tracks={playlist.tracks} />
         </Window>
     );
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 import './index.css.ts';
 import PropTypes from 'prop-types';
 import { sanitize } from 'dompurify';
@@ -19,13 +19,23 @@ export interface SVGIconProps extends BaseComponentProps {
  * @param props
  * @returns Return div container with nested SVG element.
  */
-export const SvgIcon: React.VFC<SVGIconProps> = (props) => {
+export const SvgIcon: React.VFC<
+    React.DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & SVGIconProps
+> = (props) => {
     const [ell] = React.useState(
         replaceFill(new DOMParser().parseFromString(sanitize(props.src), 'image/svg+xml').firstElementChild),
     );
     const baseClassName = useBaseClassName(props, svgIconContainer);
+
+    const standartProps = { ...props, src: undefined, tooltip: undefined };
+
     return (
-        <div data-title={props.tooltip} className={baseClassName} dangerouslySetInnerHTML={{ __html: ell.outerHTML }} />
+        <div
+            {...standartProps}
+            data-title={props.tooltip}
+            className={baseClassName}
+            dangerouslySetInnerHTML={{ __html: ell.outerHTML }}
+        />
     );
 };
 
