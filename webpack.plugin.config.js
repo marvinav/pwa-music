@@ -41,11 +41,6 @@ var config = {
                 exclude: /node_modules/,
             },
             {
-                // Загрузчик css
-                test: /\.(scss|css)$/i,
-                use: [devMode ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
-            },
-            {
                 // Загрузчик картинок
                 test: /\.(png|svg|jpg|jpeg|gif|ttf|woff|woff2|eot|ttf|otf|json)$/,
                 type: 'asset/resource',

@@ -4,8 +4,11 @@ import { Loading } from './pages/Loading';
 import { BackgroundMemo as Background } from './layouts/Background';
 // import { NavBarProps } from './layouts/NavBar';
 import { PluginRoute } from './services/PluginRoute';
+
+import './index.css';
+import { useTheme } from './components/themes';
+
 import AnimatedBackground from '../static/assets/backgrounds/11.gif';
-import { useThemeVariables } from './components/utils/themeVariables';
 
 const NotFound = lazy(() => import(/* webpackChunkName: "NotFound" */ './pages/NotFound'));
 // const Home = lazy(() => import(/* webpackChunkName: "Home" */ './pages/Home'));
@@ -39,7 +42,8 @@ const MusicPlayer = lazy(() => import(/* webpackChunkName: "MusicPlayer" */ './p
 const App: React.FC = () => {
     // const math = useRouteMatch<{ section: string }>('/:section?');
     // const history = useHistory();
-    useThemeVariables();
+    useTheme();
+
     return (
         <React.Fragment>
             <Background

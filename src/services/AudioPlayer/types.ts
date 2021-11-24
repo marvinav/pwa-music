@@ -1,4 +1,4 @@
-import { AudioPlayer as AudioPlayerImplementation } from '.';
+import { AudioPlayer as AudioPlayerImplementation } from './AudioPlayer';
 
 export type AudioPlayer = AudioPlayerImplementation;
 
@@ -27,7 +27,7 @@ export interface BaseTrack {
     path: string;
 
     /**
-     * Total duration of file.
+     * Total duration of file in ms.
      */
     duration?: number;
 

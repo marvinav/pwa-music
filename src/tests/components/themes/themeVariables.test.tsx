@@ -1,5 +1,5 @@
-import { defaultThemeVariables } from '../../../components/types';
-import { iterateThemeVariables, setThemeVariables, useThemeVariables } from '../../../components/utils/themeVariables';
+import { iterateThemeVariables, setThemeVariables, useTheme } from '../../../components/themes';
+import { draculaTheme } from '../../../components/themes/dracula.theme';
 
 it('Iterate theme variables', () => {
     const obj = {
@@ -39,18 +39,18 @@ describe('Use theme variable', () => {
     };
     it('Default', () => {
         called = [];
-        useThemeVariables();
+        useTheme();
         expect(called.find((x) => x.property === '--size-xs').value).toBe('8px');
         expect(called.find((x) => x.property === '--font-family-main').value).toBe("'Roboto', sans-serif");
     });
 
     it('Not default', () => {
         called = [];
-        useThemeVariables({
+        useTheme({
             layer: {
                 color: {
                     primary: {
-                        0: 'not-red',
+                        '0': 'not-red',
                     },
                 },
             },
@@ -62,9 +62,7 @@ describe('Use theme variable', () => {
         });
         expect(called.find((x) => x.property === '--layer-color-primary-0').value).toBe('not-red');
         expect(called.find((x) => x.property === '--font-family-main').value).toBe('not-main');
-        expect(called.find((x) => x.property === '--font-family-special').value).toBe(
-            defaultThemeVariables.font.family.special,
-        );
+        expect(called.find((x) => x.property === '--font-family-special').value).toBe(draculaTheme.font.family.special);
         expect(called.find((x) => x.property === '--size-xs').value).toBe('8px');
     });
 });

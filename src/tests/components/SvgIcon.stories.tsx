@@ -1,6 +1,5 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import '../../index.scss';
 import { SvgIcon } from '../../components/SvgIcon';
 
 const svg = `

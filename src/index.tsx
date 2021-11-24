@@ -4,7 +4,6 @@ import 'regenerator-runtime/runtime';
 
 import App from './App';
 import AppProvider from './providers/AppProvider';
-import './index.scss';
 import { pluginManager } from './services/PluginManager';
 import { env } from './utils/env';
 

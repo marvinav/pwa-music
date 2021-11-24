@@ -1,6 +1,5 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import '../../index.scss';
 import { NavLink } from '../../components/NavLink/index';
 
 const story: ComponentMeta<typeof NavLink> = {

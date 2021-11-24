@@ -1,6 +1,5 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import '../../index.scss';
 import { Shined } from '../../components/Shined';
 
 export default {

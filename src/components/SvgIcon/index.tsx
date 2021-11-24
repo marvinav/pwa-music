@@ -1,8 +1,8 @@
 import React from 'react';
-import './index.scss';
+import './index.css.ts';
 import PropTypes from 'prop-types';
 import { sanitize } from 'dompurify';
-import '../index.scss';
+import { svgIconContainer } from './index.css';
 import { BaseComponentProps } from '../types';
 import { useBaseClassName } from '../utils/useBaseClassName';
 
@@ -23,7 +23,7 @@ export const SvgIcon: React.VFC<SVGIconProps> = (props) => {
     const [ell] = React.useState(
         replaceFill(new DOMParser().parseFromString(sanitize(props.src), 'image/svg+xml').firstElementChild),
     );
-    const baseClassName = useBaseClassName(props, 'svg-icon-container');
+    const baseClassName = useBaseClassName(props, svgIconContainer);
     return (
         <div data-title={props.tooltip} className={baseClassName} dangerouslySetInnerHTML={{ __html: ell.outerHTML }} />
     );

@@ -1,7 +1,8 @@
-import { defaultThemeVariables, ThemeVariableProps } from '../types';
+import { GlobalThemeContract } from './theme.css';
+import { draculaTheme } from './dracula.theme';
 
-export const useThemeVariables = (props?: ThemeVariableProps): void => {
-    const unionProps = JSON.parse(JSON.stringify(defaultThemeVariables)) as typeof defaultThemeVariables;
+export const useTheme = (props?: GlobalThemeContract): void => {
+    const unionProps = JSON.parse(JSON.stringify(draculaTheme)) as GlobalThemeContract;
 
     props &&
         iterateThemeVariables(props, (parentProps, value) => {
@@ -18,7 +19,7 @@ export const useThemeVariables = (props?: ThemeVariableProps): void => {
     setThemeVariables(unionProps);
 };
 
-export const setThemeVariables = (props: ThemeVariableProps): void => {
+export const setThemeVariables = (props: GlobalThemeContract): void => {
     iterateThemeVariables(props, (parentProps, value) => {
         document.documentElement.style.setProperty(`--${parentProps.join('-')}`, value);
     });

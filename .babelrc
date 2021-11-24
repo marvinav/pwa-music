@@ -16,6 +16,9 @@
     ],
     [
       "@babel/proposal-object-rest-spread"
+    ],
+    [
+      "@vanilla-extract/babel-plugin"
     ]
   ]
 }

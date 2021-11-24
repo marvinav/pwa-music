@@ -1,6 +1,6 @@
 import 'regenerator-runtime/runtime';
 import { Mp3Track, TrackProcessor } from '../../services/AudioPlayer/types';
-import { AudioPlayer } from '../../services/AudioPlayer';
+import { AudioPlayer } from '../../services/AudioPlayer/AudioPlayer';
 
 const playlist: AudioPlayer['_playlist'] = {
     name: 'Test First',

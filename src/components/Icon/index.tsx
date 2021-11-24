@@ -1,8 +1,8 @@
 import React from 'react';
-import './index.scss';
 import PropTypes from 'prop-types';
 import { BaseComponentProps } from '../types';
 import { useBaseClassName } from '../utils/useBaseClassName';
+import { iconContainer } from './index.css';
 
 export interface IconProps extends BaseComponentProps {
     /**
@@ -15,7 +15,7 @@ export interface IconProps extends BaseComponentProps {
 export const Icon: React.VFC<IconProps> = (props) => {
     const ref = React.useRef<HTMLImageElement>();
 
-    const baseClassName = useBaseClassName(props, 'icon-container');
+    const baseClassName = useBaseClassName(props, iconContainer);
 
     return (
         <img
