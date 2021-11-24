@@ -5,6 +5,7 @@ import { Playlist as PlaylistType, Track } from '../../services/AudioPlayer/type
 import { Player } from '../../services/AudioPlayer';
 import { Playlist } from './components/Playlist';
 import { ControlPanel } from './components/ControlPanel';
+import { Button } from '../../components/Button';
 
 const playlist: PlaylistType = {
     name: 'Only radio',
@@ -37,6 +38,7 @@ const MusicPlayer: React.VFC = () => {
 
     return (
         <Window title="player" className="music-player">
+            <Button>sd</Button>
             <ControlPanel />
             <Playlist setSelectedTrack={setSelectedTrack} selectedTrack={selectedTrack} tracks={playlist.tracks} />
         </Window>

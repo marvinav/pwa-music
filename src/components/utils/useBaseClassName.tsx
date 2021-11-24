@@ -1,7 +1,7 @@
 import React from 'react';
 import { BaseComponentProps } from '../types';
 
-export const useBaseClassName = <T extends BaseComponentProps>(
+export const useBaseClassName = <U, T extends BaseComponentProps<U>>(
     props: T,
     containerName: `${string}-container` | `layer-${0 | 1}` | string,
 ): string => {
