@@ -10,26 +10,24 @@ declare const self: ServiceWorkerGlobalScope;
 /**
  * Regex for url which related to application navigation
  */
-const navRegex = /((?!\/assets\/|\/public\/|\/static\/|\/scripts\/).*)(^(?!.*\.js$|.*\.css$|.*\.html$|.*\.json$).*)/;
+const navRegex =
+    /((?!\/assets\/|\/public\/|\/static\/|\/scripts\/).*)(^(?!.*\.js$|.*\.css$|.*\.html$|.*\.json$|.*\.webapp).*)/;
 const assets = new Assets();
 
 self.addEventListener('fetch', async (event) => {
     const requestUrl = new URL(event.request.url);
-    if (requestUrl.hostname === self.location.hostname) {
+    const search = requestUrl.searchParams.get('fetch-type');
+    if (search === 'networkCache') {
+        event.respondWith(cachedFetch(event.request));
+    } else if (search === 'cache-network') {
+        console.log('failing back to network');
+        event.respondWith(cachedFailbackToNetworkFetch(event.request));
+    } else if (requestUrl.hostname === self.location.hostname) {
         event.respondWith(
             navRegex.test(requestUrl.pathname) ? caches.match('/') : cachedFailbackToNetworkFetch(event.request),
         );
-    } else {
-        const search = requestUrl.searchParams.get('fetch-type');
-        if (!search) {
-            return;
-        } else if (search === 'network-cache') {
-            event.respondWith(cachedFetch(event.request));
-        } else if (search === 'cache-network') {
-            console.log('failing back to network');
-            event.respondWith(cachedFailbackToNetworkFetch(event.request));
-        }
     }
+    return;
 });
 
 self.addEventListener('install', async (_ev) => {

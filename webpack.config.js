@@ -30,6 +30,7 @@ var devServer = {
             return path.includes(publicPath);
         },
     },
+    watchFiles: ['package.json'],
     static: path.resolve(__dirname, 'dist/'),
     host: 'localhost',
     historyApiFallback: {
@@ -56,15 +57,26 @@ var config = {
             template: 'static/index.html',
         }),
         new CopyPlugin({
-            patterns: [{ from: 'public', to: 'public' }],
+            patterns: [
+                {
+                    from: 'public',
+                    to: 'public',
+                },
+                isDevServer && {
+                    from: path.resolve(__dirname, 'package.json'),
+                    to: 'assets/manifest.webapp',
+                },
+            ].filter((x) => x != null),
         }),
         new FaviconsWebpackPlugin({
             logo: './static/favicon.png',
+            cache: true,
             favicons: {
                 appName: 'marvinav',
                 appDescription: 'Blog about web, dev and science',
                 developerName: 'marvinav',
                 developerURL: 'https://www.githib.com/marvinav',
+                version: pkg.version,
             },
         }),
         /**Generate webpack-asset file with all static files url */
