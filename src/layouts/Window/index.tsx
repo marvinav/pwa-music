@@ -7,7 +7,6 @@ import close from '../../../static/assets/window/close.svg?raw';
 import minus from '../../../static/assets/window/minus.svg?raw';
 import { Layer } from '../../components/Layer';
 import { controlButton, icons, topBar, window } from './index.css';
-import { container } from '../../components/utils/container.css';
 
 export interface WindowProps {
     title: string;
@@ -28,9 +27,7 @@ export const Window: React.FC<WindowProps> = (props) => {
                     <SvgIcon src={close} className={icons({ action: 'close' })}></SvgIcon>
                 </div>
             </div>
-            <Layer level={1} className={container()}>
-                {props.children}
-            </Layer>
+            {props.children}
         </Layer>
     );
 };
@@ -38,6 +35,5 @@ export const Window: React.FC<WindowProps> = (props) => {
 function useClassname(props: WindowProps) {
     const classess = [window];
     props.className && classess.push(props.className);
-    props.fullSize && classess.push('full-screen');
     return classess.join(' ');
 }

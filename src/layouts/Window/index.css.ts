@@ -44,6 +44,20 @@ export const topBar = style({
     justifyContent: 'space-between',
 });
 
+export const bottomBar = style({
+    '@media': {
+        [`${mediaQueries.s}`]: {
+            maxHeight: globalThemeVars.size.s,
+        },
+    },
+    display: 'flex',
+    width: '100%',
+    maxHeight: globalThemeVars.size.normal,
+    height: '100%',
+    padding: '0',
+    margin: '0',
+});
+
 export const window = style([
     {
         display: 'flex',

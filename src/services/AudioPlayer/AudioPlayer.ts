@@ -196,11 +196,11 @@ export class AudioPlayer {
      */
     unsubscribe = (subscriptionId: string, ev?: Events | 'all'): number => {
         if (ev) {
-            return this._subscriptions[ev].delete(subscriptionId) ? 1 : 0;
+            return this._subscriptions[ev]?.delete(subscriptionId) ? 1 : 0;
         }
         let deletedSubscriptions = 0;
         for (const event in Object.getOwnPropertyNames(this._subscriptions)) {
-            this._subscriptions[event as Events].delete(subscriptionId) && deletedSubscriptions++;
+            this._subscriptions[event as Events]?.delete(subscriptionId) && deletedSubscriptions++;
         }
         return deletedSubscriptions;
     };
