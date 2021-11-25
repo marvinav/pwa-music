@@ -32,7 +32,9 @@ var devServer = {
     },
     static: path.resolve(__dirname, 'dist/'),
     host: 'localhost',
-    historyApiFallback: true,
+    historyApiFallback: {
+        disableDotRule: false,
+    },
     https: true,
     hot: true,
     port: 4242,
@@ -144,7 +146,7 @@ module.exports = (env, argv) => {
     config.plugins.push(
         new webpack.DefinePlugin({
             webpack_env: {
-                SERVICE_WORKER: process.env.SERVICE_WORKER ?? true,
+                SERVICE_WORKER: process.env.SERVICE_WORKER === 'true',
                 MODE: JSON.stringify(config.mode),
                 VERSION: JSON.stringify(pkg.version),
             },
