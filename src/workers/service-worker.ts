@@ -10,18 +10,19 @@ declare const self: ServiceWorkerGlobalScope;
 /**
  * Regex for url which related to application navigation
  */
-const navRegex = /((?!\/assets\/|\/public\/|\/static\/|\/scripts\/).*)(^(?!.*\.js$|.*\.css$|.*\.html$).*)/;
+const navRegex = /((?!\/assets\/|\/public\/|\/static\/|\/scripts\/).*)(^(?!.*\.js$|.*\.css$|.*\.html$|.*\.json$).*)/;
 const assets = new Assets();
 
 self.addEventListener('fetch', async (event) => {
     const requestUrl = new URL(event.request.url);
-
     if (requestUrl.hostname === self.location.hostname) {
-        event.respondWith(navRegex.test(requestUrl.pathname) ? caches.match('/') : cachedFetch(event.request));
+        event.respondWith(
+            navRegex.test(requestUrl.pathname) ? caches.match('/') : cachedFailbackToNetworkFetch(event.request),
+        );
     } else {
-        const search = requestUrl.searchParams.get('my-space');
+        const search = requestUrl.searchParams.get('fetch-type');
         if (!search) {
-            event.respondWith(fetch(event.request));
+            return;
         } else if (search === 'network-cache') {
             event.respondWith(cachedFetch(event.request));
         } else if (search === 'cache-network') {

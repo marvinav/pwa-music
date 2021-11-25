@@ -13,13 +13,13 @@ const playlist: PlaylistType = {
         {
             recordable: true,
             mimeType: 'icy-cast',
-            path: 'http://radio.plaza.one/mp3_96',
+            path: 'https://radio.plaza.one/mp3_96',
             mediaMetadata: { album: '', artist: 'Radio Plaza', artwork: null, title: 'Nightwave Plaza' },
         },
         {
             recordable: true,
             mimeType: 'icy-cast',
-            path: 'http://playerservices.streamtheworld.com/api/livestream-redirect/KINK.mp3',
+            path: 'https://playerservices.streamtheworld.com/api/livestream-redirect/KINK.mp3',
             duration: 100,
             mediaMetadata: {
                 artist: 'Left Coast 70s: Mellow album rock from the Seventies. Yacht friendly.',
