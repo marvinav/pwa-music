@@ -10,6 +10,7 @@ import { Content } from '../../layouts/Window/Content';
 import { SvgIcon } from '../../components/SvgIcon';
 
 import addSong from '../../../static/assets/player/add-playlist-solid.svg?raw';
+import { Visualization } from './components/Visualization';
 
 const playlist: PlaylistType = {
     name: 'Only radio',
@@ -68,8 +69,9 @@ const MusicPlayer: React.VFC = () => {
     return (
         <Window title="player" className="music-player">
             <Content>
-                <ControlPanel />
+                <ControlPanel selectedTrack={selectedTrack} />
                 <Playlist setSelectedTrack={playTrack} selectedTrack={selectedTrack} tracks={playlist.tracks} />
+                <Visualization />
             </Content>
             <BottomBar>
                 <SvgIcon

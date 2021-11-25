@@ -65,7 +65,7 @@ export interface Playlist {
 
 export interface TrackProcessor<T extends Track> {
     type: T['mimeType'];
-    play: (context: AudioContext, track: T, onEnd?: () => Promise<void>) => Promise<void>;
+    play: (context: AudioContext, node: GainNode, track: T, onEnd?: () => Promise<void>) => Promise<void>;
     stop: () => Promise<void>;
     pause: () => Promise<void>;
 }

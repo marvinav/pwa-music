@@ -7,6 +7,8 @@ import { EventHandler, Events, GetEventOption, Playlist, Track, TrackProcessor }
 export class AudioPlayer {
     private _mode: AudioPlayer['mode'] = 'none';
     private _defaultContext = new AudioContext();
+    private _gainNode: GainNode;
+    private _analyzer: AnalyserNode;
     private _playlist: Playlist;
     private readonly _processors: Record<Track['mimeType'], TrackProcessor<Track>> | Record<string, never>;
 
@@ -30,6 +32,10 @@ export class AudioPlayer {
     private _state: 'play' | 'stop' | 'pause';
 
     constructor(processors?: AudioPlayer['_processors']) {
+        this._analyzer = this._defaultContext.createAnalyser();
+        this._gainNode = this._defaultContext.createGain();
+        this._gainNode.connect(this._analyzer);
+        this._gainNode.connect(this._defaultContext.destination);
         this._processors = processors ?? {};
     }
 
@@ -45,6 +51,19 @@ export class AudioPlayer {
      */
     get playlist(): Playlist {
         return this._playlist;
+    }
+
+    /**
+     * Get nodes
+     */
+    get nodes(): {
+        analyzer: AnalyserNode;
+        gain: GainNode;
+    } {
+        return {
+            analyzer: this._analyzer,
+            gain: this._gainNode,
+        };
     }
 
     /**
@@ -134,10 +153,11 @@ export class AudioPlayer {
             throw new Error('Preprocessor is not found');
         }
 
-        await this._processors[_track.mimeType].play(this._defaultContext, _track, async () => {
+        await this._processors[_track.mimeType].play(this._defaultContext, this._gainNode, _track, async () => {
             this.notify('track-end', null);
             await this.play({ trackNumber: 1, relative: true });
         });
+        this._analyzer.connect(this._defaultContext.destination);
 
         if (this._state != 'play') {
             this._state = 'play';

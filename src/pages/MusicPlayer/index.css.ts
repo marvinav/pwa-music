@@ -76,3 +76,18 @@ export const playlistItem = recipe({
         padding.s,
     ],
 });
+
+export const visualization = style({
+    display: 'flex',
+    width: '100%',
+    height: '100px',
+    gap: '1px',
+    alignContent: 'flex-end',
+    alignItems: 'flex-end',
+});
+
+export const visualNode = style({
+    width: '100%',
+    backgroundColor: globalThemeVars.button.color.focused,
+    transition: 'height 0.5s linear',
+});

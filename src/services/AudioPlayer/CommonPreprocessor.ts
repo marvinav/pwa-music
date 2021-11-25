@@ -6,7 +6,12 @@ export class CommonPreprocessor implements TrackProcessor<Track> {
 
     type: 'icy-cast' | 'mp3' = 'icy-cast';
 
-    play: (context: AudioContext, track: Track, onEnd?: () => Promise<void>) => Promise<void> = async (c, t, onEnd) => {
+    play: (context: AudioContext, node: GainNode, track: Track, onEnd?: () => Promise<void>) => Promise<void> = async (
+        c,
+        n,
+        t,
+        onEnd,
+    ) => {
         this._audio.load();
         await c.resume();
         this._audio.setAttribute('src', t.path);
@@ -14,7 +19,7 @@ export class CommonPreprocessor implements TrackProcessor<Track> {
         if (!this._source) {
             this._source = c.createMediaElementSource(this._audio);
             this._audio.setAttribute('crossorigin', 'anonymous');
-            this._source.connect(c.destination);
+            this._source.connect(n);
         }
 
         this._audio.onended = async (_ev) => {

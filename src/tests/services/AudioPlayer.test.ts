@@ -41,7 +41,18 @@ const playlistSecond: AudioPlayer['_playlist'] = {
 };
 
 describe('Audio Player', () => {
-    const mockAudioContext = {};
+    const mockAudioContext = {
+        createAnalyser: () => {
+            return {
+                connect: () => null,
+            };
+        },
+        createGain: () => {
+            return {
+                connect: () => null,
+            };
+        },
+    };
 
     global.AudioContext = jest.fn().mockImplementation(() => {
         return mockAudioContext;
@@ -96,13 +107,15 @@ describe('Audio Player', () => {
         let currentTrack: number;
         let onEndBox;
 
-        const mockPlay = jest.fn<Promise<void>, Parameters<TrackProcessor<Mp3Track>['play']>>(async (c, t, onEnd?) => {
-            onEndBox = async () => {
-                currentTrack++;
-                await onEnd();
-            };
-            return null;
-        });
+        const mockPlay = jest.fn<Promise<void>, Parameters<TrackProcessor<Mp3Track>['play']>>(
+            async (c, n, t, onEnd?) => {
+                onEndBox = async () => {
+                    currentTrack++;
+                    await onEnd();
+                };
+                return null;
+            },
+        );
 
         const mockPause = jest.fn<Promise<void>, Parameters<TrackProcessor<Mp3Track>['pause']>>(async () => {
             return null;

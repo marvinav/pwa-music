@@ -8,8 +8,9 @@ import pause from '../../../../static/assets/player/pause-solid.svg?raw';
 import play from '../../../../static/assets/player/play-solid.svg?raw';
 import { controlPanel, playerStateButtons } from '../index.css';
 import { Player } from '../../../services/AudioPlayer';
+import { Track } from '../../../services/AudioPlayer/types';
 
-export const ControlPanel: React.VFC = () => {
+export const ControlPanel: React.VFC<{ selectedTrack?: Track }> = (_props) => {
     return (
         <div className={controlPanel}>
             <SvgIcon
