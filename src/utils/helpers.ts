@@ -27,5 +27,5 @@ export async function cachedFailbackToNetworkFetch(
     const networkResponse = await fetch(request);
     const responseClone = networkResponse.clone();
     store.put(request, responseClone);
-    return response;
+    return networkResponse;
 }
