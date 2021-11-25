@@ -49,8 +49,14 @@ export class PluginManager {
     }
 
     async loadPlugins(): Promise<Manifest[]> {
-        const manifestResponse = await fetch('/plugins/yandex-disk/manifest.json');
-        return [(await manifestResponse.json()) as Manifest];
+        const defaultPlugins: Manifest[] = [];
+        try {
+            const manifestResponse = await fetch('/plugins/yandex-disk/manifest.json');
+            defaultPlugins.push((await manifestResponse.json()) as Manifest);
+        } catch (_err) {
+            console.warn('Yandex.Plugin has not been loaded');
+        }
+        return defaultPlugins;
     }
 }
 
