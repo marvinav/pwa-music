@@ -37,9 +37,10 @@ Player.setPlaylist(playlist);
 
 const MusicPlayer: React.VFC = () => {
     const [selectedTrack, setSelectedTrack] = React.useState<Track>(null);
+    const [selectedPlaylist, setSelectedPlaylist] = React.useState(playlist);
 
     React.useEffect(() => {
-        Player.playlist.path != playlist.path && Player.setPlaylist(playlist);
+        Player.playlist.path != selectedPlaylist.path && Player.setPlaylist(playlist);
         const id = Player.subscribe('track-start', (_ev) => {
             setSelectedTrack((x) => {
                 if (x?.path === Player?.state?.track?.track?.path) {
@@ -52,7 +53,7 @@ const MusicPlayer: React.VFC = () => {
         return () => {
             Player.unsubscribe(id);
         };
-    }, []);
+    }, [selectedPlaylist]);
 
     const playTrack = React.useCallback(async (track: Track) => {
         const result = await Player.play({
@@ -71,7 +72,23 @@ const MusicPlayer: React.VFC = () => {
                 <Playlist setSelectedTrack={playTrack} selectedTrack={selectedTrack} tracks={playlist.tracks} />
             </Content>
             <BottomBar>
-                <SvgIcon src={addSong}></SvgIcon>
+                <SvgIcon
+                    src={addSong}
+                    onClick={() => {
+                        selectedPlaylist.tracks.push({
+                            recordable: true,
+                            mimeType: 'icy-cast',
+                            path: 'http://stream-dc1.radioparadise.com/rp_192m.ogg',
+                            duration: 100,
+                            mediaMetadata: {
+                                artist: 'OGG',
+                                artwork: null,
+                            },
+                        });
+                        selectedPlaylist.tracks = [...selectedPlaylist.tracks];
+                        setSelectedPlaylist({ ...selectedPlaylist });
+                    }}
+                ></SvgIcon>
             </BottomBar>
         </Window>
     );
