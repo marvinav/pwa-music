@@ -30,7 +30,6 @@ var devServer = {
             return path.includes(publicPath);
         },
     },
-    watchFiles: ['package.json'],
     static: path.resolve(__dirname, 'dist/'),
     host: 'localhost',
     historyApiFallback: {
@@ -62,11 +61,7 @@ var config = {
                     from: 'public',
                     to: 'public',
                 },
-                isDevServer && {
-                    from: path.resolve(__dirname, 'package.json'),
-                    to: 'assets/manifest.webapp',
-                },
-            ].filter((x) => x != null),
+            ],
         }),
         new FaviconsWebpackPlugin({
             logo: './static/favicon.png',

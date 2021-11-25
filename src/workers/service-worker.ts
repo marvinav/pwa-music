@@ -4,9 +4,10 @@ import 'regenerator-runtime/runtime';
 
 import { Assets } from '../services/Assets';
 import { cachedFailbackToNetworkFetch, cachedFetch } from '../utils/helpers';
+import { env } from '../utils/env';
 
 declare const self: ServiceWorkerGlobalScope;
-
+console.log(`Service worker script of ${env.VERSION}v has been loaded`);
 /**
  * Regex for url which related to application navigation
  */
@@ -30,25 +31,28 @@ self.addEventListener('fetch', async (event) => {
     return;
 });
 
-self.addEventListener('install', async (_ev) => {
-    console.time('Installation time');
-    (await caches.open('root')).add('/');
-    const webpackAssets = await caches.open('webpack-assets');
-    // Install assets for current webworker.
-    await webpackAssets.addAll(await assets.getCoreAssetsUrls());
-    console.timeEnd('Installation time');
-    console.log('Service Worker Installed');
+self.addEventListener('install', (_ev) => {
+    const install = async () => {
+        console.time('Installation time');
+        (await caches.open('root')).add('/');
+        const webpackAssets = await caches.open('webpack-assets');
+        // Install assets for current webworker.
+        await webpackAssets.addAll(await assets.getCoreAssetsUrls());
+        console.timeEnd('Installation time');
+        console.log('Service Worker Installed');
+    };
+    _ev.waitUntil(install());
 });
 
 self.addEventListener('activate', async (_ev) => {
     console.time('Activation time');
-    const cache = await caches.open('webpack-assets');
-    const cachedAssets = await cache.keys();
-    const coreUrls = await assets.getCoreAssetsUrls();
-    cachedAssets.forEach((cached) => {
-        if (!coreUrls.find((a) => cached.url.endsWith(a))) {
-            cache.delete(cached);
-        }
-    });
+    // const cache = await caches.open('webpack-assets');
+    // const cachedAssets = await cache.keys();
+    // const coreUrls = await assets.getCoreAssetsUrls();
+    // cachedAssets.forEach((cached) => {
+    //     if (!coreUrls.find((a) => cached.url.endsWith(a))) {
+    //         cache.delete(cached);
+    //     }
+    // });
     console.timeEnd('Activation time');
 });

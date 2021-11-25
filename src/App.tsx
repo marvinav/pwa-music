@@ -9,6 +9,8 @@ import './index.css';
 import { useTheme } from './components/themes';
 
 import AnimatedBackground from '../static/assets/backgrounds/11.gif';
+import { startUp } from './startup';
+import { pluginManager } from './services/PluginManager';
 
 const NotFound = lazy(() => import(/* webpackChunkName: "NotFound" */ './pages/NotFound'));
 // const Home = lazy(() => import(/* webpackChunkName: "Home" */ './pages/Home'));
@@ -40,9 +42,11 @@ const MusicPlayer = lazy(() => import(/* webpackChunkName: "MusicPlayer" */ './p
 // ];
 
 const App: React.FC = () => {
-    // const math = useRouteMatch<{ section: string }>('/:section?');
+    // // const math = useRouteMatch<{ section: string }>('/:section?');
     // const history = useHistory();
     useTheme();
+    startUp();
+    pluginManager.loadPlugins();
 
     return (
         <React.Fragment>

@@ -25,6 +25,11 @@ declare global {
 // Self assign because webpack.DefinePlugin
 // by default only replace variable,
 // eslint-disable-next-line no-self-assign
-window.env = { ...webpack_env };
 
-export const env = window.env;
+if (self.window) {
+    window.env = { ...webpack_env };
+} else {
+    self.env = { ...webpack_env };
+}
+
+export const env = self.window ? window.env : self.env;
