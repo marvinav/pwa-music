@@ -1,4 +1,4 @@
-import { Manifest } from '../../shared/plugins/BasePlugin';
+import { Manifest } from 'shared/plugins/BasePlugin';
 
 interface IPluginMeta {
     id: string;

@@ -1,12 +1,12 @@
-import { WebpackAsset } from '../../constants';
-import { AssetBase, AssetEntry, RawAsset } from '../../types';
+import { AssetBase, AssetEntry, RawAsset } from './types';
+import { env } from '../env/env';
 import { cachedFetch } from '../utils/helpers';
 
 export class Assets {
     private _assets: AssetEntry[];
     private url: string;
 
-    async loadAssets(url: string = WebpackAsset): Promise<AssetEntry[]> {
+    async loadAssets(url: string = env.WEBPACK_ASSET): Promise<AssetEntry[]> {
         this.url = url;
         const assets = await (await cachedFetch(url)).json();
         if (assets) {

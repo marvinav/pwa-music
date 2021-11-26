@@ -1,7 +1,6 @@
 /**
  * Environments from webpack builds
  */
-
 declare const webpack_env: {
     /**
      * Should be service worker registered
@@ -15,6 +14,18 @@ declare const webpack_env: {
      * Version
      */
     VERSION: `${number}.${number}.${number}`;
+    /**
+     * Url addres of webpack assets file
+     */
+    WEBPACK_ASSET: string;
+    /**
+     * Core plugin Source url
+     */
+    CORE_PLUGIN_SOURCE: string;
+    /**
+     * Git hub Avatar
+     */
+    GIT_HUB_AVATAR: string;
 };
 
 declare global {

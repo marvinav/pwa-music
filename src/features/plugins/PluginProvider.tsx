@@ -1,9 +1,9 @@
 import React from 'react';
-import { CorePluginSource } from '../../constants';
 
-import { PluginContext, IPluginContextValue } from '../../entities/contexts/PluginContext';
-import { PluginSettingsModel } from '../../shared/models/PluginSettingsModel';
-import { HandShake, LoadingView, Manifest, Plugin, View } from '../../shared/plugins/BasePlugin';
+import { PluginContext, IPluginContextValue } from 'entities/contexts/PluginContext';
+import { env } from 'shared/env/env';
+import { PluginSettingsModel } from 'shared/models/PluginSettingsModel';
+import { HandShake, LoadingView, Manifest, Plugin, View } from 'shared/plugins/BasePlugin';
 import { pluginManager } from './PluginManager';
 
 export const PluginProvider: React.FC = (props) => {
@@ -12,7 +12,7 @@ export const PluginProvider: React.FC = (props) => {
 };
 
 const createPluginSource = (plugin: Manifest) => {
-    return `${plugin.src ?? CorePluginSource}/${plugin.id}/${plugin.entry}`;
+    return `${plugin.src ?? env.CORE_PLUGIN_SOURCE}/${plugin.id}/${plugin.entry}`;
 };
 
 const loadingMock: LoadingView = {

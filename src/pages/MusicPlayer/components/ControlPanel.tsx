@@ -1,5 +1,5 @@
 import React from 'react';
-import { SvgIcon } from '../../../shared/ui/components/SvgIcon';
+import { SvgIcon } from 'shared/ui/components/SvgIcon';
 
 // import gear from 'static/assets/player/gear-solid.svg?raw';
 // import record from 'static/assets/player/record-solid.svg?raw';

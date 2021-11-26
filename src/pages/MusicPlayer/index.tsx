@@ -1,13 +1,13 @@
 import React from 'react';
-import { Window } from '../../shared/ui/layouts/Window';
+import { Window } from 'shared/ui/layouts/Window';
 
 import { Playlist as PlaylistType, Track } from '../../services/AudioPlayer/types';
 import { Player } from '../../services/AudioPlayer';
 import { Playlist } from './components/Playlist';
 import { ControlPanel } from './components/ControlPanel';
-import { BottomBar } from '../../shared/ui/layouts/Window/BottomBar';
-import { Content } from '../../shared/ui/layouts/Window/Content';
-import { SvgIcon } from '../../shared/ui/components/SvgIcon';
+import { BottomBar } from 'shared/ui/layouts/Window/BottomBar';
+import { Content } from 'shared/ui/layouts/Window/Content';
+import { SvgIcon } from 'shared/ui/components/SvgIcon';
 
 import addSong from 'static/assets/player/add-playlist-solid.svg?raw';
 import { Visualization } from './components/Visualization';

@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { YandexStorageProviderSettings } from '..';
-import { Loading } from '../../../../pages/Loading';
-import { HandShake } from '../../../../shared/plugins/BasePlugin';
 import { createOAuthUrl } from '../helpers/createOAuthUrl';
 import { YandexDiskClient } from '../YandexDiskClient';
 import { IResource, Resource } from '../YandexDiskClient.types';
-import { FileSystemDb } from '../../../../models/FileSystem.Dexie';
+import { FileSystemDb } from 'shared/files/FileSystem.Dexie';
+import { HandShake } from 'shared/plugins/BasePlugin';
 
 export interface ISettingsProps {
     handshake: HandShake<YandexStorageProviderSettings>;
@@ -70,7 +69,7 @@ export const Settings: React.VFC<ISettingsProps> = (props) => {
 
     switch (success) {
         case 'loading':
-            return <Loading></Loading>;
+            return <div></div>;
         case 'error':
             return <div>Произошла непредвиденная ошибка</div>;
         case 'success':
@@ -82,7 +81,7 @@ export const Settings: React.VFC<ISettingsProps> = (props) => {
                 link
             );
         default:
-            return <Loading></Loading>;
+            return <div></div>;
     }
 };
 

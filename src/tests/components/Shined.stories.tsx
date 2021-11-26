@@ -1,6 +1,6 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { Shined } from '../../shared/ui/components/Shined';
+import { Shined } from 'shared/ui/components/Shined';
 
 export default {
     component: Shined,

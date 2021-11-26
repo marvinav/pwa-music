@@ -1,5 +1,5 @@
 import { StorageProvider } from './interfaces/StorageProvider';
-import { PluginSettingsConnection } from './models/types';
+import { PluginSettingsConnection } from './types';
 
 export type ViewScope = SettingsMainScope | 'home.widget' | 'route.main';
 

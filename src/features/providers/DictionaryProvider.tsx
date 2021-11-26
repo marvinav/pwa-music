@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { dictionaryPath } from '../../constants';
 
-import { dictionaryContext, IDictionaryContextValue } from '../../entities/contexts/DictionaryContext';
-import { cachedFetch } from '../../shared/utils/helpers';
+import { dictionaryContext, IDictionaryContextValue } from 'entities/contexts/DictionaryContext';
+import { cachedFetch } from 'shared/utils/helpers';
+
+export const dictionaryPath = (lang: string): string => `public/dictionary/${lang}.json`;
 
 export const DictionaryProvider: React.FC = (props) => {
     const dictionary = useDictionary();

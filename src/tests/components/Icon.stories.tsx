@@ -1,15 +1,13 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { gitHubAvatar } from '../../constants';
-
-import { Icon } from '../../shared/ui/components/Icon';
+import { Icon } from 'shared/ui/components/Icon';
 
 export default {
     component: Icon,
     title: 'Components/Icon',
     args: {
-        src: gitHubAvatar,
+        src: 'https://avatars.githubusercontent.com/u/44019557',
     },
 } as ComponentMeta<typeof Icon>;
 

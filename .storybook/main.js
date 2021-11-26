@@ -1,5 +1,9 @@
 const path = require('path');
 
+const appWebpack = require(path.join(__dirname, '../webpack.config.js'));
+
+console.log(appWebpack);
+
 module.exports = {
     stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
     addons: [
@@ -16,6 +20,12 @@ module.exports = {
             type: 'asset/source',
             resourceQuery: /raw/,
         });
+        console.log(config);
+        console.log(appWebpack());
+        config.resolve.alias = {
+            ...(config.resolve.alias || {}),
+            ...appWebpack().resolve.alias,
+        };
         config.output.devtoolModuleFilenameTemplate = 'file:///[absolute-resource-path]';
         return config;
     },

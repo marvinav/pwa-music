@@ -1,14 +1,14 @@
 import localforage from 'localforage';
 import React from 'react';
-import { Icon } from '../../shared/ui/components/Icon';
-import { Shined } from '../../shared/ui/components/Shined';
-import { gitHubAvatar } from '../../constants';
-import { useDictionary } from '../../entities/contexts/DictionaryContext';
-import { usePlugin } from '../../entities/contexts/PluginContext';
+import { Icon } from 'shared/ui/components/Icon';
+import { Shined } from 'shared/ui/components/Shined';
+import { useDictionary } from 'entities/contexts/DictionaryContext';
+import { usePlugin } from 'entities/contexts/PluginContext';
+import { env } from 'shared/env/env';
 
 const Home: React.VFC = () => {
     const { d } = useDictionary();
-    const AvatarMemo = React.useMemo(() => <Icon className="avatar" src={gitHubAvatar}></Icon>, []);
+    const AvatarMemo = React.useMemo(() => <Icon className="avatar" src={env.GIT_HUB_AVATAR}></Icon>, []);
     const ref = React.useRef();
 
     const { getSettings } = usePlugin();

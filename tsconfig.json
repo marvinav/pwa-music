@@ -14,7 +14,28 @@
     "noImplicitThis": true,
     "allowSyntheticDefaultImports": true,
     "target": "es5",
-    "rootDir": "src/",
+    "rootDirs": [
+      "src/",
+      "plugins/"
+    ],
+    "baseUrl": "./",
+    "paths": {
+      "static/*": [
+        "static/*"
+      ],
+      "shared/*": [
+        "src/shared/*"
+      ],
+      "features/*": [
+        "src/features/*"
+      ],
+      "entities/*": [
+        "src/entities/*"
+      ],
+      "pages/*": [
+        "src/pages/*"
+      ],
+    },
     "outDir": "dist/",
     "jsx": "react"
   }
