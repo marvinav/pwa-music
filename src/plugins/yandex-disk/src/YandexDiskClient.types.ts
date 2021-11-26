@@ -1,4 +1,4 @@
-import { StorageEntry } from '../../shared/models/fileSystem';
+import { StorageEntry } from '../../../shared/plugins/models/fileSystem';
 import { YandexDiskClient } from './YandexDiskClient';
 
 /**

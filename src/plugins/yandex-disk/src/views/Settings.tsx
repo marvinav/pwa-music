@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { YandexStorageProviderSettings } from '..';
 import { Loading } from '../../../../pages/Loading';
-import { HandShake } from '../../../shared/BasePlugin';
+import { HandShake } from '../../../../shared/plugins/BasePlugin';
 import { createOAuthUrl } from '../helpers/createOAuthUrl';
 import { YandexDiskClient } from '../YandexDiskClient';
 import { IResource, Resource } from '../YandexDiskClient.types';

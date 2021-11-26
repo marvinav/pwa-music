@@ -1,10 +1,10 @@
 import localforage from 'localforage';
 import React from 'react';
-import { Icon } from '../../components/Icon';
-import { Shined } from '../../components/Shined';
+import { Icon } from '../../shared/ui/components/Icon';
+import { Shined } from '../../shared/ui/components/Shined';
 import { gitHubAvatar } from '../../constants';
-import { useDictionary } from '../../contexts/DictionaryContext';
-import { usePlugin } from '../../contexts/PluginContext';
+import { useDictionary } from '../../entities/contexts/DictionaryContext';
+import { usePlugin } from '../../entities/contexts/PluginContext';
 
 const Home: React.VFC = () => {
     const { d } = useDictionary();

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { NavBar } from '../../layouts/NavBar';
+import { NavBar } from '../../shared/ui/layouts/NavBar';
 import { DictionaryProvider } from '../__mocks__/dictionaryMock';
 
 export default {

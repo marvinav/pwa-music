@@ -128,8 +128,14 @@ var config = {
             },
         ],
     },
+    stats: {
+        errorDetails: true,
+    },
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
+        alias: {
+            static: path.resolve(__dirname, 'static'),
+        },
     },
     output: {
         filename: '[name].[contenthash].bundle.js',

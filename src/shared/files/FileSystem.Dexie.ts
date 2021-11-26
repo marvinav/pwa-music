@@ -1,5 +1,5 @@
 import Dexie from 'dexie';
-import { StorageEntry } from '../plugins/shared/models/fileSystem';
+import { StorageEntry } from './types';
 
 export class FileSystemDb {
     private readonly pluginStorageKey: string;

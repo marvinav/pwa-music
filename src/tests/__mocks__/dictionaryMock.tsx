@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { dictionaryContext, IDictionaryContextValue } from '../../contexts/DictionaryContext';
+import { dictionaryContext, IDictionaryContextValue } from '../../entities/contexts/DictionaryContext';
 
 export const DictionaryProvider: React.FC = (props) => {
     const dictionary = useDictionary();

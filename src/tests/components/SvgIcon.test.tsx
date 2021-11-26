@@ -1,5 +1,5 @@
 import React from 'react';
-import { svgIconContainer } from '../../components/SvgIcon/index.css';
+import { svgIconContainer } from '../../shared/ui/components/SvgIcon/index.css';
 
 import { render } from '@testing-library/react';
 

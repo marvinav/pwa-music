@@ -7,8 +7,8 @@ declare module '*.jpeg';
 declare module '*.jpg';
 declare module '*.png';
 declare module '*.gif';
-
-declare module '*.json' {
+declare module '*.json';
+declare module '*.json?raw' {
     type dictionary = {
         [key: string]: string;
     };

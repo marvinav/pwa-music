@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { gitHubAvatar } from '../../constants';
 
-import { Icon } from '../../components/Icon';
+import { Icon } from '../../shared/ui/components/Icon';
 
 export default {
     component: Icon,

@@ -2,8 +2,8 @@
 
 import 'regenerator-runtime/runtime';
 
-import { Assets } from '../services/Assets';
-import { cachedFailbackToNetworkFetch, cachedFetch } from '../utils/helpers';
+import { Assets } from '../../shared/services/Assets';
+import { cachedFailbackToNetworkFetch, cachedFetch } from '../../shared/utils/helpers';
 import { env } from '../utils/env';
 
 declare const self: ServiceWorkerGlobalScope;

@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useRef } from 'react';
 import { NavLink } from '../../components/NavLink';
-import { useDictionary } from '../../contexts/DictionaryContext';
 import { nav } from './index.css';
 import { navlink } from '../../components/NavLink/index.css';
 
@@ -14,7 +13,6 @@ export interface NavBarProps {
 }
 
 export const NavBar: React.VFC<NavBarProps> = (props) => {
-    const { d } = useDictionary();
     const [selected, setSelected] = React.useState(props.section);
     const focusLink = useRef(0);
     const ref = useRef<HTMLElement>();
@@ -60,7 +58,7 @@ export const NavBar: React.VFC<NavBarProps> = (props) => {
                         props.onClick(path);
                     }}
                 >
-                    {d(link.label)}
+                    {link.label}
                 </NavLinkMemo>
             ))}
         </nav>

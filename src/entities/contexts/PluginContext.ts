@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { View } from '../plugins/shared/BasePlugin';
+import { View } from '../../shared/plugins/BasePlugin';
 /**
  * Plugins of web application.
  */

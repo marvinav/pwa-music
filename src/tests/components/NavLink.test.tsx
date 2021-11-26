@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
 import story, { NewWindow, NavigateLink } from './NavLink.stories';
-import { navlink } from '../../components/NavLink/index.css';
+import { navlink } from '../../shared/ui/components/NavLink/index.css';
 it('Open link in new window', () => {
     window.open = jest.fn();
     const args = { ...story.args, ...NewWindow.args };

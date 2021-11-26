@@ -1,6 +1,6 @@
 import PouchDb from 'pouchdb';
 import PouchDbFind from 'pouchdb-find';
-import { StorageEntry } from '../plugins/shared/models/fileSystem';
+import { StorageEntry } from './types';
 
 PouchDb.plugin(PouchDbFind);
 

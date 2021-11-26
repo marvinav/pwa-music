@@ -1,15 +1,15 @@
 import React from 'react';
-import { Window } from '../../layouts/Window';
+import { Window } from '../../shared/ui/layouts/Window';
 
 import { Playlist as PlaylistType, Track } from '../../services/AudioPlayer/types';
 import { Player } from '../../services/AudioPlayer';
 import { Playlist } from './components/Playlist';
 import { ControlPanel } from './components/ControlPanel';
-import { BottomBar } from '../../layouts/Window/BottomBar';
-import { Content } from '../../layouts/Window/Content';
-import { SvgIcon } from '../../components/SvgIcon';
+import { BottomBar } from '../../shared/ui/layouts/Window/BottomBar';
+import { Content } from '../../shared/ui/layouts/Window/Content';
+import { SvgIcon } from '../../shared/ui/components/SvgIcon';
 
-import addSong from '../../../static/assets/player/add-playlist-solid.svg?raw';
+import addSong from 'static/assets/player/add-playlist-solid.svg?raw';
 import { Visualization } from './components/Visualization';
 
 const playlist: PlaylistType = {
@@ -50,7 +50,6 @@ const MusicPlayer: React.VFC = () => {
                 return Player.playlist.tracks.find((x) => x.path === Player.state.track.track.path);
             });
         });
-        console.log({ id });
         return () => {
             Player.unsubscribe(id);
         };

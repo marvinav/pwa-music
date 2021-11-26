@@ -1,8 +1,8 @@
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
-import { padding, rectangle } from '../../components/index.css';
-import { globalThemeVars } from '../../components/themes/theme.css';
+import { padding, rectangle } from '../../shared/ui/components/index.css';
+import { globalThemeVars } from '../../shared/ui/components/themes/theme.css';
 
 export const controlPanel = style([
     {

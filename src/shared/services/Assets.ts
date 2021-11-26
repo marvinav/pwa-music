@@ -1,5 +1,5 @@
-import { WebpackAsset } from '../constants';
-import { AssetBase, AssetEntry, RawAsset } from '../types';
+import { WebpackAsset } from '../../constants';
+import { AssetBase, AssetEntry, RawAsset } from '../../types';
 import { cachedFetch } from '../utils/helpers';
 
 export class Assets {
