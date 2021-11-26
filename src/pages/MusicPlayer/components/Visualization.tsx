@@ -1,5 +1,5 @@
 import React from 'react';
-import { Player } from '../../../services/AudioPlayer';
+import { Player } from '../../../entities/AudioPlayer';
 import { visualization, visualNode } from '../index.css';
 
 const d = new Array(24).fill('1');

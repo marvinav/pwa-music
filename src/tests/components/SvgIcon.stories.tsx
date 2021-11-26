@@ -1,6 +1,6 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { SvgIcon } from 'shared/ui/components/SvgIcon';
+import { SvgIcon } from 'shared/ui/components';
 
 const svg = `
 <svg id="should-be-removed" width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -2,9 +2,9 @@ import localforage from 'localforage';
 import React from 'react';
 import { Icon } from 'shared/ui/components/Icon';
 import { Shined } from 'shared/ui/components/Shined';
-import { useDictionary } from 'entities/contexts/DictionaryContext';
 import { usePlugin } from 'entities/contexts/PluginContext';
 import { env } from 'shared/env/env';
+import { useDictionary } from 'entities/dictionary';
 
 const Home: React.VFC = () => {
     const { d } = useDictionary();

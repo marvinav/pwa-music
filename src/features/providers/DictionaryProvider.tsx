@@ -1,6 +1,6 @@
+import { dictionaryContext, IDictionaryContextValue } from 'entities/dictionary';
 import React, { useState } from 'react';
 
-import { dictionaryContext, IDictionaryContextValue } from 'entities/contexts/DictionaryContext';
 import { cachedFetch } from 'shared/utils/helpers';
 
 export const dictionaryPath = (lang: string): string => `public/dictionary/${lang}.json`;

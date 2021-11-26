@@ -7,8 +7,8 @@ import next from 'static/assets/player/next-solid.svg?raw';
 import pause from 'static/assets/player/pause-solid.svg?raw';
 import play from 'static/assets/player/play-solid.svg?raw';
 import { controlPanel, playerStateButtons } from '../index.css';
-import { Player } from '../../../services/AudioPlayer';
-import { Track } from '../../../services/AudioPlayer/types';
+import { Player } from '../../../entities/AudioPlayer';
+import { Track } from '../../../entities/AudioPlayer/types';
 
 export const ControlPanel: React.VFC<{ selectedTrack?: Track }> = (_props) => {
     return (

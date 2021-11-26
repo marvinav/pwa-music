@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import { Loading } from 'pages/Loading';
 import { BackgroundMemo as Background } from 'shared/ui/layouts/Background';
 // import { NavBarProps } from './layouts/NavBar';
-import { PluginRoute } from '../services/PluginRoute';
+import { PluginRoute } from '../features/routes/PluginRoute';
 
 import './index.css';
 import { useTheme } from 'shared/ui/components/themes';
