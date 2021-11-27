@@ -30,12 +30,14 @@ var devServer = {
             return path.includes(publicPath);
         },
     },
+    server: {
+        type: 'https',
+    },
     static: path.resolve(__dirname, 'dist/'),
     host: 'localhost',
     historyApiFallback: {
         disableDotRule: false,
     },
-    https: true,
     hot: true,
     port: 4242,
 };
@@ -135,6 +137,7 @@ var config = {
         extensions: ['.tsx', '.ts', '.js'],
         alias: {
             static: path.resolve(__dirname, 'static'),
+            app: path.resolve(__dirname, 'src/app'),
             shared: path.resolve(__dirname, 'src/shared'),
             features: path.resolve(__dirname, 'src/features'),
             entities: path.resolve(__dirname, 'src/entities'),

@@ -10,7 +10,7 @@ import { usePlugin } from 'entities/contexts/PluginContext';
  * @param props Роутинг в случае успешной авторизации
  */
 const PluginRouteChildren: React.VFC = () => {
-    const { pluginId, viewId } = useParams<{ pluginId: string; viewId: string }>();
+    const { pluginId, viewId } = useParams();
     const ref = React.useRef();
     const { getRoute } = usePlugin();
 
@@ -25,5 +25,9 @@ const PluginRouteChildren: React.VFC = () => {
 };
 
 export const PluginRoute: React.VFC<RouteProps> = (props) => {
-    return <Route {...props} component={PluginRouteChildren}></Route>;
+    return (
+        <Route {...props}>
+            <PluginRouteChildren />
+        </Route>
+    );
 };

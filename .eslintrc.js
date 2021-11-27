@@ -17,7 +17,7 @@ module.exports = {
             version: 'detect', // Tells eslint-plugin-react to automatically detect the version of React to use
         },
         'boundaries/include': ['src/**/*', 'static/*/**'],
-        'boundaries/ignore': ['src/tests/**/*'],
+        'boundaries/ignore': ['src/tests/*/**'],
         'boundaries/elements': [
             {
                 type: 'entry-point',
@@ -31,23 +31,29 @@ module.exports = {
             },
             {
                 type: 'shared',
-                pattern: 'shared',
+                pattern: 'shared/*',
                 capture: ['slice', 'segment', 'file'],
             },
             {
                 type: 'entities',
-                pattern: 'entities',
+                pattern: 'entities/*',
                 capture: ['slice', 'segment', 'file'],
             },
             {
                 type: 'features',
-                pattern: 'features',
+                pattern: 'features/*',
                 capture: ['slice', 'segment', 'file'],
             },
             {
                 type: 'pages',
-                pattern: 'pages',
+                pattern: 'pages/*/*',
                 capture: ['slice', 'segment', 'file'],
+            },
+            {
+                type: 'pages',
+                pattern: 'pages/*/*.(tsx|ts)',
+                capture: ['slice', 'index'],
+                mode: 'file',
             },
             {
                 type: 'app',
@@ -67,17 +73,19 @@ module.exports = {
     },
     extends: [
         'eslint:recommended',
-        'plugin:boundaries/strict',
+        'plugin:import/typescript',
         'plugin:react/recommended', // Uses the recommended rules from @eslint-plugin-react
         'plugin:react-hooks/recommended',
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
+        'plugin:boundaries/strict',
         'prettier',
     ],
     rules: {
         // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
         '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
         'react/prop-types': [0],
+        'boundaries/no-private': [2, { allowUncles: false }],
         'boundaries/element-types': [
             2,
             {
@@ -104,8 +112,7 @@ module.exports = {
                     },
                     {
                         from: ['pages'],
-                        disallow: ['pages'],
-                        allow: ['entities', 'features', 'static', 'shared', ['pages', { slice: '${slice}' }]],
+                        allow: ['entities', 'features', 'static', 'shared', 'pages'],
                     },
                     {
                         from: ['app'],
