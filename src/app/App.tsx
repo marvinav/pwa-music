@@ -11,7 +11,7 @@ import ParticlesConfig from 'static/assets/backgrounds/particles.json';
 
 import { startUp } from './startup';
 import { Route, Routes } from 'react-router-dom';
-import { pluginManager } from 'features/plugins/PluginManager';
+import { pluginManager } from 'features/plugins';
 
 const NotFound = lazy(() => import(/* webpackChunkName: "NotFound" */ 'pages/NotFound'));
 const MusicPlayer = lazy(() => import(/* webpackChunkName: "MusicPlayer" */ 'pages/MusicPlayer'));

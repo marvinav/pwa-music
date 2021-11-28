@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Track } from 'entities/audio/types';
-import { playlist } from '../index.css';
+import { playlist } from './index.css';
 import { PlaylistItem } from './PlaylistItem';
 
 export const Playlist: React.VFC<{

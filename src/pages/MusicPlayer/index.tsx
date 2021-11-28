@@ -8,11 +8,11 @@ import { SvgIcon } from 'shared/ui/components/SvgIcon';
 import { Player } from 'entities/audio';
 import { Playlist as PlaylistType, Track } from 'entities/audio/types';
 
-import { Playlist } from './components/Playlist';
-import { ControlPanel } from './components/ControlPanel';
+import { Playlist } from './ui/Playlist';
+import { ControlPanel } from './ui/ControlPanel';
 
 import addSong from 'static/assets/player/add-playlist-solid.svg?raw';
-import { Visualization } from './components/Visualization';
+import { Visualization } from './ui/Visualization';
 
 const playlist: PlaylistType = {
     name: 'Only radio',
