@@ -3,15 +3,15 @@ import { Loading } from 'pages/Loading';
 import { BackgroundMemo as Background } from 'shared/ui/layouts/Background';
 // import { NavBarProps } from './layouts/NavBar';
 
-import './index.css';
+import './ui/style.css';
 import { useTheme } from 'shared/ui/components/themes';
 
 import AnimatedBackground from 'static/assets/backgrounds/11.gif';
 import ParticlesConfig from 'static/assets/backgrounds/particles.json';
 
 import { startUp } from './startup';
-import { pluginManager } from 'entities/contexts/PluginManager';
 import { Route, Routes } from 'react-router-dom';
+import { pluginManager } from 'features/plugins/PluginManager';
 
 const NotFound = lazy(() => import(/* webpackChunkName: "NotFound" */ 'pages/NotFound'));
 const MusicPlayer = lazy(() => import(/* webpackChunkName: "MusicPlayer" */ 'pages/MusicPlayer'));

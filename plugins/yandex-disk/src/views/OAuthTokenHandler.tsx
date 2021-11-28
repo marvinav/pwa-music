@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Loading } from 'pages/Loading';
-import { HandShake } from 'shared/plugins/BasePlugin';
+import { HandShake } from 'entities/plugins/BasePlugin';
 import { YandexStorageProviderSettings } from '..';
 import { parseHash } from '../helpers/parseHash';
 

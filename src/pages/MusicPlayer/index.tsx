@@ -5,8 +5,8 @@ import { BottomBar } from 'shared/ui/layouts/Window/BottomBar';
 import { Content } from 'shared/ui/layouts/Window/Content';
 import { SvgIcon } from 'shared/ui/components/SvgIcon';
 
-import { Player } from 'entities/AudioPlayer';
-import { Playlist as PlaylistType, Track } from 'entities/AudioPlayer/types';
+import { Player } from 'entities/audio';
+import { Playlist as PlaylistType, Track } from 'entities/audio/types';
 
 import { Playlist } from './components/Playlist';
 import { ControlPanel } from './components/ControlPanel';

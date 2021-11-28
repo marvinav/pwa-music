@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { IFile, StorageEntry } from 'shared/files/types';
-import { HandShake, IBaseManifest, StorageProviderPlugin, View } from 'shared/plugins/BasePlugin';
-import { StorageProvider } from 'shared/plugins/interfaces/StorageProvider';
+import { HandShake, IBaseManifest, StorageProviderPlugin, View } from 'entities/plugins/BasePlugin';
+import { StorageProvider } from 'entities/plugins/interfaces/StorageProvider';
 import { OAuthTokenHandler } from './views/OAuthTokenHandler';
 import { Settings } from './views/Settings';
 import { YandexDiskClient } from './YandexDiskClient';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Route, RouteProps, useParams } from 'react-router-dom';
-import { usePlugin } from 'entities/contexts/PluginContext';
+import { usePlugin } from './PluginContext';
 
 /**
  * Обертка над Route.

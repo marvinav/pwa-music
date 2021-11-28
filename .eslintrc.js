@@ -36,6 +36,12 @@ module.exports = {
                 mode: 'file',
             },
             {
+                type: 'shared',
+                pattern: 'shared/*.ts',
+                capture: ['declaration'],
+                mode: 'file',
+            },
+            {
                 type: 'entities',
                 pattern: 'entities/*/**',
                 capture: ['slice', 'segment', 'file'],
@@ -99,7 +105,7 @@ module.exports = {
                     },
                     {
                         from: ['shared'],
-                        allow: ['static', ['shared', { package: '${package}' }]],
+                        allow: ['static', ['shared', { package: '${package}' }], ['shared', { declaration: 'types' }]],
                     },
                     {
                         from: ['entities'],

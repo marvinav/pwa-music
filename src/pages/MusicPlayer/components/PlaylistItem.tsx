@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useMemo } from 'react';
-import { Track } from 'entities/AudioPlayer/types';
+import { Track } from 'entities/audio/types';
 import { convertDurationToHumanRead } from '../helpers/convertDurationToHumanRead';
 import { artist, title, duration as durationClassName, playlistItem } from '../index.css';
 
