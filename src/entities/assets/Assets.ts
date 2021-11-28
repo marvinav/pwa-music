@@ -1,7 +1,6 @@
 import { AssetBase, AssetEntry, RawAsset } from './types';
-import { env } from '../env/env';
-import { cachedFetch } from '../utils/helpers';
-
+import { cachedFetch } from 'shared/utils/helpers';
+import { env } from 'shared/env/env';
 export class Assets {
     private _assets: AssetEntry[];
     private url: string;

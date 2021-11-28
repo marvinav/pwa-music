@@ -31,30 +31,29 @@ module.exports = {
             },
             {
                 type: 'shared',
-                pattern: 'shared/*',
-                capture: ['slice', 'segment', 'file'],
+                pattern: 'shared/*/**',
+                capture: ['package', 'segment', 'file'],
+                mode: 'file',
             },
             {
                 type: 'entities',
-                pattern: 'entities/*',
+                pattern: 'entities/*/**',
                 capture: ['slice', 'segment', 'file'],
+                mode: 'file',
             },
             {
                 type: 'features',
-                pattern: 'features/*',
+                pattern: 'features/*/**',
                 capture: ['slice', 'segment', 'file'],
-            },
-            {
-                type: 'pages',
-                pattern: 'pages/*/*',
-                capture: ['slice', 'segment', 'file'],
-            },
-            {
-                type: 'pages',
-                pattern: 'pages/*/*.(tsx|ts)',
-                capture: ['slice', 'index'],
                 mode: 'file',
             },
+            {
+                type: 'pages',
+                pattern: 'pages/*/**',
+                capture: ['slice', 'segment', 'file'],
+                mode: 'file',
+            },
+
             {
                 type: 'app',
                 pattern: 'app',
@@ -100,19 +99,19 @@ module.exports = {
                     },
                     {
                         from: ['shared'],
-                        allow: ['static'],
+                        allow: ['static', ['shared', { package: '${package}' }]],
                     },
                     {
                         from: ['entities'],
-                        allow: ['shared', 'static'],
+                        allow: ['shared', 'static', ['entities', { slice: '${slice}' }]],
                     },
                     {
                         from: ['features'],
-                        allow: ['entities', 'shared', 'static'],
+                        allow: ['entities', 'shared', 'static', ['features', { slice: '${slice}' }]],
                     },
                     {
                         from: ['pages'],
-                        allow: ['entities', 'features', 'static', 'shared', 'pages'],
+                        allow: ['entities', 'features', 'static', 'shared', ['pages', { slice: '${slice}' }]],
                     },
                     {
                         from: ['app'],

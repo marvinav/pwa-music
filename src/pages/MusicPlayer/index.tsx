@@ -11,9 +11,6 @@ import { Playlist as PlaylistType, Track } from 'entities/AudioPlayer/types';
 import { Playlist } from './components/Playlist';
 import { ControlPanel } from './components/ControlPanel';
 
-import { Loading } from 'pages/Loading/index';
-console.log(Loading);
-
 import addSong from 'static/assets/player/add-playlist-solid.svg?raw';
 import { Visualization } from './components/Visualization';
 
@@ -72,7 +69,6 @@ const MusicPlayer: React.VFC = () => {
 
     return (
         <Window title="player" className="music-player">
-            <Loading></Loading>
             <Content>
                 <ControlPanel selectedTrack={selectedTrack} />
                 <Playlist setSelectedTrack={playTrack} selectedTrack={selectedTrack} tracks={playlist.tracks} />

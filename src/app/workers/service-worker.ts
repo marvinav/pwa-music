@@ -2,7 +2,7 @@
 
 import 'regenerator-runtime/runtime';
 
-import { Assets } from 'shared/assets/Assets';
+import { Assets } from 'entities/assets/Assets';
 import { cachedFailbackToNetworkFetch, cachedFetch } from 'shared/utils/helpers';
 import { env } from 'shared/env/env';
 

@@ -10,7 +10,7 @@ import AnimatedBackground from 'static/assets/backgrounds/11.gif';
 import ParticlesConfig from 'static/assets/backgrounds/particles.json';
 
 import { startUp } from './startup';
-import { pluginManager } from 'features/plugins/PluginManager';
+import { pluginManager } from 'entities/contexts/PluginManager';
 import { Route, Routes } from 'react-router-dom';
 
 const NotFound = lazy(() => import(/* webpackChunkName: "NotFound" */ 'pages/NotFound'));
