@@ -1,6 +1,6 @@
 import React from 'react';
-import { Player } from 'entities/audio';
 import { visualization, visualNode } from './index.css';
+import { Player } from 'entities/audio';
 
 const d = new Array(24).fill('1');
 

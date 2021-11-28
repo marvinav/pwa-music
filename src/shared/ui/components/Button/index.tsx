@@ -1,8 +1,8 @@
 import React, { HTMLAttributes } from 'react';
 import PropTypes from 'prop-types';
-import { button, ButtonVariants } from './index.css';
 import { BaseComponentProps } from '../types';
 import { useBaseClassName } from '../utils/useBaseClassName';
+import { button, ButtonVariants } from './index.css';
 
 export const Button: React.VFC<
     React.DetailedHTMLProps<HTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & BaseComponentProps<ButtonVariants>

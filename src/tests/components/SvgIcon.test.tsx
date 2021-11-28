@@ -1,11 +1,12 @@
 import React from 'react';
-import { svgIconContainer } from 'shared/ui/components/SvgIcon/index.css';
 
 import { render } from '@testing-library/react';
 
 import '@testing-library/jest-dom/extend-expect';
 
 import story, { SvgIconSave } from './SvgIcon.stories';
+
+import { svgIconContainer } from 'shared/ui/components/SvgIcon/index.css';
 
 it('SVG Icon', () => {
     const args = { ...story.args, ...SvgIconSave.args };

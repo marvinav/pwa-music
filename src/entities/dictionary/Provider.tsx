@@ -1,5 +1,5 @@
-import { dictionaryContext, IDictionaryContextValue } from 'entities/dictionary';
 import React, { useState } from 'react';
+import { dictionaryContext, IDictionaryContextValue } from 'entities/dictionary';
 
 import { cachedFetch } from 'shared/utils/helpers';
 

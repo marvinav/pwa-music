@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { IFile, StorageEntry } from 'shared/files/types';
-import { HandShake, IBaseManifest, StorageProviderPlugin, View } from 'entities/plugins/BasePlugin';
-import { StorageProvider } from 'entities/plugins/interfaces/StorageProvider';
 import { OAuthTokenHandler } from './views/OAuthTokenHandler';
 import { Settings } from './views/Settings';
 import { YandexDiskClient } from './YandexDiskClient';
 import { Resource } from './YandexDiskClient.types';
+import { StorageProvider } from 'entities/plugins/interfaces/StorageProvider';
+import { HandShake, IBaseManifest, StorageProviderPlugin, View } from 'entities/plugins/BasePlugin';
+import { IFile, StorageEntry } from 'shared/files/types';
 
 const manifest: IBaseManifest = {
     id: 'yandex-disk',

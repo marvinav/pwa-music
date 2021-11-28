@@ -1,12 +1,12 @@
 import React from 'react';
 import { SvgIcon } from '../../components/SvgIcon';
 
+import { Layer } from '../../components/Layer';
+import { controlButton, icons, topBar, window } from './index.css';
 import close from 'static/assets/window/close.svg?raw';
 // import minimize from 'static/assets/window/minimize.svg?raw';
 // import maximize from 'static/assets/window/maximize.svg?raw';
 import minus from 'static/assets/window/minus.svg?raw';
-import { Layer } from '../../components/Layer';
-import { controlButton, icons, topBar, window } from './index.css';
 
 export interface WindowProps {
     title: string;

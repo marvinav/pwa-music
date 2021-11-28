@@ -1,6 +1,6 @@
 import 'regenerator-runtime/runtime';
-import { IcyCastReader } from 'shared/utils/IcyCastReader';
 import { sample } from './sample';
+import { IcyCastReader } from 'shared/utils/IcyCastReader';
 
 function base64ToArrayBuffer(base64: string) {
     const binaryString = window.atob(base64);

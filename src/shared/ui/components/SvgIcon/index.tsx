@@ -2,9 +2,9 @@ import React, { HTMLAttributes } from 'react';
 import './index.css.ts';
 import PropTypes from 'prop-types';
 import { sanitize } from 'dompurify';
-import { svgIconContainer } from './index.css';
 import { BaseComponentProps } from '../types';
 import { useBaseClassName } from '../utils/useBaseClassName';
+import { svgIconContainer } from './index.css';
 
 export interface SVGIconProps extends BaseComponentProps {
     /**

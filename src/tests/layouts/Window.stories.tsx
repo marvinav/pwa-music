@@ -1,8 +1,8 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Window } from 'shared/ui/layouts/Window';
 import { DictionaryProvider } from '../__mocks__/dictionaryMock';
+import { Window } from 'shared/ui/layouts/Window';
 
 export default {
     component: Window,

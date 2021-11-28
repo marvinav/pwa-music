@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useMemo } from 'react';
-import { Track } from 'entities/audio/types';
 import { convertDurationToHumanRead } from '../lib/convertDurationToHumanRead';
 import { artist, title, duration as durationClassName, playlistItem } from './index.css';
+import { Track } from 'entities/audio/types';
 
 export const PlaylistItem: React.VFC<{ track: Track; selected: boolean; onDoubleClick: () => void }> = (props) => {
     const { track, selected } = props;

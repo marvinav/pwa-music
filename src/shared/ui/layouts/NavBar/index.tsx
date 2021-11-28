@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useRef } from 'react';
 import { NavLink } from '../../components/NavLink';
-import { nav } from './index.css';
 import { navlink } from '../../components/NavLink/index.css';
+import { nav } from './index.css';
 
 export interface NavBarProps {
     onClick: (path: string) => void;

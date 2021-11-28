@@ -1,17 +1,16 @@
 import React, { Suspense, lazy } from 'react';
-import { Loading } from 'pages/Loading';
-import { BackgroundMemo as Background } from 'shared/ui/layouts/Background';
+import { Route, Routes } from 'react-router-dom';
 // import { NavBarProps } from './layouts/NavBar';
+import { startUp } from './startup';
 
 import './ui/style.css';
+import { BackgroundMemo as Background } from 'shared/ui/layouts/Background';
 import { useTheme } from 'shared/ui/components/themes';
 
 import AnimatedBackground from 'static/assets/backgrounds/11.gif';
 import ParticlesConfig from 'static/assets/backgrounds/particles.json';
-
-import { startUp } from './startup';
-import { Route, Routes } from 'react-router-dom';
 import { pluginManager } from 'features/plugins';
+import { Loading } from 'pages/Loading';
 
 const NotFound = lazy(() => import(/* webpackChunkName: "NotFound" */ 'pages/NotFound'));
 const MusicPlayer = lazy(() => import(/* webpackChunkName: "MusicPlayer" */ 'pages/MusicPlayer'));

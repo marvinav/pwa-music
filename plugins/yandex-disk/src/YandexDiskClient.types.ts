@@ -1,5 +1,5 @@
-import { StorageEntry } from 'shared/files/types';
 import { YandexDiskClient } from './YandexDiskClient';
+import { StorageEntry } from 'shared/files/types';
 
 /**
  * An error can occur if the request was formed incorrectly, the specified resource doesn't exist on the server, the server is not working, and so on. All errors are returned with HTTP response codes.
