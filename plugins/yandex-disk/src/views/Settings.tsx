@@ -5,7 +5,7 @@ import { createOAuthUrl } from '../helpers/createOAuthUrl';
 import { YandexDiskClient } from '../YandexDiskClient';
 import { IResource, Resource } from '../YandexDiskClient.types';
 import { FileSystemDb } from 'shared/files/FileSystem.Dexie';
-import { HandShake } from 'entities/plugins/BasePlugin';
+import { HandShake } from 'entities/plugins/types';
 
 export interface ISettingsProps {
     handshake: HandShake<YandexStorageProviderSettings>;

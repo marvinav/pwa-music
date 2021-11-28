@@ -4,8 +4,8 @@ import { pluginManager } from '../service/PluginManager';
 import { IPluginContextValue } from '../types';
 import { PluginContext } from './PluginContext';
 import { env } from 'shared/env/env';
-import { PluginSettingsModel } from 'entities/plugins/PluginSettingsModel';
-import { HandShake, LoadingView, Manifest, Plugin, View } from 'entities/plugins/BasePlugin';
+import { PluginSettingsModel } from 'entities/plugins';
+import { HandShake, LoadingView, Manifest, Plugin, View } from 'entities/plugins/types';
 
 export const PluginProvider: React.FC = (props) => {
     const plugin = usePlugin();

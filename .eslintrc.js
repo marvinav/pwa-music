@@ -43,8 +43,14 @@ module.exports = {
             },
             {
                 type: 'entities',
-                pattern: 'entities/*/**',
+                pattern: 'entities/*/*/*',
                 capture: ['slice', 'segment', 'file'],
+                mode: 'file',
+            },
+            {
+                type: 'entities',
+                pattern: 'entities/*/*.(ts|tsx)',
+                capture: ['slice', 'openAPI'],
                 mode: 'file',
             },
             {
@@ -114,7 +120,12 @@ module.exports = {
                     },
                     {
                         from: ['features'],
-                        allow: ['entities', 'shared', 'static', ['features', { slice: '${slice}' }]],
+                        allow: [
+                            ['entities', { openAPI: '(index|types)' }],
+                            'shared',
+                            'static',
+                            ['features', { slice: '${slice}' }],
+                        ],
                     },
                     {
                         from: ['pages'],

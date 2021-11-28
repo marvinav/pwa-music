@@ -1,4 +1,4 @@
-import { Manifest } from 'entities/plugins/BasePlugin';
+import { Manifest } from 'entities/plugins/types';
 
 interface IPluginMeta {
     id: string;

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { YandexStorageProviderSettings } from '..';
 import { parseHash } from '../helpers/parseHash';
 import { Loading } from 'pages/Loading';
-import { HandShake } from 'entities/plugins/BasePlugin';
+import { HandShake } from 'entities/plugins/types';
 
 export interface IOAuthTokenHandlerProps {
     handshake: HandShake<YandexStorageProviderSettings>;

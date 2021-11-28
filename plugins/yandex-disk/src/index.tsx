@@ -4,8 +4,7 @@ import { OAuthTokenHandler } from './views/OAuthTokenHandler';
 import { Settings } from './views/Settings';
 import { YandexDiskClient } from './YandexDiskClient';
 import { Resource } from './YandexDiskClient.types';
-import { StorageProvider } from 'entities/plugins/interfaces/StorageProvider';
-import { HandShake, IBaseManifest, StorageProviderPlugin, View } from 'entities/plugins/BasePlugin';
+import { HandShake, IBaseManifest, StorageProviderPlugin, StorageProvider, View } from 'entities/plugins/types';
 import { IFile, StorageEntry } from 'shared/files/types';
 
 const manifest: IBaseManifest = {
