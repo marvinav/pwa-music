@@ -1,5 +1,3 @@
-import { createContext, useContext } from 'react';
-
 /**
  * Dictionary of web application.
  * Instead of writing inline phrase of words,
@@ -28,16 +26,3 @@ export interface IDictionaryContextValue {
      */
     langs: string[];
 }
-
-// Контекст
-export const dictionaryContext = createContext<IDictionaryContextValue>({
-    setLanguage: async () => undefined,
-    d: () => undefined,
-    lang: 'en',
-    langs: ['en'],
-});
-
-// Hook, вызовом которого получаем контекст.
-export const useDictionary = (): IDictionaryContextValue => {
-    return useContext<IDictionaryContextValue>(dictionaryContext);
-};

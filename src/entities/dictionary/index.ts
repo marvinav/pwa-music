@@ -1,4 +1,4 @@
-import { IDictionaryContextValue, dictionaryContext, useDictionary } from './Context';
-import { DictionaryProvider, dictionaryPath } from './Provider';
+import { dictionaryContext, useDictionary } from './service/context';
+import { DictionaryProvider, dictionaryPath } from './service/Provider';
 
-export { IDictionaryContextValue, dictionaryContext, useDictionary, DictionaryProvider, dictionaryPath };
+export { dictionaryContext, useDictionary, DictionaryProvider, dictionaryPath };

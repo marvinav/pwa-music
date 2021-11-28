@@ -120,7 +120,7 @@ module.exports = {
                 rules: [
                     {
                         from: ['entry-point'],
-                        allow: ['app', 'features'],
+                        allow: ['app'],
                     },
                     {
                         from: ['shared'],
