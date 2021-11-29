@@ -1,6 +1,6 @@
 import 'regenerator-runtime/runtime';
-import { Mp3Track, TrackProcessor } from '../../entities/audio/types';
 import { AudioPlayer } from '../../entities/audio/AudioPlayer';
+import { Mp3Track, TrackProcessor } from '../../entities/audio/types';
 
 const playlist: AudioPlayer['_playlist'] = {
     name: 'Test First',
@@ -44,12 +44,12 @@ describe('Audio Player', () => {
     const mockAudioContext = {
         createAnalyser: () => {
             return {
-                connect: () => null,
+                connect: jest.fn(),
             };
         },
         createGain: () => {
             return {
-                connect: () => null,
+                connect: jest.fn(),
             };
         },
     };
@@ -59,10 +59,8 @@ describe('Audio Player', () => {
     });
 
     it('Add and remove subscription', () => {
+        const action = jest.fn();
         const player = new AudioPlayer();
-        const action = async () => {
-            return;
-        };
         const id = player.subscribe('playlist-changed', action);
         expect(id).toBeTruthy();
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -113,17 +111,12 @@ describe('Audio Player', () => {
                     currentTrack++;
                     await onEnd();
                 };
-                return null;
             },
         );
 
-        const mockPause = jest.fn<Promise<void>, Parameters<TrackProcessor<Mp3Track>['pause']>>(async () => {
-            return null;
-        });
+        const mockPause = jest.fn<Promise<void>, Parameters<TrackProcessor<Mp3Track>['pause']>>();
 
-        const mockStop = jest.fn<Promise<void>, Parameters<TrackProcessor<Mp3Track>['stop']>>(async () => {
-            return null;
-        });
+        const mockStop = jest.fn<Promise<void>, Parameters<TrackProcessor<Mp3Track>['stop']>>();
 
         const preprocessor: TrackProcessor<Mp3Track> = {
             type: 'mp3',

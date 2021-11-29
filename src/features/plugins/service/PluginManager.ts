@@ -31,8 +31,8 @@ export class PluginManager {
     private plugins: Map<string, IPluginMeta> = new Map();
 
     constructor() {
-        addEventListener('my-space/PluginManager', (ev: CustomEventInit<IAddPluginEvent>) => {
-            console.log(ev);
+        addEventListener('my-space/PluginManager', (event_: CustomEventInit<IAddPluginEvent>) => {
+            console.log(event_);
         });
     }
 
@@ -53,7 +53,7 @@ export class PluginManager {
         try {
             const manifestResponse = await fetch('/plugins/yandex-disk/manifest.json');
             defaultPlugins.push((await manifestResponse.json()) as Manifest);
-        } catch (_err) {
+        } catch {
             console.warn('Yandex.Plugin has not been loaded');
         }
         return defaultPlugins;

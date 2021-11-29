@@ -1,27 +1,27 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { useRef } from 'react';
 
-export interface IShinedProps {
+export interface IShinedProperties {
     size?: number;
     background?: string;
     children: (options: IShinedInjectOptions) => JSX.Element;
 }
 export interface IShinedInjectOptions {
-    onMouseMove: (ev: React.MouseEvent) => void;
-    onMouseEnter: (ev: React.MouseEvent) => void;
-    onMouseLeave: (ev: React.MouseEvent) => void;
+    onMouseMove: (event_: React.MouseEvent) => void;
+    onMouseEnter: (event_: React.MouseEvent) => void;
+    onMouseLeave: (event_: React.MouseEvent) => void;
     shine: JSX.Element;
 }
 
-export const Shined: React.VFC<IShinedProps> = (props) => {
-    const ref = useRef<HTMLDivElement>();
+export const Shined: React.VFC<IShinedProperties> = (properties) => {
+    const reference = useRef<HTMLDivElement>();
     const onMouseEnter = React.useCallback(() => {
-        ref.current.style.setProperty('display', null);
+        reference.current.style.removeProperty('display');
     }, []);
 
     const onMouseLeave = React.useCallback(() => {
-        ref.current.style.setProperty('display', 'none');
+        reference.current.style.setProperty('display', 'none');
     }, []);
 
     const shine = React.useMemo(() => {
@@ -31,29 +31,29 @@ export const Shined: React.VFC<IShinedProps> = (props) => {
                     position: 'fixed',
                     pointerEvents: 'none',
                     borderRadius: '50%',
-                    width: `${props.size}px`,
-                    height: `${props.size}px`,
+                    width: `${properties.size}px`,
+                    height: `${properties.size}px`,
                     overflow: 'clip',
                     filter: 'blur(5px)',
                     transform: 'translate(-50%, -50%)',
-                    background: props.background,
+                    background: properties.background,
                 }}
-                ref={ref}
+                ref={reference}
                 className="shine"
             ></div>
         );
-    }, [props.size, props.background]);
+    }, [properties.size, properties.background]);
 
     const onMouseMove = React.useCallback(
-        (ev: React.MouseEvent) => {
-            if (ref) {
-                const halfWidth = props.size / 2;
-                ref.current.style.setProperty('top', `${ev.clientY}px`);
-                ref.current.style.setProperty('left', `${ev.clientX}px`);
-                const parentClient = ev.currentTarget.getBoundingClientRect();
+        (event_: React.MouseEvent) => {
+            if (reference) {
+                const halfWidth = properties.size / 2;
+                reference.current.style.setProperty('top', `${event_.clientY}px`);
+                reference.current.style.setProperty('left', `${event_.clientX}px`);
+                const parentClient = event_.currentTarget.getBoundingClientRect();
                 const shineClient = {
-                    clientX: ev.clientX,
-                    clientY: ev.clientY,
+                    clientX: event_.clientX,
+                    clientY: event_.clientY,
                 };
                 let bottomOverflow = parentClient.bottom - shineClient.clientY;
                 bottomOverflow = bottomOverflow < halfWidth ? halfWidth - bottomOverflow : 0;
@@ -63,16 +63,16 @@ export const Shined: React.VFC<IShinedProps> = (props) => {
                 leftOverflow = leftOverflow < -halfWidth ? 0 : halfWidth + leftOverflow;
                 let rightOverflow = parentClient.right - shineClient.clientX;
                 rightOverflow = rightOverflow < halfWidth ? halfWidth - rightOverflow : 0;
-                ref.current.style.setProperty(
+                reference.current.style.setProperty(
                     'clip-path',
                     `inset(${topOverflow}px ${rightOverflow}px  ${bottomOverflow}px ${leftOverflow}px)`,
                 );
             }
         },
-        [props.size],
+        [properties.size],
     );
 
-    return props.children({ onMouseMove, onMouseLeave, onMouseEnter, shine });
+    return properties.children({ onMouseMove, onMouseLeave, onMouseEnter, shine });
 };
 
 Shined.propTypes = {

@@ -7,7 +7,7 @@ const jsonKeys = new Set(['filter']);
 export function useQuery<T extends { [key: string]: unknown }>(): T {
     const search = new URLSearchParams(useLocation().search);
     const result: Record<string, unknown> = {};
-    search.forEach((value, key) => {
+    for (const [key, value] of search.entries()) {
         const toInsert = jsonKeys.has(key) ? JSON.parse(value) : value;
         let old = result[key];
         if (old && Array.isArray(old)) {
@@ -18,6 +18,6 @@ export function useQuery<T extends { [key: string]: unknown }>(): T {
             old = toInsert;
         }
         result[key] = old;
-    });
+    }
     return result as T;
 }

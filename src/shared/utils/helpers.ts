@@ -10,7 +10,7 @@ export async function cachedFetch(request: RequestInfo, cacheName = 'cached-even
             cache.put(request, responseClone);
         });
         return response;
-    } catch (err) {
+    } catch {
         return caches.match(request);
     }
 }

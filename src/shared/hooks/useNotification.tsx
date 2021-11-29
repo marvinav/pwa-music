@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { useSafeDispatch } from './useSafeDispatch';
 
 /**
@@ -14,7 +15,7 @@ interface State {
  */
 type Action = Partial<State>;
 
-type NotificationReducer = (prevState: State, action: Action) => State;
+type NotificationReducer = (previousState: State, action: Action) => State;
 
 /** True if the code is being executed on the server. */
 const isServer = typeof window === 'undefined';
@@ -48,10 +49,10 @@ interface UseNotificationReturnType {
 
 export function useNotification(): UseNotificationReturnType {
     const [{ permission, error }, setState] = React.useReducer<NotificationReducer>(
-        (prevState, action) => ({ ...prevState, ...action }),
+        (previousState, action) => ({ ...previousState, ...action }),
         {
-            permission: isSupported ? Notification.permission : null,
-            error: !isSupported ? new Error('This browser does not support web notifications.') : null,
+            permission: isSupported ? Notification.permission : undefined,
+            error: !isSupported ? new Error('This browser does not support web notifications.') : undefined,
         },
     );
 
@@ -66,7 +67,7 @@ export function useNotification(): UseNotificationReturnType {
             // Update permission status and clear out any errors.
             safeSetState({
                 permission: notificationPermission,
-                error: null,
+                error: undefined,
             });
         } catch {
             // Fallback to the deprecated callback API.
@@ -74,7 +75,7 @@ export function useNotification(): UseNotificationReturnType {
                 // Update permission status and clear out any errors.
                 safeSetState({
                     permission: notificationPermission,
-                    error: null,
+                    error: undefined,
                 });
             });
         }
@@ -82,13 +83,13 @@ export function useNotification(): UseNotificationReturnType {
 
     const notify = React.useCallback(
         (title: Notification['title'], options?: NotificationOptions) => {
-            if (!isSupported || permission !== 'granted') return null;
+            if (!isSupported || permission !== 'granted') return;
 
             try {
                 const notification = new Notification(title, options);
 
                 // Clear out possible errors in state.
-                safeSetState({ error: null });
+                safeSetState({ error: undefined });
 
                 return notification;
             } catch (error) {
@@ -96,7 +97,7 @@ export function useNotification(): UseNotificationReturnType {
                     safeSetState({ error });
                 }
 
-                return null;
+                return;
             }
         },
         [permission, safeSetState],

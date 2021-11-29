@@ -1,25 +1,25 @@
-import React from 'react';
-
 import { render } from '@testing-library/react';
+import React from 'react';
 
 import '@testing-library/jest-dom/extend-expect';
 
-import story, { SvgIconSave } from './SvgIcon.stories';
-
 import { svgIconContainer } from 'shared/ui/components/SvgIcon/index.css';
 
+import story, { SvgIconSave } from './SvgIcon.stories';
+
 it('SVG Icon', () => {
-    const args = { ...story.args, ...SvgIconSave.args };
-    const component = <SvgIconSave {...args}></SvgIconSave>;
+    const arguments_ = { ...story.args, ...SvgIconSave.args };
+    const component = <SvgIconSave {...arguments_}></SvgIconSave>;
     const { container } = render(component);
     const paths = container.querySelectorAll('path');
     const svg = container.querySelector('svg');
-    expect(container.getElementsByClassName(svgIconContainer).item(0).className).toBe(svgIconContainer);
+    expect(container.querySelectorAll(`.${svgIconContainer}`).item(0).className).toBe(svgIconContainer);
     expect(svg.getAttribute('id')).toBeNull();
     expect(svg.getAttribute('preserveAspectRatio')).toBe('none');
-    paths.forEach((x) => {
-        expect(x.getAttribute('fill')).toBe('currentColor');
-    });
+    for (const x of paths) {
+        console.log(x);
+        expect(paths[x].getAttribute('fill')).toBe('currentColor');
+    }
 });
 
 it('SVG Icon with xml node', () => {
@@ -78,13 +78,13 @@ it('SVG Icon with xml node', () => {
 </g>
 </svg>
 `;
-    const args = { ...story.args, ...SvgIconSave.args, src: svgInnerHtml };
-    const { container } = render(<SvgIconSave {...args}></SvgIconSave>);
+    const arguments_ = { ...story.args, ...SvgIconSave.args, src: svgInnerHtml };
+    const { container } = render(<SvgIconSave {...arguments_}></SvgIconSave>);
     const paths = container.querySelectorAll('path');
     const svg = container.querySelector('svg');
     expect(svg.getAttribute('id')).toBeNull();
     expect(svg.getAttribute('preserveAspectRatio')).toBe('none');
-    paths.forEach((x) => {
+    for (const x of paths) {
         expect(x.getAttribute('fill')).toBe('currentColor');
-    });
+    }
 });

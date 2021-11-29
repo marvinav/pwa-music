@@ -9,5 +9,5 @@ const PaperStyle = {
 };
 
 export function useStyle(main: string, flags: [font: keyof typeof FontStyle, paper: keyof typeof PaperStyle]): string {
-    return [main, flags].filter((x) => x != null).join(' ');
+    return [main, flags].filter((x) => x != undefined).join(' ');
 }

@@ -1,15 +1,17 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+
+import { HandShake } from 'entities/plugins/types';
+import { Loading } from 'pages/Loading';
+
 import { YandexStorageProviderSettings } from '..';
 import { parseHash } from '../helpers/parseHash';
-import { Loading } from 'pages/Loading';
-import { HandShake } from 'entities/plugins/types';
 
-export interface IOAuthTokenHandlerProps {
+export interface IOAuthTokenHandlerProperties {
     handshake: HandShake<YandexStorageProviderSettings>;
 }
 
-export const OAuthTokenHandler: React.VFC<IOAuthTokenHandlerProps> = (props) => {
+export const OAuthTokenHandler: React.VFC<IOAuthTokenHandlerProperties> = (properties) => {
     const auth = document.location.hash && parseHash(document.location.hash);
     const [success, setSuccess] = React.useState<'loading' | 'error' | 'success'>('loading');
 
@@ -17,16 +19,16 @@ export const OAuthTokenHandler: React.VFC<IOAuthTokenHandlerProps> = (props) => 
         if (auth) {
             (async () => {
                 try {
-                    let settings = await props.handshake.settings.get();
-                    settings = { ...settings, ...auth, expiresIn: new Date(new Date().getTime() + auth.expiresIn) };
-                    await props.handshake.settings.addOrUpdate(settings);
+                    let settings = await properties.handshake.settings.get();
+                    settings = { ...settings, ...auth, expiresIn: new Date(Date.now() + auth.expiresIn) };
+                    await properties.handshake.settings.addOrUpdate(settings);
                     setSuccess('success');
                 } catch {
                     setSuccess('error');
                 }
             })();
         }
-    }, [auth, props.handshake.settings]);
+    }, [auth, properties.handshake.settings]);
 
     switch (success) {
         case 'loading':

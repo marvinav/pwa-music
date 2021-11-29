@@ -1,6 +1,7 @@
-import { AssetBase, AssetEntry, RawAsset } from './types';
-import { cachedFetch } from 'shared/utils/helpers';
 import { env } from 'shared/env/env';
+import { cachedFetch } from 'shared/utils/helpers';
+
+import { AssetBase, AssetEntry, RawAsset } from './types';
 
 export class Assets {
     private _assets: AssetEntry[];
@@ -34,11 +35,11 @@ export function flatAsset(assets: RawAsset): AssetEntry[] {
         if (typeof value === 'string') {
             const parsed = parseFileName(value);
             parsed && result.push(parseFileName(value));
-        } else if (value instanceof Array) {
-            value.forEach((x) => {
+        } else if (Array.isArray(value)) {
+            for (const x of value) {
                 const parsed = parseFileName(x);
                 parsed && result.push(parsed);
-            });
+            }
         } else {
             const parsed = flatAsset(value as RawAsset);
             parsed && result.push(...parsed);

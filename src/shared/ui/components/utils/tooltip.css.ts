@@ -1,4 +1,5 @@
 import { style } from '@vanilla-extract/css';
+
 import { rounded } from '../index.css';
 
 // [data-title]:after {
@@ -23,7 +24,7 @@ export const tooltip = style([
                 position: 'absolute',
                 whiteSpace: 'nowrap',
                 opacity: 0,
-                zIndex: 99999,
+                zIndex: 99_999,
                 visibility: 'hidden',
             },
         },

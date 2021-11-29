@@ -1,5 +1,6 @@
-import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import React from 'react';
+
 import { SvgIcon } from 'shared/ui/components';
 
 const svg = `
@@ -19,6 +20,6 @@ const story: ComponentMeta<typeof SvgIcon> = {
 
 export default story;
 
-const Template: ComponentStory<typeof SvgIcon> = (args) => <SvgIcon {...args} />;
+const Template: ComponentStory<typeof SvgIcon> = (arguments_) => <SvgIcon {...arguments_} />;
 
 export const SvgIconSave = Template.bind({});

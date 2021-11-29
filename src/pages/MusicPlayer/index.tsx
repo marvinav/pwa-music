@@ -1,17 +1,16 @@
 import React from 'react';
 
-import { Playlist } from './ui/Playlist';
-import { ControlPanel } from './ui/ControlPanel';
-import { Visualization } from './ui/Visualization';
+import { Player } from 'entities/audio';
+import { Playlist as PlaylistType, Track } from 'entities/audio/types';
+import { SvgIcon } from 'shared/ui/components/SvgIcon';
 import { Window } from 'shared/ui/layouts/Window';
 import { BottomBar } from 'shared/ui/layouts/Window/BottomBar';
 import { Content } from 'shared/ui/layouts/Window/Content';
-import { SvgIcon } from 'shared/ui/components/SvgIcon';
-
-import { Player } from 'entities/audio';
-import { Playlist as PlaylistType, Track } from 'entities/audio/types';
-
 import addSong from 'static/assets/player/add-playlist-solid.svg?raw';
+
+import { ControlPanel } from './ui/ControlPanel';
+import { Playlist } from './ui/Playlist';
+import { Visualization } from './ui/Visualization';
 
 const playlist: PlaylistType = {
     name: 'Only radio',
@@ -21,7 +20,7 @@ const playlist: PlaylistType = {
             recordable: true,
             mimeType: 'icy-cast',
             path: 'https://radio.plaza.one/mp3_96',
-            mediaMetadata: { album: '', artist: 'Radio Plaza', artwork: null, title: 'Nightwave Plaza' },
+            mediaMetadata: { album: '', artist: 'Radio Plaza', title: 'Nightwave Plaza' },
         },
         {
             recordable: true,
@@ -30,7 +29,6 @@ const playlist: PlaylistType = {
             duration: 100,
             mediaMetadata: {
                 artist: 'Left Coast 70s: Mellow album rock from the Seventies. Yacht friendly.',
-                artwork: null,
             },
         },
     ],
@@ -38,12 +36,12 @@ const playlist: PlaylistType = {
 Player.setPlaylist(playlist);
 
 const MusicPlayer: React.VFC = () => {
-    const [selectedTrack, setSelectedTrack] = React.useState<Track>(null);
+    const [selectedTrack, setSelectedTrack] = React.useState<Track>();
     const [selectedPlaylist, setSelectedPlaylist] = React.useState(playlist);
 
     React.useEffect(() => {
         Player.playlist.path != selectedPlaylist.path && Player.setPlaylist(playlist);
-        const id = Player.subscribe('track-start', (_ev) => {
+        const id = Player.subscribe('track-start', (_event) => {
             setSelectedTrack((x) => {
                 if (x?.path === Player?.state?.track?.track?.path) {
                     return x;
@@ -84,7 +82,6 @@ const MusicPlayer: React.VFC = () => {
                             duration: 100,
                             mediaMetadata: {
                                 artist: 'OGG',
-                                artwork: null,
                             },
                         });
                         selectedPlaylist.tracks = [...selectedPlaylist.tracks];

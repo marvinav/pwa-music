@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { spinner, spinnerDiv } from './index.css';
 
 export const Spinner: React.VFC = () => (

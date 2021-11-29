@@ -9,19 +9,19 @@ export function parseHash(hash: string): {
         type?: string;
         expiresIn?: number;
     } = {};
-    formatedHash.forEach((x) => {
+    for (const x of formatedHash) {
         const kvPair = x.split('=');
         switch (kvPair[0]) {
             case 'access_token':
                 result.token = kvPair[1];
-                return;
+                continue;
             case 'token_type':
                 result.type = kvPair[1];
-                return;
+                continue;
             case 'expires_in':
-                result.expiresIn = parseInt(kvPair[1], 10);
-                return;
+                result.expiresIn = Number.parseInt(kvPair[1], 10);
+                continue;
         }
-    });
+    }
     return result;
 }

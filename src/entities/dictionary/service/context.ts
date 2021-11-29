@@ -1,10 +1,11 @@
 import { createContext, useContext } from 'react';
+
 import { IDictionaryContextValue } from '../types';
 
 // Контекст
 export const dictionaryContext = createContext<IDictionaryContextValue>({
-    setLanguage: async () => undefined,
-    d: () => undefined,
+    setLanguage: undefined,
+    d: undefined,
     lang: 'en',
     langs: ['en'],
 });

@@ -1,53 +1,55 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { useRef } from 'react';
+
 import { NavLink } from '../../components/NavLink';
 import { navlink } from '../../components/NavLink/index.css';
+
 import { nav } from './index.css';
 
-export interface NavBarProps {
+export interface NavBarProperties {
     onClick: (path: string) => void;
     section: string | undefined;
 
     links: { id: string; label: string; path: string }[];
 }
 
-export const NavBar: React.VFC<NavBarProps> = (props) => {
-    const [selected, setSelected] = React.useState(props.section);
+export const NavBar: React.VFC<NavBarProperties> = (properties) => {
+    const [selected, setSelected] = React.useState(properties.section);
     const focusLink = useRef(0);
-    const ref = useRef<HTMLElement>();
+    const reference = useRef<HTMLElement>();
     React.useEffect(() => {
-        setSelected(props.section);
-    }, [props.section]);
+        setSelected(properties.section);
+    }, [properties.section]);
 
     return (
         <nav
             className={nav}
-            ref={ref}
+            ref={reference}
             role="presentation"
-            onKeyDown={(e) => {
-                if (e.code === 'ArrowRight') {
-                    e.preventDefault();
+            onKeyDown={(event) => {
+                if (event.code === 'ArrowRight') {
+                    event.preventDefault();
                     focusLink.current =
-                        focusLink.current + 1 >= ref.current.children.length ? 0 : focusLink.current + 1;
-                    (ref.current.children[focusLink.current] as HTMLElement).focus();
-                } else if (e.code === 'ArrowLeft') {
-                    e.preventDefault();
+                        focusLink.current + 1 >= reference.current.children.length ? 0 : focusLink.current + 1;
+                    (reference.current.children[focusLink.current] as HTMLElement).focus();
+                } else if (event.code === 'ArrowLeft') {
+                    event.preventDefault();
                     focusLink.current =
-                        focusLink.current - 1 < 0 ? ref.current.children.length - 1 : focusLink.current - 1;
-                    (ref.current.children[focusLink.current] as HTMLElement).focus();
+                        focusLink.current - 1 < 0 ? reference.current.children.length - 1 : focusLink.current - 1;
+                    (reference.current.children[focusLink.current] as HTMLElement).focus();
                 }
             }}
-            onFocus={(ev) => {
-                if (ev.target === ref.current) {
-                    ev.preventDefault();
-                    const indexOfSelected = props.links.findIndex((x) => x.path === selected);
+            onFocus={(event_) => {
+                if (event_.target === reference.current) {
+                    event_.preventDefault();
+                    const indexOfSelected = properties.links.findIndex((x) => x.path === selected);
                     focusLink.current = indexOfSelected;
-                    (ref.current.children[indexOfSelected] as HTMLElement).focus();
+                    (reference.current.children[indexOfSelected] as HTMLElement).focus();
                 }
             }}
         >
-            {props.links.map((link) => (
+            {properties.links.map((link) => (
                 <NavLinkMemo
                     tabIndex={-1}
                     key={link.path}
@@ -55,7 +57,7 @@ export const NavBar: React.VFC<NavBarProps> = (props) => {
                     path={link.path}
                     selected={selected === link.path}
                     onNavigate={(path) => {
-                        props.onClick(path);
+                        properties.onClick(path);
                     }}
                 >
                     {link.label}

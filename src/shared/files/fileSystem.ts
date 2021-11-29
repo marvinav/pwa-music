@@ -1,10 +1,11 @@
 import PouchDb from 'pouchdb';
 import PouchDbFind from 'pouchdb-find';
+
 import { StorageEntry } from './types';
 
 PouchDb.plugin(PouchDbFind);
 
-export class FileSystemDb {
+export class FileSystemDatabase {
     private readonly pluginStorageKey: string;
     private readonly store: PouchDB.Database<StorageEntry>;
 
@@ -14,9 +15,8 @@ export class FileSystemDb {
     }
 
     async addOrUpdateEntry(entry: StorageEntry): Promise<string> {
-        return await (
-            await this.store.put({ ...entry, _rev: 'baserevision' }, { force: true })
-        ).id;
+        const { id } = await this.store.put({ ...entry, _rev: 'baserevision' }, { force: true });
+        return id;
     }
 
     async getMetaInfo(path: string, name: string): Promise<StorageEntry> {

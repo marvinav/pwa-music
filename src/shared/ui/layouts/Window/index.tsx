@@ -1,14 +1,16 @@
 import React from 'react';
-import { SvgIcon } from '../../components/SvgIcon';
 
-import { Layer } from '../../components/Layer';
-import { controlButton, icons, topBar, window } from './index.css';
 import close from 'static/assets/window/close.svg?raw';
-// import minimize from 'static/assets/window/minimize.svg?raw';
-// import maximize from 'static/assets/window/maximize.svg?raw';
 import minus from 'static/assets/window/minus.svg?raw';
 
-export interface WindowProps {
+import { Layer } from '../../components/Layer';
+import { SvgIcon } from '../../components/SvgIcon';
+
+import { controlButton, icons, topBar, window } from './index.css';
+// import minimize from 'static/assets/window/minimize.svg?raw';
+// import maximize from 'static/assets/window/maximize.svg?raw';
+
+export interface WindowProperties {
     title: string;
     onClose?: () => void;
     onMimimize?: () => void;
@@ -17,23 +19,23 @@ export interface WindowProps {
     className?: string;
 }
 
-export const Window: React.FC<WindowProps> = (props) => {
+export const Window: React.FC<WindowProperties> = (properties) => {
     return (
-        <Layer level={0} className={useClassname(props)}>
+        <Layer level={0} className={useClassname(properties)}>
             <div className={topBar}>
-                <div className="title">{props.title}</div>
+                <div className="title">{properties.title}</div>
                 <div className={controlButton}>
                     <SvgIcon src={minus} className={icons({ action: 'minimize' })}></SvgIcon>
                     <SvgIcon src={close} className={icons({ action: 'close' })}></SvgIcon>
                 </div>
             </div>
-            {props.children}
+            {properties.children}
         </Layer>
     );
 };
 
-function useClassname(props: WindowProps) {
+function useClassname(properties: WindowProperties) {
     const classess = [window];
-    props.className && classess.push(props.className);
+    properties.className && classess.push(properties.className);
     return classess.join(' ');
 }

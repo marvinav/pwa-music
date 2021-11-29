@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Spinner } from 'shared/ui/components/Spinner';
 
 const style = {

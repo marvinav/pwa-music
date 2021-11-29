@@ -22,11 +22,11 @@ export class CommonPreprocessor implements TrackProcessor<Track> {
             this._source.connect(n);
         }
 
-        this._audio.onended = async (_ev) => {
+        this._audio.addEventListener('ended', async (_event) => {
             this._audio.removeAttribute('src');
             this._audio.load();
             await onEnd();
-        };
+        });
         this._audio.play();
         return null;
     };

@@ -18,12 +18,12 @@ export const fetchWrapper = async (
         return fetch(info, init);
     }
 
-    const isWorker = (self as unknown as ServiceWorkerGlobalScope).skipWaiting != null;
+    const isWorker = (self as unknown as ServiceWorkerGlobalScope).skipWaiting != undefined;
 
     // Send to worker if worker initialized
     if (!isWorker && window.navigator.serviceWorker && (await window.navigator.serviceWorker.getRegistration())) {
         const initMarked = init ?? {};
-        initMarked.headers = { ...(initMarked.headers ?? {}), fetchType: type };
+        initMarked.headers = { ...initMarked.headers, fetchType: type };
         return fetch(info, initMarked);
     }
     const request = new Request(info, init);
@@ -45,7 +45,8 @@ export const fetchWrapper = async (
             return response;
         }
         const networkResponse = await fetch(info, init);
-        (await caches.open(type)).put(request, networkResponse.clone());
+        const { put } = await caches.open(type);
+        put(request, networkResponse.clone());
         return response;
     }
     if (type === 'network-fallback') {
@@ -53,11 +54,12 @@ export const fetchWrapper = async (
     }
     if (type === 'network-first') {
         try {
-            const response = fetch(info, init);
-            (await caches.open(type)).put(request, (await response).clone());
+            const response = await fetch(info, init);
+            const { put } = await caches.open(type);
+            put(request, response.clone());
             return response;
-        } catch (err) {
-            console.error(err);
+        } catch (error) {
+            console.error(error);
             return caches.match(request);
         }
     }

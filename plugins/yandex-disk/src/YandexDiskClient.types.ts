@@ -1,5 +1,6 @@
-import { YandexDiskClient } from './YandexDiskClient';
 import { StorageEntry } from 'shared/files/types';
+
+import { YandexDiskClient } from './YandexDiskClient';
 
 /**
  * An error can occur if the request was formed incorrectly, the specified resource doesn't exist on the server, the server is not working, and so on. All errors are returned with HTTP response codes.
@@ -132,8 +133,8 @@ export class Resource implements IResource {
 
     private readonly client: YandexDiskClient;
     private _embeddedResources: Map<string, IResource>;
-    constructor(res: IResource, client: YandexDiskClient) {
-        Object.assign(this, res);
+    constructor(resource: IResource, client: YandexDiskClient) {
+        Object.assign(this, resource);
         this.client = client;
     }
 
@@ -164,12 +165,12 @@ export class Resource implements IResource {
 
     getAllEmbedded = async (offset?: number): Promise<IResource[]> => {
         if (this.type === 'file') {
-            return null;
+            return undefined;
         }
 
         this._embeddedResources = this._embeddedResources ?? new Map(this._embedded?.items?.map((x) => [x.path, x]));
         if (this._embeddedResources?.size >= this._embedded?.total) {
-            return Array.from(this._embeddedResources.values());
+            return [...this._embeddedResources.values()];
         }
         const response = await this.client.getMetainformation(this.path, {
             limit: this._embedded?.total ?? 20,
@@ -187,14 +188,14 @@ export class Resource implements IResource {
             // Collect from start if response does not contain items but dir in reality has them
             await this.getAllEmbedded(offset + 20);
         }
-        response._embedded.items.forEach((x) => {
+        for (const x of response._embedded.items) {
             this._embeddedResources.set(x.path, x);
-        });
+        }
         this._embedded.total = response._embedded.total;
         if (this._embeddedResources.size < this._embedded.total) {
             await this.getAllEmbedded();
         }
-        return Array.from(this._embeddedResources.values());
+        return [...this._embeddedResources.values()];
     };
 }
 

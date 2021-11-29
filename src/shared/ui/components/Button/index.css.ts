@@ -1,28 +1,28 @@
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
-import { globalThemeVars } from '../themes/theme.css';
-import { VariantProps } from '../types';
+import { globalThemeVariables as globalThemeVariables } from '../themes/theme.css';
+import { VariantProperties as VariantProperties } from '../types';
 
 export const buttonClass = style({
-    backgroundColor: globalThemeVars.button.background.primary,
-    color: globalThemeVars.button.color.primary,
-    border: globalThemeVars.button.border.primary,
-    boxShadow: globalThemeVars.button.shadow.primary,
+    backgroundColor: globalThemeVariables.button.background.primary,
+    color: globalThemeVariables.button.color.primary,
+    border: globalThemeVariables.button.border.primary,
+    boxShadow: globalThemeVariables.button.shadow.primary,
 });
 
 const buttonTypes = ['primary', 'danger', 'disabled', 'focused', 'submit'];
 
-const type = {} as typeof globalThemeVars.button.background;
+const type = {} as typeof globalThemeVariables.button.background;
 
-buttonTypes.forEach((x) => {
+for (const x of buttonTypes) {
     type[x] = {
-        backgroundColor: globalThemeVars.button.background[x],
-        color: globalThemeVars.button.color[x],
-        border: globalThemeVars.button.border[x],
-        boxShadow: globalThemeVars.button.shadow[x],
+        backgroundColor: globalThemeVariables.button.background[x],
+        color: globalThemeVariables.button.color[x],
+        border: globalThemeVariables.button.border[x],
+        boxShadow: globalThemeVariables.button.shadow[x],
     };
-});
+}
 
 export const button = recipe({
     variants: {
@@ -36,4 +36,4 @@ export const button = recipe({
     },
 });
 
-export type ButtonVariants = VariantProps<typeof button>;
+export type ButtonVariants = VariantProperties<typeof button>;

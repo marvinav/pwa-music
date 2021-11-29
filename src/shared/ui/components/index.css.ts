@@ -1,7 +1,8 @@
 // @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto&display=swap');
 
 import { style } from '@vanilla-extract/css';
-import { globalThemeVars } from './themes/theme.css';
+
+import { globalThemeVariables as globalThemeVariables } from './themes/theme.css';
 import { DeviceSize, PaddinSize, Size } from './types';
 
 const sizes: PaddinSize[] = ['0', 's', 'normal', 'l'];
@@ -9,8 +10,8 @@ const sizes: PaddinSize[] = ['0', 's', 'normal', 'l'];
 const padding = {} as Record<PaddinSize, string>;
 const margin = {} as Record<PaddinSize, string>;
 sizes.map((x) => {
-    padding[x] = style({ padding: x === '0' ? '0' : globalThemeVars.padding[x] });
-    margin[x] = style({ padding: x === '0' ? '0' : globalThemeVars.padding[x] });
+    padding[x] = style({ padding: x === '0' ? '0' : globalThemeVariables.padding[x] });
+    margin[x] = style({ padding: x === '0' ? '0' : globalThemeVariables.padding[x] });
 });
 
 export { padding, margin };
@@ -20,22 +21,22 @@ export const rounded = style({
 });
 
 export const mainFont = style({
-    fontFamily: globalThemeVars.font.family.main,
+    fontFamily: globalThemeVariables.font.family.main,
 });
 
 export const specialFont = style({
-    fontFamily: globalThemeVars.font.family.special,
+    fontFamily: globalThemeVariables.font.family.special,
 });
 
 const recSizes: Size[] = ['xs', 's', 'normal', 'l', 'xl'];
 const rectangle = {} as Record<Size, string>;
 
-recSizes.forEach((x) => {
+for (const x of recSizes) {
     rectangle[x] = style({
-        width: globalThemeVars.size[x],
-        height: globalThemeVars.size[x],
+        width: globalThemeVariables.size[x],
+        height: globalThemeVariables.size[x],
     });
-});
+}
 
 export { rectangle };
 

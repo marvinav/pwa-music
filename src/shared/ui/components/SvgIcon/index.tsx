@@ -1,12 +1,15 @@
-import React, { HTMLAttributes } from 'react';
-import './index.css.ts';
-import PropTypes from 'prop-types';
 import { sanitize } from 'dompurify';
-import { BaseComponentProps } from '../types';
+import PropTypes from 'prop-types';
+import React, { HTMLAttributes } from 'react';
+
+import './index.css.ts';
+
+import { BaseComponentProps as BaseComponentProperties } from '../types';
 import { useBaseClassName } from '../utils/useBaseClassName';
+
 import { svgIconContainer } from './index.css';
 
-export interface SVGIconProps extends BaseComponentProps {
+export interface SVGIconProperties extends BaseComponentProperties {
     /**
      * Will be passed in `src` attribute of nested `img`
      */
@@ -20,38 +23,38 @@ export interface SVGIconProps extends BaseComponentProps {
  * @returns Return div container with nested SVG element.
  */
 export const SvgIcon: React.VFC<
-    React.DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & SVGIconProps
-> = (props) => {
+    React.DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & SVGIconProperties
+> = (properties) => {
     const [ell] = React.useState(
-        replaceFill(new DOMParser().parseFromString(sanitize(props.src), 'image/svg+xml').firstElementChild),
+        replaceFill(new DOMParser().parseFromString(sanitize(properties.src), 'image/svg+xml').firstElementChild),
     );
-    const baseClassName = useBaseClassName(props, svgIconContainer);
+    const baseClassName = useBaseClassName(properties, svgIconContainer);
 
-    const standartProps = { ...props, src: undefined, tooltip: undefined };
+    const standartProperties = { ...properties, src: undefined, tooltip: undefined };
 
     return (
         <div
-            {...standartProps}
-            data-title={props.tooltip}
+            {...standartProperties}
+            data-title={properties.tooltip}
             className={baseClassName}
             dangerouslySetInnerHTML={{ __html: ell.outerHTML }}
         />
     );
 };
 
-function replaceFill(doc: SVGSVGElement | Element) {
-    if (doc.nodeName === 'svg') {
-        doc.setAttribute('preserveAspectRatio', 'none');
-        doc.setAttribute('width', '100%');
-        doc.setAttribute('height', '100%');
-        doc.removeAttribute('id');
-    } else if (doc.nodeName === 'path') {
-        doc.setAttribute('fill', 'currentColor');
+function replaceFill(document_: SVGSVGElement | Element) {
+    if (document_.nodeName === 'svg') {
+        document_.setAttribute('preserveAspectRatio', 'none');
+        document_.setAttribute('width', '100%');
+        document_.setAttribute('height', '100%');
+        document_.removeAttribute('id');
+    } else if (document_.nodeName === 'path') {
+        document_.setAttribute('fill', 'currentColor');
     }
-    for (const ch in doc.children) {
-        replaceFill(doc.children[ch]);
+    for (const ch in document_.children) {
+        replaceFill(document_.children[ch]);
     }
-    return doc as SVGSVGElement;
+    return document_ as SVGSVGElement;
 }
 
 SvgIcon.propTypes = {

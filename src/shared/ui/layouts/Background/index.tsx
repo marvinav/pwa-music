@@ -1,36 +1,36 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React from 'react';
-export interface BackgroundBaseProps {
+export interface BackgroundBaseProperties {
     particlesConfig?: string;
     imgSrc?: string;
     color?: string;
     type: 'particles' | 'img' | 'color';
 }
 
-export interface ImageBackgroundProps extends BackgroundBaseProps {
+export interface ImageBackgroundProperties extends BackgroundBaseProperties {
     type: 'img';
     imgSrc: string;
 }
 
-export interface ParticlesBackgroundProps extends BackgroundBaseProps {
+export interface ParticlesBackgroundProperties extends BackgroundBaseProperties {
     type: 'particles';
     particlesConfig: string;
 }
 
-export interface ColorBackgroundProps extends BackgroundBaseProps {
+export interface ColorBackgroundProperties extends BackgroundBaseProperties {
     type: 'color';
     color: string;
 }
 
-export const Background: React.FC<ImageBackgroundProps | ParticlesBackgroundProps | ColorBackgroundProps> = (props) => {
-    switch (props.type) {
+export const Background: React.FC<ImageBackgroundProperties | ParticlesBackgroundProperties | ColorBackgroundProperties> = (properties) => {
+    switch (properties.type) {
         case 'particles':
         default:
             import('particles.js').then((_x) => {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 (window as unknown as { particlesJS: any }).particlesJS.load(
                     'particles-js-background',
-                    props.particlesConfig,
+                    properties.particlesConfig,
                 );
             });
             return (
@@ -43,7 +43,7 @@ export const Background: React.FC<ImageBackgroundProps | ParticlesBackgroundProp
             return (
                 <div
                     style={{
-                        color: props.color,
+                        color: properties.color,
                         position: 'fixed',
                         left: 0,
                         top: 0,
@@ -58,7 +58,7 @@ export const Background: React.FC<ImageBackgroundProps | ParticlesBackgroundProp
             return (
                 <div
                     style={{
-                        backgroundImage: `url(${props.imgSrc})`,
+                        backgroundImage: `url(${properties.imgSrc})`,
                         backgroundRepeat: 'no-repeat',
                         backgroundSize: 'cover',
                         position: 'fixed',

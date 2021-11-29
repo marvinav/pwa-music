@@ -1,7 +1,9 @@
-import { Background, BackgroundMemo } from './Background';
 
-import { NavBar } from './NavBar';
 
-import { Window } from './Window';
 
-export { Background, BackgroundMemo, NavBar, Window };
+
+
+
+export {Background, BackgroundMemo} from './Background';
+export {NavBar} from './NavBar';
+export {Window} from './Window';

@@ -1,12 +1,15 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { useMemo } from 'react';
-import { convertDurationToHumanRead } from '../lib/convertDurationToHumanRead';
-import { artist, title, duration as durationClassName, playlistItem } from './index.css';
+
 import { Track } from 'entities/audio/types';
 
-export const PlaylistItem: React.VFC<{ track: Track; selected: boolean; onDoubleClick: () => void }> = (props) => {
-    const { track, selected } = props;
+import { convertDurationToHumanRead } from '../lib/convertDurationToHumanRead';
+
+import { artist, title, duration as durationClassName, playlistItem } from './index.css';
+
+export const PlaylistItem: React.VFC<{ track: Track; selected: boolean; onDoubleClick: () => void }> = (properties) => {
+    const { track, selected } = properties;
 
     const duration = useMemo(() => {
         return convertDurationToHumanRead(track?.duration);
@@ -15,8 +18,8 @@ export const PlaylistItem: React.VFC<{ track: Track; selected: boolean; onDouble
     return (
         <section
             className={playlistItem({ selected })}
-            onDoubleClick={(_ev) => {
-                props.onDoubleClick();
+            onDoubleClick={(_event) => {
+                properties.onDoubleClick();
             }}
         >
             <span className={title}>{track.mediaMetadata?.title ?? track.path}</span>
@@ -28,8 +31,8 @@ export const PlaylistItem: React.VFC<{ track: Track; selected: boolean; onDouble
 
 PlaylistItem.propTypes = {
     onDoubleClick: PropTypes.func,
-    track: (props, _propName, componentName) => {
-        if (!props[_propName]?.['path']) {
+    track: (properties, _propertyName, componentName) => {
+        if (!properties[_propertyName]?.['path']) {
             return new Error(
                 'Invalid prop `' + 'path' + '` supplied to' + ' `' + componentName + '`. Validation failed.',
             );

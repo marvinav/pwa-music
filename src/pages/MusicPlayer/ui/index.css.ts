@@ -2,7 +2,7 @@ import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
 import { padding, rectangle } from 'shared/ui/components/index.css';
-import { globalThemeVars } from 'shared/ui/components/themes/theme.css';
+import { globalThemeVariables } from 'shared/ui/components/themes/theme.css';
 
 export const controlPanel = style([
     {
@@ -53,8 +53,8 @@ export const playlistItem = recipe({
     variants: {
         selected: {
             true: {
-                backgroundColor: globalThemeVars.button.background.focused,
-                color: globalThemeVars.button.color.focused,
+                backgroundColor: globalThemeVariables.button.background.focused,
+                color: globalThemeVariables.button.color.focused,
             },
         },
     },
@@ -65,11 +65,11 @@ export const playlistItem = recipe({
             gridTemplateAreas: "'title duration' 'artist duration'",
             gridTemplateColumns: `1fr var(--duration-width)`,
             alignItems: 'center',
-            gap: globalThemeVars.size.xs,
+            gap: globalThemeVariables.size.xs,
             selectors: {
                 '&:hover': {
-                    backgroundColor: globalThemeVars.button.background.focused,
-                    color: globalThemeVars.button.color.focused,
+                    backgroundColor: globalThemeVariables.button.background.focused,
+                    color: globalThemeVariables.button.color.focused,
                 },
             },
         },
@@ -88,6 +88,6 @@ export const visualization = style({
 
 export const visualNode = style({
     width: '100%',
-    backgroundColor: globalThemeVars.button.color.focused,
+    backgroundColor: globalThemeVariables.button.color.focused,
     transition: 'height 0.5s linear',
 });

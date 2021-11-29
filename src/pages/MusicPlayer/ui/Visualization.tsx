@@ -1,8 +1,10 @@
 import React from 'react';
-import { visualization, visualNode } from './index.css';
+
 import { Player } from 'entities/audio';
 
-const d = new Array(24).fill('1');
+import { visualization, visualNode } from './index.css';
+
+const d = Array.from({ length: 24 }).fill('1');
 
 export const Visualization: React.VFC = () => {
     const [data, setData] = React.useState(new Uint8Array(Player.nodes.analyzer.frequencyBinCount));
@@ -17,15 +19,15 @@ export const Visualization: React.VFC = () => {
 
     const bars: number[] = [];
 
-    for (let i = 0; i < data.length; i = i + d.length) {
+    for (let index = 0; index < data.length; index = index + d.length) {
         let result = 0;
         let added = 0;
-        d.forEach((x, ind) => {
-            if (i + ind < data.length) {
-                result = result + data[i + ind];
+        for (const [ind] of d.entries()) {
+            if (index + ind < data.length) {
+                result = result + data[index + ind];
                 added++;
             }
-        });
+        }
         bars.push(result / added);
     }
 

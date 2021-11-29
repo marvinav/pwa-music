@@ -3,7 +3,7 @@ import React from 'react';
 // Hook
 export function useEventListener<K extends keyof WindowEventMap>(
     eventName: K,
-    handler: (ev: WindowEventMap[K]) => void,
+    handler: (event_: WindowEventMap[K]) => void,
     element = window,
 ): void {
     // Create a ref that stores handler
@@ -17,15 +17,15 @@ export function useEventListener<K extends keyof WindowEventMap>(
         savedHandler.current = handler;
     }, [handler]);
 
+    // Create event listener that calls handler function stored in ref
+    const eventListener = React.useCallback((event: UIEvent) => savedHandler.current(event), [savedHandler]);
+
     React.useEffect(
         () => {
             // Make sure element supports addEventListener
             // On
             const isSupported = element && element.addEventListener;
             if (!isSupported) return;
-
-            // Create event listener that calls handler function stored in ref
-            const eventListener = (event: UIEvent) => savedHandler.current(event);
 
             // Add event listener
             element.addEventListener(eventName, eventListener);
@@ -35,6 +35,6 @@ export function useEventListener<K extends keyof WindowEventMap>(
                 element.removeEventListener(eventName, eventListener);
             };
         },
-        [eventName, element], // Re-run if eventName or element changes
+        [eventName, element, eventListener], // Re-run if eventName or element changes
     );
 }

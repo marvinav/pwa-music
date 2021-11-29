@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Route, RouteProps, useParams } from 'react-router-dom';
+
 import { usePlugin } from './PluginContext';
 
 /**
@@ -11,22 +12,22 @@ import { usePlugin } from './PluginContext';
  */
 const PluginRouteChildren: React.VFC = () => {
     const { pluginId, viewId } = useParams();
-    const ref = React.useRef();
+    const reference = React.useRef();
     const { getRoute } = usePlugin();
 
     const plugin = getRoute(pluginId, viewId);
 
     React.useEffect(() => {
         if (plugin && plugin._ !== 'loading') {
-            plugin.render(ref.current);
+            plugin.render(reference.current);
         }
     }, [plugin]);
-    return <div key={pluginId + viewId} ref={ref}></div>;
+    return <div key={pluginId + viewId} ref={reference}></div>;
 };
 
-export const PluginRoute: React.VFC<RouteProps> = (props) => {
+export const PluginRoute: React.VFC<RouteProps> = (properties) => {
     return (
-        <Route {...props}>
+        <Route {...properties}>
             <PluginRouteChildren />
         </Route>
     );

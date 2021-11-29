@@ -2,7 +2,7 @@ import { iterateThemeVariables, setThemeVariables, useTheme } from 'shared/ui/co
 import { draculaTheme } from 'shared/ui/components/themes/dracula.theme';
 
 it('Iterate theme variables', () => {
-    const obj = {
+    const object = {
         a: {
             aa: {
                 aaa: 'aaa',
@@ -19,8 +19,8 @@ it('Iterate theme variables', () => {
         b: 'b',
     };
     const called: { key: string; val: string }[] = [];
-    iterateThemeVariables(obj, (parents, val) => {
-        called.push({ key: parents.join('-'), val });
+    iterateThemeVariables(object, (parents, value) => {
+        called.push({ key: parents.join('-'), val: value });
     });
 
     expect(called.length).toBe(6);

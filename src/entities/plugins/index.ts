@@ -1,3 +1,5 @@
-import { PluginSettingsModel } from './PluginSettingsModel';
 
-export { PluginSettingsModel };
+
+
+
+export {PluginSettingsModel} from './PluginSettingsModel';

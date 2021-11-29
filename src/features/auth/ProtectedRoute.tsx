@@ -8,8 +8,8 @@ import { RouteProps, Route } from 'react-router-dom';
  * Если нет, то пользователь переадресуется на страницу по умолчанию для авторизации.
  * @param props Роутинг в случае успешной авторизации
  */
-const ProtectedRoute: React.VFC<RouteProps> = (props) => {
-    return <Route {...props} />;
+const ProtectedRoute: React.VFC<RouteProps> = (properties) => {
+    return <Route {...properties} />;
 };
 
 export default ProtectedRoute;

@@ -1,10 +1,10 @@
 // usehooks.com
 import { useEffect, useRef } from 'react';
 
-export default function useMemoCompare<T>(next: T, compare: (prev: T, next: T) => T): T {
+export default function useMemoCompare<T>(next: T, compare: (previous_: T, next: T) => T): T {
     // Ref for storing previous value
-    const previousRef = useRef<T>();
-    const previous = previousRef.current;
+    const previousReference = useRef<T>();
+    const previous = previousReference.current;
 
     // Pass previous and next value to compare function
     // to determine whether to consider them equal.
@@ -15,7 +15,7 @@ export default function useMemoCompare<T>(next: T, compare: (prev: T, next: T) =
     // the same old value if compare keeps returning true.
     useEffect(() => {
         if (!isEqual) {
-            previousRef.current = next;
+            previousReference.current = next;
         }
     });
 

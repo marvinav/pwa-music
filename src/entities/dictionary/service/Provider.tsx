@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 
-import { IDictionaryContextValue } from '../types';
-
 import { dictionaryContext } from 'entities/dictionary';
 import { cachedFetch } from 'shared/utils/helpers';
 
+import { IDictionaryContextValue } from '../types';
+
 export const dictionaryPath = (lang: string): string => `public/dictionary/${lang}.json`;
 
-export const DictionaryProvider: React.FC = (props) => {
+export const DictionaryProvider: React.FC = (properties) => {
     const dictionary = useDictionary();
-    return <dictionaryContext.Provider value={dictionary}>{props.children}</dictionaryContext.Provider>;
+    return <dictionaryContext.Provider value={dictionary}>{properties.children}</dictionaryContext.Provider>;
 };
 
 const defaultLang = 'en_US';
@@ -17,7 +17,7 @@ const defaultLang = 'en_US';
 // Реализация контекста словаря посредством загрузки json схем, которые хранятся в static
 const useDictionary = (): IDictionaryContextValue => {
     const [language, setLanguage] = useState<string>(window.navigator.language.split('-')[0]);
-    const [dictionary, setDictionary] = useState<{ [key: string]: string }>(null);
+    const [dictionary, setDictionary] = useState<{ [key: string]: string }>();
 
     React.useEffect(() => {
         setLanguage(language);
@@ -25,7 +25,8 @@ const useDictionary = (): IDictionaryContextValue => {
 
     React.useEffect(() => {
         if (!language || language === defaultLang) {
-            setDictionary(null);
+            // eslint-disable-next-line unicorn/no-useless-undefined
+            setDictionary(undefined);
         } else {
             (async (language) => {
                 try {
@@ -34,8 +35,8 @@ const useDictionary = (): IDictionaryContextValue => {
                         setDictionary(await response.json());
                         return;
                     }
-                } catch (err) {
-                    console.error(err);
+                } catch (error) {
+                    console.error(error);
                 }
             })(language);
         }

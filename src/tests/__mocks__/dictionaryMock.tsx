@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
+
 import { dictionaryContext } from 'entities/dictionary';
 import { IDictionaryContextValue } from 'entities/dictionary/types';
 
-export const DictionaryProvider: React.FC = (props) => {
+export const DictionaryProvider: React.FC = (properties) => {
     const dictionary = useDictionary();
-    return <dictionaryContext.Provider value={dictionary}>{props.children}</dictionaryContext.Provider>;
+    return <dictionaryContext.Provider value={dictionary}>{properties.children}</dictionaryContext.Provider>;
 };
 
 const defaultLang = 'en';

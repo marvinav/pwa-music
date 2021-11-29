@@ -1,47 +1,47 @@
-import { GlobalThemeContract } from './theme.css';
 import { draculaTheme } from './dracula.theme';
+import { GlobalThemeContract } from './theme.css';
 
-export const useTheme = (props?: GlobalThemeContract): void => {
-    const unionProps = JSON.parse(JSON.stringify(draculaTheme)) as GlobalThemeContract;
+export const useTheme = (properties?: GlobalThemeContract): void => {
+    const unionProperties = JSON.parse(JSON.stringify(draculaTheme)) as GlobalThemeContract;
 
-    props &&
-        iterateThemeVariables(props, (parentProps, value) => {
-            let buff = unionProps;
-            parentProps.forEach((x, ind) => {
-                if (ind + 1 === parentProps.length) {
+    properties &&
+        iterateThemeVariables(properties, (parentProperties, value) => {
+            let buff = unionProperties;
+            for (const [ind, x] of parentProperties.entries()) {
+                if (ind + 1 === parentProperties.length) {
                     buff[x] = value;
                 } else {
                     buff = buff[x];
                 }
-            });
+            }
         });
 
-    setThemeVariables(unionProps);
+    setThemeVariables(unionProperties);
 };
 
-export const setThemeVariables = (props: GlobalThemeContract): void => {
-    iterateThemeVariables(props, (parentProps, value) => {
-        document.documentElement.style.setProperty(`--${parentProps.join('-')}`, value);
+export const setThemeVariables = (properties: GlobalThemeContract): void => {
+    iterateThemeVariables(properties, (parentProperties, value) => {
+        document.documentElement.style.setProperty(`--${parentProperties.join('-')}`, value);
     });
 };
 
 export const iterateThemeVariables = (
-    obj: Record<string, unknown>,
-    action: (parentProps: string[], value: string) => void,
+    object: Record<string, unknown>,
+    action: (parentProperties: string[], value: string) => void,
 ): void => {
-    const getProperty = (prop: string, parentProps: string[], parent: unknown) => {
-        const currentProps = [...parentProps, prop];
+    const getProperty = (property: string, parentProperties: string[], parent: unknown) => {
+        const currentProperties = [...parentProperties, property];
 
-        if (parent[prop].constructor === String) {
-            action(currentProps, parent[prop]);
+        if (parent[property].constructor === String) {
+            action(currentProperties, parent[property]);
         } else {
-            for (const nestedProp of Object.getOwnPropertyNames(parent[prop])) {
-                getProperty(nestedProp, currentProps, parent[prop]);
+            for (const nestedProperty of Object.getOwnPropertyNames(parent[property])) {
+                getProperty(nestedProperty, currentProperties, parent[property]);
             }
         }
     };
 
-    for (const prop of Object.getOwnPropertyNames(obj)) {
-        getProperty(prop, [], obj);
+    for (const property of Object.getOwnPropertyNames(object)) {
+        getProperty(property, [], object);
     }
 };

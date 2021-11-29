@@ -1,8 +1,9 @@
-import React, { HTMLAttributes } from 'react';
 import PropTypes from 'prop-types';
+import React, { HTMLAttributes } from 'react';
+
 import { navlink } from './index.css';
 
-type NavLinkProps = React.PropsWithChildren<
+type NavLinkProperties = React.PropsWithChildren<
     React.DetailedHTMLProps<HTMLAttributes<HTMLSpanElement>, HTMLSpanElement> & {
         /**
          * Path to navigate page
@@ -23,9 +24,9 @@ type NavLinkProps = React.PropsWithChildren<
     }
 >;
 
-export const NavLink: React.VFC<NavLinkProps> = (props) => {
-    const { onNavigate, path, disabled, selected } = props;
-    const reactAttributes = { ...props };
+export const NavLink: React.VFC<NavLinkProperties> = (properties) => {
+    const { onNavigate, path, disabled, selected, onClick, children } = properties;
+    const reactAttributes = { ...properties };
     delete reactAttributes.onNavigate;
     delete reactAttributes.ref;
     return (
@@ -33,22 +34,22 @@ export const NavLink: React.VFC<NavLinkProps> = (props) => {
             {...reactAttributes}
             role="link"
             tabIndex={0}
-            className={className({ selected, disabled, className: props.className })}
-            onKeyPress={(e) => {
-                !disabled && e.code === 'Enter' && props.onNavigate(path);
+            className={className({ selected, disabled, className: properties.className })}
+            onKeyPress={(event) => {
+                !disabled && event.code === 'Enter' && properties.onNavigate(path);
             }}
-            onClick={(e) => {
+            onClick={(event) => {
                 if (disabled) {
                     return;
                 }
                 if (onNavigate) {
                     onNavigate(path);
                 } else {
-                    props.onClick && props.onClick(e);
+                    onClick && onClick(event);
                 }
             }}
         >
-            {props.children}
+            {children}
         </span>
     );
 };
@@ -63,10 +64,10 @@ NavLink.propTypes = {
     className: PropTypes.string,
 };
 
-function className(props: { selected?: boolean; disabled?: boolean; className?: string }) {
+function className(properties: { selected?: boolean; disabled?: boolean; className?: string }) {
     const main = [navlink];
-    props.className && main.push(props.className);
-    props.selected && main.push('selected');
-    props.disabled && main.push('disabled');
+    properties.className && main.push(properties.className);
+    properties.selected && main.push('selected');
+    properties.disabled && main.push('disabled');
     return main.join(' ');
 }

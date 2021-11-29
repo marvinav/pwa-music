@@ -1,9 +1,9 @@
 import React from 'react';
 
-export const List: React.FC = (props) => {
+export const List: React.FC = (properties) => {
     return (
         <div className="list">
-            {React.Children.map(props.children, (child) => {
+            {React.Children.map(properties.children, (child) => {
                 return <div className="list-item">{child}</div>;
             })}
         </div>

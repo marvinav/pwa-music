@@ -6,14 +6,14 @@ export class IcyCastReader {
     private _bodyReader: ReadableStreamDefaultReader<Uint8Array>;
     private _metaInt: number;
     private _state: 'initialized' | 'started' | 'stopped' = 'initialized';
-    private _icyHeader: string = null;
+    private _icyHeader: string;
     private bufferArray: Uint8Array[] = [];
     private length = 0;
     private received = 0;
     private send = 0;
 
     processBuffer: (buff: Uint8Array, icyHeaders: string) => Promise<void>;
-    onDone: (params: { received: number; send: number }) => void;
+    onDone: (parameters: { received: number; send: number }) => void;
 
     get state(): typeof this._state {
         return this._state;
@@ -34,11 +34,11 @@ export class IcyCastReader {
         if (init.signal) {
             const oldSignal = init.signal;
             const oldOnAbort = init.signal.onabort;
-            oldSignal.onabort = (ev) => {
-                oldOnAbort && oldOnAbort.apply(this, ev);
+            oldSignal.addEventListener('abort', (event_) => {
+                oldOnAbort && oldOnAbort.apply(this, event_);
                 this._abortController.abort();
                 this._state = 'stopped';
-            };
+            });
         }
         init.signal = this._abortController.signal;
         init.keepalive = init.keepalive === undefined ? true : init.keepalive;
@@ -66,10 +66,10 @@ export class IcyCastReader {
                     this.read();
                 } else {
                     let offset = 0;
-                    this.bufferArray.forEach((x) => {
+                    for (const x of this.bufferArray) {
                         mergedArray.set(x, offset);
                         offset += x.length;
-                    });
+                    }
                     this.send += mergedArray.length;
                     this.processBuffer && (await this.processBuffer(mergedArray, this.icyHeader));
                     this.done();
@@ -78,10 +78,10 @@ export class IcyCastReader {
             }
 
             let offset = 0;
-            this.bufferArray.forEach((x) => {
+            for (const x of this.bufferArray) {
                 mergedArray.set(x, offset);
                 offset += x.length;
-            });
+            }
 
             const icyHeaderLength = mergedArray[this.metaInt] ?? 0;
             // If current buffer does not contain all metadata when skip
@@ -90,10 +90,10 @@ export class IcyCastReader {
                     this.read();
                 } else {
                     let offset = 0;
-                    this.bufferArray.forEach((x) => {
+                    for (const x of this.bufferArray) {
                         mergedArray.set(x, offset);
                         offset += x.length;
-                    });
+                    }
                     this.send += mergedArray.length;
                     this.processBuffer && (await this.processBuffer(mergedArray, this.icyHeader));
                     this.done();
@@ -103,7 +103,7 @@ export class IcyCastReader {
 
             if (icyHeaderLength > 0) {
                 this._icyHeader = String.fromCharCode.apply(
-                    null,
+                    undefined,
                     mergedArray.slice(this.metaInt + 1, this.metaInt + 1 + icyHeaderLength * 16),
                 );
             }
@@ -122,7 +122,7 @@ export class IcyCastReader {
                 }
                 if (headerSize > 0) {
                     this._icyHeader = String.fromCharCode.apply(
-                        null,
+                        undefined,
                         newArray.slice(this.metaInt + 1, this.metaInt + 1 + headerSize),
                     );
                 }
@@ -142,7 +142,7 @@ export class IcyCastReader {
                     (await this.processBuffer(newArray.slice(0, this.metaInt), this.icyHeader));
                 this.done();
             }
-        } catch (ex) {
+        } catch {
             if (!done) {
                 this.read();
             } else {

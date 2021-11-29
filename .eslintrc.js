@@ -11,7 +11,7 @@ module.exports = {
             jsx: true, // Allows for the parsing of JSX
         },
     },
-    plugins: ['prettier', 'react', '@typescript-eslint', 'react-hooks', 'jsx-a11y', 'import', 'boundaries'],
+    plugins: ['prettier', 'react', '@typescript-eslint', 'react-hooks', 'jsx-a11y', 'import', 'unicorn', 'boundaries'],
     settings: {
         react: {
             version: 'detect', // Tells eslint-plugin-react to automatically detect the version of React to use
@@ -101,6 +101,7 @@ module.exports = {
         'plugin:react-hooks/recommended',
         'plugin:jsx-a11y/recommended',
         'plugin:@typescript-eslint/eslint-recommended',
+        'plugin:unicorn/recommended',
         'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
         'plugin:boundaries/strict',
         'prettier',
@@ -109,7 +110,15 @@ module.exports = {
         // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
         '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
         'react/prop-types': [0],
-        'import/order': [2, {}],
+        'import/order': [
+            2,
+            {
+                groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+                'newlines-between': 'always',
+                alphabetize: { order: 'asc' },
+            },
+        ],
+        'unicorn/filename-case': [0],
         'boundaries/no-private': [2, { allowUncles: false }],
         'boundaries/element-types': [
             2,

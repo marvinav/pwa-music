@@ -1,17 +1,18 @@
 import Dexie from 'dexie';
+
 import { StorageEntry } from './types';
 
-export class FileSystemDb {
+export class FileSystemDataBase {
     private readonly pluginStorageKey: string;
     private readonly store: Dexie.Table<StorageEntry, [string, string]>;
     private readonly rootPath: string;
 
     constructor(provider: string, rootPath = '/') {
-        const db = new Dexie(`file-system.dexie.${provider}`);
-        db.version(1).stores({
+        const database = new Dexie(`file-system.dexie.${provider}`);
+        database.version(1).stores({
             files: '[path+name], path',
         });
-        this.store = db.table('files');
+        this.store = database.table('files');
         this.rootPath = rootPath;
     }
 
@@ -20,19 +21,20 @@ export class FileSystemDb {
         const rootPath = (function () {
             const index = path.lastIndexOf(name);
             if (index > -1) {
-                return path.substring(0, index);
+                return path.slice(0, Math.max(0, index));
             }
-            return null;
+            return;
         })();
         if (path !== this.rootPath) {
-            const rootDir = await this.store.filter((x) => {
+            const rootDirectory = await this.store.filter((x) => {
                 return x._ === 'directory' && x.path === rootPath;
             });
-            if (!(await rootDir.first())) {
+            if (!(await rootDirectory.first())) {
                 throw new Error('Root dir not created');
             }
         }
-        return (await this.store.put(query)).join('-');
+        const { join } = await this.store.put(query);
+        return join('-');
     }
 
     async copyFile(
@@ -47,11 +49,12 @@ export class FileSystemDb {
             throw new Error('Directory copy not implemented');
         }
         if (removeOld) {
-            (await this.store.where({ path, name })).delete();
+            this.store.where({ path, name }).delete();
         }
 
         const newFile = { ...oldFile, path: newPath, name: newName ?? name };
-        return (await this.store.add(newFile)).join('-');
+        const { join } = await this.store.add(newFile);
+        return join('-');
     }
 
     async getMetaInfo(path: string, name: string): Promise<StorageEntry> {
@@ -66,8 +69,8 @@ export class FileSystemDb {
     async delete(path: string, name: string): Promise<boolean> {
         await this.store.delete([path, name]);
         await this.store
-            .filter((obj) => {
-                return obj.path.startsWith(path);
+            .filter((object) => {
+                return object.path.startsWith(path);
             })
             .delete();
         return true;

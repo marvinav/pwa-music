@@ -1,11 +1,13 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { BaseComponentProps } from '../types';
+import React from 'react';
+
+import { BaseComponentProps as BaseComponentProperties } from '../types';
 import { useBaseClassName } from '../utils/useBaseClassName';
+
 import { iconContainer } from './index.css';
 
-export interface IconProps
-    extends BaseComponentProps,
+export interface IconProperties
+    extends BaseComponentProperties,
         React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> {
     /**
      * Will be passed in `src` attribute of nested `img`
@@ -14,22 +16,22 @@ export interface IconProps
     onErrorSrc?: string;
 }
 
-export const Icon: React.VFC<IconProps> = (props) => {
-    const ref = React.useRef<HTMLImageElement>();
+export const Icon: React.VFC<IconProperties> = (properties) => {
+    const reference = React.useRef<HTMLImageElement>();
 
-    const baseClassName = useBaseClassName(props, iconContainer);
+    const baseClassName = useBaseClassName(properties, iconContainer);
 
     return (
         <img
             onError={() => {
-                if (props.onErrorSrc && ref.current.src !== props.onErrorSrc) {
-                    ref.current.src = props.onErrorSrc;
+                if (properties.onErrorSrc && reference.current.src !== properties.onErrorSrc) {
+                    reference.current.src = properties.onErrorSrc;
                 }
             }}
-            ref={ref}
+            ref={reference}
             className={baseClassName}
-            src={props.src}
-            alt={props.alt}
+            src={properties.src}
+            alt={properties.alt}
         ></img>
     );
 };

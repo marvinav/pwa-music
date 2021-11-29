@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/no-document-cookie */
 // Copy from https://github.com/hamzahamidi/cookies-utils;
 
 type cookie = {
@@ -58,10 +59,9 @@ export function deleteCookie(name: string, path?: string, domain?: string): void
 export function deleteAllCookies(): void {
     const cookies = document.cookie.split(';');
 
-    for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i];
+    for (const cookie of cookies) {
         const eqPos = cookie.indexOf('=');
-        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        const name = eqPos > -1 ? cookie.slice(0, Math.max(0, eqPos)) : cookie;
         document.cookie = name + '=' + expireTime;
     }
 }

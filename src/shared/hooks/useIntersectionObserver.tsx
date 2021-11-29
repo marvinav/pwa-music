@@ -2,15 +2,15 @@
 
 import { useState, useEffect, MutableRefObject } from 'react';
 
-interface IntersactionObserverProps {
+interface IntersactionObserverProperties {
     threshold: number;
     root?: Element | Document | null;
     rootMargin?: string;
 }
 
 export const useIntersectionObserver = (
-    ref: MutableRefObject<Element>,
-    options: IntersactionObserverProps,
+    reference: MutableRefObject<Element>,
+    options: IntersactionObserverProperties,
 ): [boolean, IntersectionObserver] => {
     const { threshold, root, rootMargin } = options;
     // configure the state
@@ -35,20 +35,20 @@ export const useIntersectionObserver = (
                     entry: observerInstance,
                 });
                 // unobserve the element
-                observerInstance.unobserve(ref.current);
+                observerInstance.unobserve(reference.current);
             }
             return;
         },
         {
             threshold: threshold || 0,
-            root: root || null,
+            root,
             rootMargin: rootMargin || '0%',
         },
     );
 
     useEffect(() => {
-        if (ref.current) {
-            observer.observe(ref.current);
+        if (reference.current) {
+            observer.observe(reference.current);
         }
     });
 

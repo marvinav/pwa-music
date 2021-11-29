@@ -1,7 +1,8 @@
+/* eslint-disable unicorn/prevent-abbreviations */
 /**
  * Environments from webpack builds
  */
-declare const webpack_env: {
+declare const webpack_environment: {
     /**
      * Should be service worker registered
      */
@@ -30,7 +31,7 @@ declare const webpack_env: {
 
 declare global {
     export interface Window {
-        env: typeof webpack_env;
+        env: typeof webpack_environment;
     }
 }
 // Self assign because webpack.DefinePlugin
@@ -38,9 +39,9 @@ declare global {
 // eslint-disable-next-line no-self-assign
 
 if (self.window) {
-    window.env = { ...webpack_env };
+    window.env = { ...webpack_environment };
 } else {
-    self.env = { ...webpack_env };
+    self.env = { ...webpack_environment };
 }
 
 export const env = self.window ? window.env : self.env;

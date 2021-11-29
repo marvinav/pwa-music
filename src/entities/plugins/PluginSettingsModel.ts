@@ -1,4 +1,5 @@
 import localforage from 'localforage';
+
 import { PluginSettingsConnection } from 'entities/plugins/types';
 
 export class PluginSettingsModel<T> extends PluginSettingsConnection<T> {
@@ -15,7 +16,7 @@ export class PluginSettingsModel<T> extends PluginSettingsConnection<T> {
     }
     async addOrUpdate(s: T): Promise<boolean> {
         const result = await this.store.setItem<T>(this.pluginStorageKey, s);
-        return result != null;
+        return result != undefined;
     }
 
     async delete(): Promise<boolean> {

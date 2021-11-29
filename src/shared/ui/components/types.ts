@@ -7,10 +7,10 @@ export type PaddinSize = '0' | 's' | 'normal' | 'l';
 
 // Helpers
 export type DeepPartial<T> = T extends Record<string, unknown> ? { [P in keyof T]?: DeepPartial<T[P]> } : T;
-export type VariantProps<U> = U extends RuntimeFn<infer N> ? VariantSelection<N> : null;
+export type VariantProperties<U> = U extends RuntimeFn<infer N> ? VariantSelection<N> : null;
 
 // Interfaces
-export interface BaseComponentProps<T = void> {
+export interface BaseComponentProperties<T = void> {
     className?: string;
     variants?: T;
 }

@@ -1,17 +1,19 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+
+import { HandShake } from 'entities/plugins/types';
+import { FileSystemDb } from 'shared/files/FileSystem.Dexie';
+
 import { YandexStorageProviderSettings } from '..';
-import { createOAuthUrl } from '../helpers/createOAuthUrl';
 import { YandexDiskClient } from '../YandexDiskClient';
 import { IResource, Resource } from '../YandexDiskClient.types';
-import { FileSystemDb } from 'shared/files/FileSystem.Dexie';
-import { HandShake } from 'entities/plugins/types';
+import { createOAuthUrl } from '../helpers/createOAuthUrl';
 
-export interface ISettingsProps {
+export interface ISettingsProperties {
     handshake: HandShake<YandexStorageProviderSettings>;
 }
 
-export const Settings: React.VFC<ISettingsProps> = (props) => {
+export const Settings: React.VFC<ISettingsProperties> = (properties) => {
     const [success, setSuccess] = React.useState<'loading' | 'error' | 'success'>('loading');
     const [settings, setSettings] = React.useState<YandexStorageProviderSettings>();
     const [link, setLink] = React.useState(null);
@@ -19,10 +21,10 @@ export const Settings: React.VFC<ISettingsProps> = (props) => {
     React.useEffect(() => {
         (async () => {
             try {
-                const loadedSettings = await props.handshake.settings.get();
+                const loadedSettings = await properties.handshake.settings.get();
                 const clientId = loadedSettings?.clientId ?? `27679647b5984078abdcfdacca641201`;
-                const deviceId = loadedSettings?.deviceId ?? `${Math.random() * 10000}`;
-                const deviceName = loadedSettings?.deviceName ?? navigator.userAgent.substr(0, 8);
+                const deviceId = loadedSettings?.deviceId ?? `${Math.random() * 10_000}`;
+                const deviceName = loadedSettings?.deviceName ?? navigator.userAgent.slice(0, 8);
                 const fileSystem = new FileSystemDb('yandex-disk', 'disk:/');
                 if (loadedSettings?.token) {
                     const client = new YandexDiskClient(loadedSettings.token);
@@ -38,8 +40,8 @@ export const Settings: React.VFC<ISettingsProps> = (props) => {
                                 new Resource(x, client).mapToFileSystem(),
                             );
                             if (x.name === 'Music') {
-                                getNested([x], client, async (cb) => {
-                                    await fileSystem.addOrUpdateEntry(cb.path, cb.name, resource.mapToFileSystem());
+                                getNested([x], client, async (callback) => {
+                                    await fileSystem.addOrUpdateEntry(callback.path, callback.name, resource.mapToFileSystem());
                                 });
                             }
                         });
@@ -47,8 +49,8 @@ export const Settings: React.VFC<ISettingsProps> = (props) => {
                 }
 
                 !loadedSettings?.clientId &&
-                    (await props.handshake.settings.addOrUpdate({
-                        ...(loadedSettings ?? {}),
+                    (await properties.handshake.settings.addOrUpdate({
+                        ...loadedSettings,
                         clientId,
                         deviceId,
                         deviceName,
@@ -60,12 +62,12 @@ export const Settings: React.VFC<ISettingsProps> = (props) => {
                 );
                 setSettings(loadedSettings);
                 setSuccess('success');
-            } catch (err) {
-                console.log(err);
+            } catch (error) {
+                console.log(error);
                 setSuccess('error');
             }
         })();
-    }, [props.handshake.settings]);
+    }, [properties.handshake.settings]);
 
     switch (success) {
         case 'loading':

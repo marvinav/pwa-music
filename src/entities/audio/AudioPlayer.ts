@@ -1,4 +1,5 @@
 import { nanoid } from 'nanoid';
+
 import { EventHandler, Events, GetEventOption, Playlist, Track, TrackProcessor } from './types';
 
 /**
@@ -116,7 +117,7 @@ export class AudioPlayer {
         }
 
         this._playlist = playlist;
-        this.notify('playlist-changed', undefined);
+        this.notify('playlist-changed');
     };
 
     /**
@@ -201,12 +202,12 @@ export class AudioPlayer {
      * @returns Return subscription id
      */
     subscribe = <T extends Events | 'all'>(
-        ev: T,
+        event_: T,
         eventHandler: T extends Events ? EventHandler<T> : EventHandler<Events>,
         id?: string,
     ): string => {
         const _id = id ?? nanoid();
-        this._subscriptions[ev].set(_id, eventHandler);
+        this._subscriptions[event_].set(_id, eventHandler);
         return _id;
     };
 
@@ -214,9 +215,9 @@ export class AudioPlayer {
      * @param ev If missed, than remove subscription from all events
      * @returns number of delted subscriptions
      */
-    unsubscribe = (subscriptionId: string, ev?: Events | 'all'): number => {
-        if (ev) {
-            return this._subscriptions[ev]?.delete(subscriptionId) ? 1 : 0;
+    unsubscribe = (subscriptionId: string, event_?: Events | 'all'): number => {
+        if (event_) {
+            return this._subscriptions[event_]?.delete(subscriptionId) ? 1 : 0;
         }
         let deletedSubscriptions = 0;
         for (const event in Object.getOwnPropertyNames(this._subscriptions)) {

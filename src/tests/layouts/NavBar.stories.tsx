@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import React, { useState } from 'react';
+
+import { NavBar } from 'shared/ui/layouts/NavBar';
 
 import { DictionaryProvider } from '../__mocks__/dictionaryMock';
-import { NavBar } from 'shared/ui/layouts/NavBar';
 
 export default {
     component: NavBar,
@@ -18,12 +19,12 @@ export default {
     },
 } as ComponentMeta<typeof NavBar>;
 
-const Template: ComponentStory<typeof NavBar> = (args) => {
-    const [section, setSection] = useState(args.section);
+const Template: ComponentStory<typeof NavBar> = (arguments_) => {
+    const [section, setSection] = useState(arguments_.section);
 
     return (
         <NavBar
-            {...args}
+            {...arguments_}
             section={section}
             onClick={(path) => {
                 setSection(path);

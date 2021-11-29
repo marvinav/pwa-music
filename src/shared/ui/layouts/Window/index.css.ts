@@ -2,7 +2,7 @@ import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
 import { mediaQueries, rectangle, rounded } from '../../components/index.css';
-import { globalThemeVars } from '../../components/themes/theme.css';
+import { globalThemeVariables as globalThemeVariables } from '../../components/themes/theme.css';
 
 export const icons = recipe({
     base: [
@@ -34,7 +34,7 @@ export const icons = recipe({
 
 export const controlButton = style({
     display: 'flex',
-    gap: globalThemeVars.padding.s,
+    gap: globalThemeVariables.padding.s,
     alignItems: 'center',
 });
 
@@ -47,12 +47,12 @@ export const topBar = style({
 export const bottomBar = style({
     '@media': {
         [`${mediaQueries.s}`]: {
-            maxHeight: globalThemeVars.size.s,
+            maxHeight: globalThemeVariables.size.s,
         },
     },
     display: 'flex',
     width: '100%',
-    maxHeight: globalThemeVars.size.normal,
+    maxHeight: globalThemeVariables.size.normal,
     height: '100%',
     padding: '0',
     margin: '0',
@@ -64,9 +64,9 @@ export const window = style([
         flexDirection: 'column',
         position: 'fixed',
         justifyContent: 'center',
-        gap: globalThemeVars.padding.s,
+        gap: globalThemeVariables.padding.s,
         alignItems: 'center',
-        padding: globalThemeVars.padding.s,
+        padding: globalThemeVariables.padding.s,
         boxSizing: 'border-box',
         width: '100%',
         height: '100%',

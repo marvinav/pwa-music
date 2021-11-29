@@ -8,77 +8,77 @@ export const globalThemeContract = createGlobalThemeContract(
         layer: {
             color: {
                 primary: {
-                    0: null as string,
-                    1: null as string,
+                    0: undefined as string,
+                    1: undefined as string,
                 },
                 secondary: {
-                    0: null as string,
-                    1: null as string,
+                    0: undefined as string,
+                    1: undefined as string,
                 },
             },
             background: {
-                0: null as string,
-                1: null as string,
+                0: undefined as string,
+                1: undefined as string,
             },
             border: {
-                0: null as string,
-                1: null as string,
+                0: undefined as string,
+                1: undefined as string,
             },
             shadow: {
-                0: null as string,
-                1: null as string,
+                0: undefined as string,
+                1: undefined as string,
             },
         },
         button: {
             background: {
-                primary: null as string,
-                submit: null as string,
-                danger: null as string,
-                disabled: null as string,
-                focused: null as string,
+                primary: undefined as string,
+                submit: undefined as string,
+                danger: undefined as string,
+                disabled: undefined as string,
+                focused: undefined as string,
             },
             color: {
-                primary: null as string,
-                submit: null as string,
-                danger: null as string,
-                disabled: null as string,
-                focused: null as string,
+                primary: undefined as string,
+                submit: undefined as string,
+                danger: undefined as string,
+                disabled: undefined as string,
+                focused: undefined as string,
             },
             border: {
-                primary: null as string,
-                submit: null as string,
-                danger: null as string,
-                disabled: null as string,
-                focused: null as string,
+                primary: undefined as string,
+                submit: undefined as string,
+                danger: undefined as string,
+                disabled: undefined as string,
+                focused: undefined as string,
             },
             shadow: {
-                primary: null as string,
-                submit: null as string,
-                danger: null as string,
-                disabled: null as string,
-                focused: null as string,
+                primary: undefined as string,
+                submit: undefined as string,
+                danger: undefined as string,
+                disabled: undefined as string,
+                focused: undefined as string,
             },
         },
         size: {
-            xs: null as string,
-            s: null as string,
-            normal: null as string,
-            l: null as string,
-            xl: null as string,
+            xs: undefined as string,
+            s: undefined as string,
+            normal: undefined as string,
+            l: undefined as string,
+            xl: undefined as string,
         },
         padding: {
-            s: null as string,
-            normal: null as string,
-            l: null as string,
+            s: undefined as string,
+            normal: undefined as string,
+            l: undefined as string,
         },
         font: {
-            family: { main: null as string, special: null as string },
+            family: { main: undefined as string, special: undefined as string },
         },
     },
     (_value, path) => path.join('-'),
 );
 
-export const globalThemeVars = globalThemeContract as GlobalThemeContract;
+export const globalThemeVariables = globalThemeContract as GlobalThemeContract;
 
-export type GlobalThemeVars = DeepPartial<MapLeafNodes<typeof globalThemeContract, CSSVarFunction>>;
+export type GlobalThemeVariables = DeepPartial<MapLeafNodes<typeof globalThemeContract, CSSVarFunction>>;
 export type GlobalThemeContract = DeepPartial<MapLeafNodes<typeof globalThemeContract, string>>;

@@ -1,23 +1,25 @@
 import React, { HTMLAttributes } from 'react';
-import { BaseComponentProps } from '../types';
+
+import { BaseComponentProps as BaseComponentProperties } from '../types';
 import { useBaseClassName } from '../utils/useBaseClassName';
+
 import { layer } from './index.css';
 
-export interface LayerProps extends BaseComponentProps {
+export interface LayerProperties extends BaseComponentProperties {
     level: 0 | 1;
 }
 
-export const Layer: React.FC<React.DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & LayerProps> = (
-    props,
+export const Layer: React.FC<React.DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & LayerProperties> = (
+    properties,
 ) => {
-    const baseClassName = useBaseClassName(props, layer[props.level]);
-    const standartProps = { ...props };
+    const baseClassName = useBaseClassName(properties, layer[properties.level]);
+    const standartProperties = { ...properties };
 
-    delete standartProps.level;
+    delete standartProperties.level;
 
     return (
-        <div {...standartProps} className={baseClassName}>
-            {props.children}
+        <div {...standartProperties} className={baseClassName}>
+            {properties.children}
         </div>
     );
 };

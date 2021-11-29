@@ -1,15 +1,17 @@
 import React from 'react';
 
-import { pluginManager } from '../service/PluginManager';
-import { IPluginContextValue } from '../types';
-import { PluginContext } from './PluginContext';
-import { env } from 'shared/env/env';
 import { PluginSettingsModel } from 'entities/plugins';
 import { HandShake, LoadingView, Manifest, Plugin, View } from 'entities/plugins/types';
+import { env } from 'shared/env/env';
 
-export const PluginProvider: React.FC = (props) => {
+import { pluginManager } from '../service/PluginManager';
+import { IPluginContextValue } from '../types';
+
+import { PluginContext } from './PluginContext';
+
+export const PluginProvider: React.FC = (properties) => {
     const plugin = usePlugin();
-    return <PluginContext.Provider value={plugin}>{props.children}</PluginContext.Provider>;
+    return <PluginContext.Provider value={plugin}>{properties.children}</PluginContext.Provider>;
 };
 
 const createPluginSource = (plugin: Manifest) => {
@@ -32,7 +34,7 @@ const usePlugin = (): IPluginContextValue => {
             const plugin = plugins?.find((x) => x.id === pluginId);
             const view = plugin?.views?.find((x) => x.id === viewId && x.scope === 'route.main');
             if (!plugin || !view) {
-                return null;
+                return;
             }
             const loaded = loadedPlugins[pluginId];
 
@@ -59,7 +61,7 @@ const usePlugin = (): IPluginContextValue => {
         (author: string, pluginId: string) => {
             const plugin = plugins?.find((x) => x.id === pluginId);
             if (!plugin) {
-                return null;
+                return;
             }
             const loaded = loadedPlugins[pluginId];
             if (!loaded) {

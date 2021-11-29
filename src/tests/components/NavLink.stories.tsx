@@ -1,5 +1,6 @@
-import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import React from 'react';
+
 import { NavLink } from 'shared/ui/components';
 
 const story: ComponentMeta<typeof NavLink> = {
@@ -16,7 +17,7 @@ const story: ComponentMeta<typeof NavLink> = {
 
 export default story;
 
-const Template: ComponentStory<typeof NavLink> = (args) => <NavLink {...args} />;
+const Template: ComponentStory<typeof NavLink> = (arguments_) => <NavLink {...arguments_} />;
 
 export const NewWindow = Template.bind({});
 

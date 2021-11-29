@@ -1,27 +1,30 @@
-import React, { HTMLAttributes } from 'react';
 import PropTypes from 'prop-types';
-import { BaseComponentProps } from '../types';
+import React, { HTMLAttributes } from 'react';
+
+import { BaseComponentProperties } from '../types';
 import { useBaseClassName } from '../utils/useBaseClassName';
+
 import { button, ButtonVariants } from './index.css';
 
 export const Button: React.VFC<
-    React.DetailedHTMLProps<HTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & BaseComponentProps<ButtonVariants>
-> = (props) => {
-    const baseClassName = useBaseClassName(props, button(props.variants));
+    React.DetailedHTMLProps<HTMLAttributes<HTMLButtonElement>, HTMLButtonElement> &
+        BaseComponentProperties<ButtonVariants>
+> = (properties) => {
+    const baseClassName = useBaseClassName(properties, button(properties.variants));
 
-    let nestedProps = {} as typeof props;
-    if (props) {
-        nestedProps = { ...props };
-        delete nestedProps.variants;
+    let nestedProperties = {} as typeof properties;
+    if (properties) {
+        nestedProperties = { ...properties };
+        delete nestedProperties.variants;
     }
 
     return (
         <button
-            onClick={(e) => {
-                e.preventDefault();
-                props.onClick && props.onClick(e);
+            onClick={(event) => {
+                event.preventDefault();
+                properties.onClick && properties.onClick(event);
             }}
-            {...nestedProps}
+            {...nestedProperties}
             className={baseClassName}
         ></button>
     );

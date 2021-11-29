@@ -2,7 +2,7 @@ export function convertDurationToHumanRead(duration: number): string {
     if (!duration) {
         return `--:--`;
     }
-    const min = duration / 60000;
+    const min = duration / 60_000;
     const sec = (min - Math.trunc(min)) * 60;
 
     return `${formatTime(min)}:${formatTime(sec)}`;

@@ -1,24 +1,25 @@
 import React from 'react';
 
-import { playlist } from './index.css';
-import { PlaylistItem } from './PlaylistItem';
 import { Track } from 'entities/audio/types';
+
+import { PlaylistItem } from './PlaylistItem';
+import { playlist } from './index.css';
 
 export const Playlist: React.VFC<{
     tracks?: Track[];
     setSelectedTrack: React.Dispatch<React.SetStateAction<Track>>;
     selectedTrack?: Track;
-}> = (props) => {
-    const ref = React.useRef();
+}> = (properties) => {
+    const reference = React.useRef();
 
     return (
-        <div className={playlist} ref={ref}>
-            {props.tracks?.map((x) => {
+        <div className={playlist} ref={reference}>
+            {properties.tracks?.map((x) => {
                 return (
                     <PlaylistItem
-                        selected={props.selectedTrack && props.selectedTrack === x}
+                        selected={properties.selectedTrack && properties.selectedTrack === x}
                         onDoubleClick={() => {
-                            props.setSelectedTrack(x);
+                            properties.setSelectedTrack(x);
                         }}
                         key={x.path}
                         track={x}

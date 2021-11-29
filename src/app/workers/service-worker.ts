@@ -3,8 +3,8 @@
 import 'regenerator-runtime/runtime';
 
 import { Assets } from 'entities/assets/Assets';
-import { cachedFailbackToNetworkFetch, cachedFetch } from 'shared/utils/helpers';
 import { env } from 'shared/env/env';
+import { cachedFailbackToNetworkFetch, cachedFetch } from 'shared/utils/helpers';
 
 declare const self: ServiceWorkerGlobalScope;
 console.log(`Service worker script of ${env.VERSION}v has been loaded`);
@@ -31,7 +31,7 @@ self.addEventListener('fetch', async (event) => {
     return;
 });
 
-self.addEventListener('install', (_ev) => {
+self.addEventListener('install', (_event) => {
     const install = async () => {
         console.time('Installation time');
         (await caches.open('root')).add('/');
@@ -41,10 +41,10 @@ self.addEventListener('install', (_ev) => {
         console.timeEnd('Installation time');
         console.log('Service Worker Installed');
     };
-    _ev.waitUntil(install());
+    _event.waitUntil(install());
 });
 
-self.addEventListener('activate', async (_ev) => {
+self.addEventListener('activate', async (_event) => {
     console.time('Activation time');
     // const cache = await caches.open('webpack-assets');
     // const cachedAssets = await cache.keys();
