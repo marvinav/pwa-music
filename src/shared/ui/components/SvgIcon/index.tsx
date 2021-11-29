@@ -4,7 +4,7 @@ import React, { HTMLAttributes } from 'react';
 
 import './index.css.ts';
 
-import { BaseComponentProps as BaseComponentProperties } from '../types';
+import { BaseComponentProperties } from '../types';
 import { useBaseClassName } from '../utils/useBaseClassName';
 
 import { svgIconContainer } from './index.css';

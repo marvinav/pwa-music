@@ -13,7 +13,19 @@ console.log(`Service worker script of ${env.VERSION}v has been loaded`);
  */
 const navRegex =
     /((?!\/assets\/|\/public\/|\/static\/|\/scripts\/).*)(^(?!.*\.js$|.*\.css$|.*\.html$|.*\.json$|.*\.webapp).*)/;
+
 const assets = new Assets();
+
+const install = async () => {
+    console.time('Installation time');
+    const { add } = await caches.open('root');
+    add('/');
+    const webpackAssets = await caches.open('webpack-assets');
+    // Install assets for current webworker.
+    await webpackAssets.addAll(await assets.getCoreAssetsUrls());
+    console.timeEnd('Installation time');
+    console.log('Service Worker Installed');
+};
 
 self.addEventListener('fetch', async (event) => {
     const requestUrl = new URL(event.request.url);
@@ -32,15 +44,6 @@ self.addEventListener('fetch', async (event) => {
 });
 
 self.addEventListener('install', (_event) => {
-    const install = async () => {
-        console.time('Installation time');
-        (await caches.open('root')).add('/');
-        const webpackAssets = await caches.open('webpack-assets');
-        // Install assets for current webworker.
-        await webpackAssets.addAll(await assets.getCoreAssetsUrls());
-        console.timeEnd('Installation time');
-        console.log('Service Worker Installed');
-    };
     _event.waitUntil(install());
 });
 

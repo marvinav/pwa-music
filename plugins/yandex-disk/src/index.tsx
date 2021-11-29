@@ -55,9 +55,9 @@ export default class YandexDiskPlugin extends StorageProviderPlugin<YandexStorag
         }
 
         const client = new YandexDiskClient(settings.token);
-        const res = await client.getMetainformation('/');
-        if (res._ === 'resource') {
-            const resource = new Resource(res, client);
+        const response = await client.getMetainformation('/');
+        if (response._ === 'resource') {
+            const resource = new Resource(response, client);
             await resource.getAllEmbedded();
         }
         return new YandexStorageProvider(settings);

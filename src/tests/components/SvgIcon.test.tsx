@@ -16,9 +16,8 @@ it('SVG Icon', () => {
     expect(container.querySelectorAll(`.${svgIconContainer}`).item(0).className).toBe(svgIconContainer);
     expect(svg.getAttribute('id')).toBeNull();
     expect(svg.getAttribute('preserveAspectRatio')).toBe('none');
-    for (const x of paths) {
-        console.log(x);
-        expect(paths[x].getAttribute('fill')).toBe('currentColor');
+    for (const path of paths) {
+        expect(path.getAttribute('fill')).toBe('currentColor');
     }
 });
 

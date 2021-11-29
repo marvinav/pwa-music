@@ -28,7 +28,7 @@ export class CommonPreprocessor implements TrackProcessor<Track> {
             await onEnd();
         });
         this._audio.play();
-        return null;
+        return;
     };
 
     stop: () => Promise<void> = async () => {

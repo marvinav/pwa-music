@@ -9,7 +9,8 @@ export class Assets {
 
     async loadAssets(url: string = env.WEBPACK_ASSET): Promise<AssetEntry[]> {
         this.url = url;
-        const assets = await (await cachedFetch(url)).json();
+        const { json } = await cachedFetch(url);
+        const assets = await json();
         if (assets) {
             this._assets = flatAsset(assets);
         }

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { BaseComponentProps as BaseComponentProperties } from '../types';
+import { BaseComponentProperties } from '../types';
 import { useBaseClassName } from '../utils/useBaseClassName';
 
 import { iconContainer } from './index.css';

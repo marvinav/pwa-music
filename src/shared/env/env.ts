@@ -2,7 +2,7 @@
 /**
  * Environments from webpack builds
  */
-declare const webpack_environment: {
+declare const webpack_env: {
     /**
      * Should be service worker registered
      */
@@ -31,7 +31,7 @@ declare const webpack_environment: {
 
 declare global {
     export interface Window {
-        env: typeof webpack_environment;
+        env: typeof webpack_env;
     }
 }
 // Self assign because webpack.DefinePlugin
@@ -39,9 +39,9 @@ declare global {
 // eslint-disable-next-line no-self-assign
 
 if (self.window) {
-    window.env = { ...webpack_environment };
+    window.env = { ...webpack_env };
 } else {
-    self.env = { ...webpack_environment };
+    self.env = { ...webpack_env };
 }
 
 export const env = self.window ? window.env : self.env;

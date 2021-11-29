@@ -31,15 +31,15 @@ export class YandexDiskClient {
         response: Promise<T | ErrorRespone>,
         type: T['_'],
     ): Promise<T | ErrorRespone> => {
-        const res = await response;
-        if ((res as ErrorRespone).error) {
+        const result = await response;
+        if ((result as ErrorRespone).error) {
             return {
-                ...(res as ErrorRespone),
+                ...(result as ErrorRespone),
                 _: 'error',
             };
         }
         return {
-            ...(res as T),
+            ...(result as T),
             _: type,
         };
     };
@@ -59,7 +59,7 @@ export class YandexDiskClient {
      */
     getMetainformation = async (
         path: string,
-        options: {
+        options?: {
             fields?: (keyof IResource)[];
             limit: number;
             offset?: number;
@@ -67,20 +67,19 @@ export class YandexDiskClient {
             preview_size?: string;
             sort?: 'name' | 'path' | 'created' | 'modified' | 'size';
             reverseSort?: boolean;
-        } = {
-            limit: 20,
         },
     ): Promise<ErrorRespone | IResource> => {
+        const { fields, limit, offset, preview_crop, preview_size, sort, reverseSort } = options ?? {};
         const { url, headers } = this.makeRequest('resources');
         const uri = new URL(url);
         uri.searchParams.set('path', path);
-        uri.searchParams.set('limit', options.limit.toString());
-        options.fields && uri.searchParams.set('fields', options.fields.join(','));
-        options.offset && uri.searchParams.set('offset', options.offset.toString());
-        uri.searchParams.set('sort', `${options.reverseSort ?? true ? '-' : ''}${options.sort ?? 'modified'}`);
-        if (options.preview_crop) {
+        uri.searchParams.set('limit', (limit ?? 20).toString());
+        fields && uri.searchParams.set('fields', fields.join(','));
+        offset && uri.searchParams.set('offset', offset.toString());
+        uri.searchParams.set('sort', `${reverseSort ?? true ? '-' : ''}${sort ?? 'modified'}`);
+        if (preview_crop) {
             uri.searchParams.set('preview_crop', `true`);
-            options.preview_size && uri.searchParams.set('preview_size', options.preview_size);
+            preview_size && uri.searchParams.set('preview_size', preview_size);
         }
         const response = await fetch(uri.toString(), { headers });
         return this.mapResponse<IResource>(response.json(), 'resource');

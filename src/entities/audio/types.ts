@@ -16,7 +16,7 @@ export type GetEventOption<T extends Events> = T extends 'state-changed'
     ? StateChangedEvent
     : T extends 'mode-changed'
     ? ModeChangedEvent
-    : null;
+    : undefined;
 
 export type EventHandler<T extends Events> = (event_: T, option: GetEventOption<T>) => Promise<void> | void;
 

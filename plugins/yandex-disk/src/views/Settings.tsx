@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import { HandShake } from 'entities/plugins/types';
-import { FileSystemDb } from 'shared/files/FileSystem.Dexie';
+import { FileSystemDataBase } from 'shared/files/index';
 
 import { YandexStorageProviderSettings } from '..';
 import { YandexDiskClient } from '../YandexDiskClient';
@@ -16,7 +16,7 @@ export interface ISettingsProperties {
 export const Settings: React.VFC<ISettingsProperties> = (properties) => {
     const [success, setSuccess] = React.useState<'loading' | 'error' | 'success'>('loading');
     const [settings, setSettings] = React.useState<YandexStorageProviderSettings>();
-    const [link, setLink] = React.useState(null);
+    const [link, setLink] = React.useState<React.ReactElement>();
 
     React.useEffect(() => {
         (async () => {
@@ -25,26 +25,29 @@ export const Settings: React.VFC<ISettingsProperties> = (properties) => {
                 const clientId = loadedSettings?.clientId ?? `27679647b5984078abdcfdacca641201`;
                 const deviceId = loadedSettings?.deviceId ?? `${Math.random() * 10_000}`;
                 const deviceName = loadedSettings?.deviceName ?? navigator.userAgent.slice(0, 8);
-                const fileSystem = new FileSystemDb('yandex-disk', 'disk:/');
+                const fileSystem = new FileSystemDataBase('yandex-disk', 'disk:/');
                 if (loadedSettings?.token) {
                     const client = new YandexDiskClient(loadedSettings.token);
-                    const res = await client.getMetainformation('/');
-                    if (res._ === 'resource') {
-                        const resource = new Resource(res, client);
-                        console.log(await fileSystem.addOrUpdateEntry(res.path, res.name, resource.mapToFileSystem()));
-                        const embended = await resource.getAllEmbedded();
-                        embended.forEach(async (x) => {
+                    const response = await client.getMetainformation('/');
+                    if (response._ === 'resource') {
+                        const resource = new Resource(response, client);
+                        const embeds = await resource.getAllEmbedded();
+                        for (const embedded of embeds) {
                             await fileSystem.addOrUpdateEntry(
-                                x.path,
-                                x.name,
-                                new Resource(x, client).mapToFileSystem(),
+                                embedded.path,
+                                embedded.name,
+                                new Resource(embedded, client).mapToFileSystem(),
                             );
-                            if (x.name === 'Music') {
-                                getNested([x], client, async (callback) => {
-                                    await fileSystem.addOrUpdateEntry(callback.path, callback.name, resource.mapToFileSystem());
+                            if (embedded.name === 'Music') {
+                                getNested([embedded], client, async (callback) => {
+                                    await fileSystem.addOrUpdateEntry(
+                                        callback.path,
+                                        callback.name,
+                                        resource.mapToFileSystem(),
+                                    );
                                 });
                             }
-                        });
+                        }
                     }
                 }
 
@@ -91,14 +94,18 @@ Settings.propTypes = {
     handshake: PropTypes.any,
 };
 
-function getNested(res: IResource[], client: YandexDiskClient, callback?: (nested: Resource) => Promise<void>) {
-    res.forEach(async (x) => {
-        const resorce = new Resource(x, client);
-        const nested = await resorce.getAllEmbedded();
+async function getNested(
+    resources: IResource[],
+    client: YandexDiskClient,
+    callback?: (nested: Resource) => Promise<void>,
+) {
+    for (const resourceProperties of resources) {
+        const resource = new Resource(resourceProperties, client);
+        const nested = await resource.getAllEmbedded();
 
-        callback && (await callback(resorce));
-        if (x.type === 'dir') {
+        callback && (await callback(resource));
+        if (resourceProperties.type === 'dir') {
             getNested(nested, client);
         }
-    });
+    }
 }

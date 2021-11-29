@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BaseComponentProps as BaseComponentProperties } from '../types';
+import { BaseComponentProperties } from '../types';
 
 export const useBaseClassName = <U, T extends BaseComponentProperties<U>>(
     properties: T,

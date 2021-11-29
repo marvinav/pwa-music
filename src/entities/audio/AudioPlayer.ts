@@ -143,7 +143,7 @@ export class AudioPlayer {
 
         if (!_track) {
             await this.stop();
-            return null;
+            return;
         }
 
         this._currenTrack = { track: _track, position: 0, trackNumber };
@@ -155,7 +155,7 @@ export class AudioPlayer {
         }
 
         await this._processors[_track.mimeType].play(this._defaultContext, this._gainNode, _track, async () => {
-            this.notify('track-end', null);
+            this.notify('track-end');
             await this.play({ trackNumber: 1, relative: true });
         });
         this._analyzer.connect(this._defaultContext.destination);
@@ -165,14 +165,14 @@ export class AudioPlayer {
             this.notify('state-changed', 'play');
         }
 
-        this.notify('track-start', null);
+        this.notify('track-start');
         return _track;
     };
 
     stop = async (): Promise<void> => {
         if (this._currenTrack) {
             await this._processors[this._currenTrack.track.mimeType].stop();
-            this._currenTrack = null;
+            this._currenTrack = undefined;
         }
         if (this._state != 'stop') {
             this._state = 'stop';
@@ -229,13 +229,13 @@ export class AudioPlayer {
     /**
      * Notify subscribers about event
      */
-    private notify = <T extends Events>(event: T, option: GetEventOption<T>) => {
-        this._subscriptions['all']?.forEach((action) => {
+    private notify = <T extends Events>(event: T, option?: GetEventOption<T>) => {
+        for (const [, action] of this._subscriptions['all']) {
             action(event, option);
-        });
-        this._subscriptions[event]?.forEach((action) => {
-            action(event, option);
-        });
+        }
+        for (const [, action] of this._subscriptions[event]) {
+            (action as EventHandler<T>)(event, option);
+        }
     };
 
     /**
@@ -249,7 +249,7 @@ export class AudioPlayer {
             return trackNumber;
         }
         if (this.mode === 'none') {
-            return this._playlist.tracks.length > trackNumber + step ? trackNumber + step : null;
+            return this._playlist.tracks.length > trackNumber + step ? trackNumber + step : undefined;
         }
     }
 }
