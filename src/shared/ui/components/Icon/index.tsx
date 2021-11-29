@@ -4,7 +4,9 @@ import { BaseComponentProps } from '../types';
 import { useBaseClassName } from '../utils/useBaseClassName';
 import { iconContainer } from './index.css';
 
-export interface IconProps extends BaseComponentProps {
+export interface IconProps
+    extends BaseComponentProps,
+        React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> {
     /**
      * Will be passed in `src` attribute of nested `img`
      */
@@ -27,6 +29,7 @@ export const Icon: React.VFC<IconProps> = (props) => {
             ref={ref}
             className={baseClassName}
             src={props.src}
+            alt={props.alt}
         ></img>
     );
 };

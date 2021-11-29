@@ -28,7 +28,6 @@ const Home: React.VFC = () => {
                         <React.Fragment>
                             <section
                                 id="short-bio"
-                                tabIndex={0}
                                 className="paper-1 rounded focusable shine-shadow"
                                 onMouseLeave={opt.onMouseLeave}
                                 onMouseEnter={opt.onMouseEnter}

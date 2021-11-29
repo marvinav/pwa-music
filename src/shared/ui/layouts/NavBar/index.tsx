@@ -24,7 +24,7 @@ export const NavBar: React.VFC<NavBarProps> = (props) => {
         <nav
             className={nav}
             ref={ref}
-            tabIndex={0}
+            role="presentation"
             onKeyDown={(e) => {
                 if (e.code === 'ArrowRight') {
                     e.preventDefault();

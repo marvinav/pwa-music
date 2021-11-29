@@ -11,7 +11,7 @@ module.exports = {
             jsx: true, // Allows for the parsing of JSX
         },
     },
-    plugins: ['prettier', 'react', '@typescript-eslint', 'react-hooks', 'import', 'boundaries'],
+    plugins: ['prettier', 'react', '@typescript-eslint', 'react-hooks', 'jsx-a11y', 'import', 'boundaries'],
     settings: {
         react: {
             version: 'detect', // Tells eslint-plugin-react to automatically detect the version of React to use
@@ -99,6 +99,7 @@ module.exports = {
         'plugin:import/typescript',
         'plugin:react/recommended', // Uses the recommended rules from @eslint-plugin-react
         'plugin:react-hooks/recommended',
+        'plugin:jsx-a11y/recommended',
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
         'plugin:boundaries/strict',

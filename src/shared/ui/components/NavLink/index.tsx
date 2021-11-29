@@ -31,6 +31,8 @@ export const NavLink: React.VFC<NavLinkProps> = (props) => {
     return (
         <span
             {...reactAttributes}
+            role="link"
+            tabIndex={0}
             className={className({ selected, disabled, className: props.className })}
             onKeyPress={(e) => {
                 !disabled && e.code === 'Enter' && props.onNavigate(path);
