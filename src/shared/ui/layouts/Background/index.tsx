@@ -22,7 +22,9 @@ export interface ColorBackgroundProperties extends BackgroundBaseProperties {
     color: string;
 }
 
-export const Background: React.FC<ImageBackgroundProperties | ParticlesBackgroundProperties | ColorBackgroundProperties> = (properties) => {
+export const Background: React.FC<
+    ImageBackgroundProperties | ParticlesBackgroundProperties | ColorBackgroundProperties
+> = (properties) => {
     switch (properties.type) {
         case 'particles':
         default:

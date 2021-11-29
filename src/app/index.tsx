@@ -6,8 +6,8 @@ import './ui/style.css';
 
 import { pluginManager } from 'features/plugins';
 import { Loading } from 'pages/Loading';
-import { useTheme } from 'shared/ui/components/themes';
-import { BackgroundMemo as Background } from 'shared/ui/layouts/Background';
+import { useTheme } from 'shared/ui';
+import { BackgroundMemo as Background } from 'shared/ui';
 import AnimatedBackground from 'static/assets/backgrounds/11.gif';
 import ParticlesConfig from 'static/assets/backgrounds/particles.json';
 

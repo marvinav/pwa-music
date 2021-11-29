@@ -2,10 +2,7 @@ import React from 'react';
 
 import { Player } from 'entities/audio';
 import { Playlist as PlaylistType, Track } from 'entities/audio/types';
-import { SvgIcon } from 'shared/ui/components/SvgIcon';
-import { Window } from 'shared/ui/layouts/Window';
-import { BottomBar } from 'shared/ui/layouts/Window/BottomBar';
-import { Content } from 'shared/ui/layouts/Window/Content';
+import { SvgIcon, Window, BottomBar, Content } from 'shared/ui/index';
 import addSong from 'static/assets/player/add-playlist-solid.svg?raw';
 
 import { ControlPanel } from './ui/ControlPanel';
@@ -40,7 +37,7 @@ const MusicPlayer: React.VFC = () => {
     const [selectedPlaylist, setSelectedPlaylist] = React.useState(playlist);
 
     React.useEffect(() => {
-        Player.playlist.path != selectedPlaylist.path && Player.setPlaylist(playlist);
+        Player.playlist != selectedPlaylist && Player.setPlaylist(playlist);
         const id = Player.subscribe('track-start', (_event) => {
             setSelectedTrack((x) => {
                 if (x?.path === Player?.state?.track?.track?.path) {
@@ -68,14 +65,15 @@ const MusicPlayer: React.VFC = () => {
         <Window title="player" className="music-player">
             <Content>
                 <ControlPanel selectedTrack={selectedTrack} />
-                <Playlist setSelectedTrack={playTrack} selectedTrack={selectedTrack} tracks={playlist.tracks} />
+                <Playlist setSelectedTrack={playTrack} selectedTrack={selectedTrack} tracks={selectedPlaylist.tracks} />
                 <Visualization />
             </Content>
             <BottomBar>
                 <SvgIcon
                     src={addSong}
                     onClick={() => {
-                        selectedPlaylist.tracks.push({
+                        const tracks = [...selectedPlaylist.tracks];
+                        tracks.push({
                             recordable: true,
                             mimeType: 'icy-cast',
                             path: 'http://stream-dc1.radioparadise.com/rp_192m.ogg',
@@ -84,8 +82,8 @@ const MusicPlayer: React.VFC = () => {
                                 artist: 'OGG',
                             },
                         });
-                        selectedPlaylist.tracks = [...selectedPlaylist.tracks];
-                        setSelectedPlaylist({ ...selectedPlaylist });
+                        const newPlaylist = { ...selectedPlaylist, tracks };
+                        setSelectedPlaylist(newPlaylist);
                     }}
                 ></SvgIcon>
             </BottomBar>

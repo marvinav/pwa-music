@@ -31,8 +31,14 @@ module.exports = {
             },
             {
                 type: 'shared',
-                pattern: 'shared/*/**',
+                pattern: 'shared/*/*/**',
                 capture: ['package', 'segment', 'file'],
+                mode: 'file',
+            },
+            {
+                type: 'shared-api',
+                pattern: 'shared/*/*.(ts|tsx)',
+                capture: ['package', 'openAPI'],
                 mode: 'file',
             },
             {
@@ -81,7 +87,6 @@ module.exports = {
             {
                 type: 'app',
                 pattern: 'app',
-                capture: ['slice', 'segment', 'file'],
             },
             {
                 type: 'static',
@@ -133,14 +138,19 @@ module.exports = {
                         allow: ['app'],
                     },
                     {
-                        from: ['shared'],
-                        allow: ['static', ['shared', { package: '${package}' }], ['shared', { declaration: 'types' }]],
+                        from: ['shared', 'shared-api'],
+                        allow: [
+                            'static',
+                            ['shared', { package: '${package}' }],
+                            ['shared', { declaration: 'types' }],
+                            ['shared-api', { package: '${package}' }],
+                        ],
                     },
                     {
                         from: ['entities', 'entities-api'],
                         allow: [
                             'static',
-                            'shared',
+                            'shared-api',
                             ['entities-api', { slice: '${slice}' }],
                             ['entities', { slice: '${slice}' }],
                         ],
@@ -149,7 +159,7 @@ module.exports = {
                         from: ['features', 'features-api'],
                         allow: [
                             'static',
-                            'shared',
+                            'shared-api',
                             'entities-api',
                             ['features-api', { slice: '${slice}' }],
                             ['features', { slice: '${slice}' }],
@@ -159,7 +169,7 @@ module.exports = {
                         from: ['pages', 'pages-api'],
                         allow: [
                             'static',
-                            'shared',
+                            'shared-api',
                             'entities-api',
                             'features-api',
                             'pages-api',
@@ -168,7 +178,7 @@ module.exports = {
                     },
                     {
                         from: ['app'],
-                        allow: ['entities-api', 'features-api', 'static', 'shared', 'pages-api'],
+                        allow: ['entities-api', 'features-api', 'static', 'shared-api', 'pages-api'],
                     },
                 ],
             },

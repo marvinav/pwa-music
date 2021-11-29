@@ -20,3 +20,11 @@ declare module 'webpack-assets.json' {
     };
     export default assets;
 }
+
+declare module 'React' {
+    export function useState<S>(initialState: S | (() => S)): [Readonly<S>, React.Dispatch<React.SetStateAction<S>>];
+    export function useState<S = undefined>(): [
+        Readonly<S> | undefined,
+        React.Dispatch<React.SetStateAction<S | undefined>>,
+    ];
+}

@@ -4,8 +4,7 @@ import React from 'react';
 import { useDictionary } from 'entities/dictionary';
 import { usePlugin } from 'features/plugins';
 import { env } from 'shared/env/env';
-import { Icon } from 'shared/ui/components/Icon';
-import { Shined } from 'shared/ui/components/Shined';
+import { Icon, Shined } from 'shared/ui';
 
 const Home: React.VFC = () => {
     const { d } = useDictionary();

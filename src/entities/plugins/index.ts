@@ -1,5 +1,1 @@
-
-
-
-
-export {PluginSettingsModel} from './PluginSettingsModel';
+export { PluginSettingsModel } from './PluginSettingsModel';

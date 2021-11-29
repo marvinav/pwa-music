@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Player } from 'entities/audio';
 import { Track } from 'entities/audio/types';
-import { SvgIcon } from 'shared/ui/components/SvgIcon';
+import { SvgIcon } from 'shared/ui';
 import next from 'static/assets/player/next-solid.svg?raw';
 import pause from 'static/assets/player/pause-solid.svg?raw';
 import play from 'static/assets/player/play-solid.svg?raw';

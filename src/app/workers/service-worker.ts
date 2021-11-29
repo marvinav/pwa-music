@@ -18,10 +18,11 @@ const assets = new Assets();
 
 const install = async () => {
     console.time('Installation time');
-    const { add } = await caches.open('root');
-    add('/');
+    const cache = await caches.open('root');
+    cache.add('/');
     const webpackAssets = await caches.open('webpack-assets');
     // Install assets for current webworker.
+    console.log(await assets.getCoreAssetsUrls());
     await webpackAssets.addAll(await assets.getCoreAssetsUrls());
     console.timeEnd('Installation time');
     console.log('Service Worker Installed');

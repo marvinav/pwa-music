@@ -2,7 +2,7 @@
 
 import { style } from '@vanilla-extract/css';
 
-import { globalThemeVariables as globalThemeVariables } from './themes/theme.css';
+import { globalThemeVariables } from './themes/theme.css';
 import { DeviceSize, PaddinSize, Size } from './types';
 
 const sizes: PaddinSize[] = ['0', 's', 'normal', 'l'];

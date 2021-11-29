@@ -11,13 +11,15 @@ export default {
     component: List,
     title: 'components/List',
     args: {
-        children: Array.from({length: 100}).fill(filler).map(function (x, ind) {
-            return (
-                <div className="depth-1" key={filler()}>
-                    {ind}
-                </div>
-            );
-        }),
+        children: Array.from({ length: 100 })
+            .fill(filler)
+            .map(function (x, ind) {
+                return (
+                    <div className="depth-1" key={filler()}>
+                        {ind}
+                    </div>
+                );
+            }),
     },
 } as ComponentMeta<typeof List>;
 
