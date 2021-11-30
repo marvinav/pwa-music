@@ -4,6 +4,7 @@
     "lib": [
       "ES2020",
       "DOM",
+      "DOM.Iterable",
       "WebWorker"
     ],
     "moduleResolution": "node",
@@ -13,8 +14,32 @@
     "experimentalDecorators": true,
     "noImplicitThis": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es5",
-    "rootDir": "src/",
+    "target": "es6",
+    "rootDirs": [
+      "src/",
+      "plugins/"
+    ],
+    "baseUrl": "./",
+    "paths": {
+      "static/*": [
+        "static/*"
+      ],
+      "app/*": [
+        "src/app/*"
+      ],
+      "shared/*": [
+        "src/shared/*"
+      ],
+      "features/*": [
+        "src/features/*"
+      ],
+      "entities/*": [
+        "src/entities/*"
+      ],
+      "pages/*": [
+        "src/pages/*"
+      ],
+    },
     "outDir": "dist/",
     "jsx": "react"
   }

@@ -5,5 +5,9 @@
         "pmmmwh",
         "Roboto",
         "webrtc"
-    ]
+    ],
+    "path-intellisense.mappings": {
+        "shared": "${workspaceFolder}/src/shared",
+        "static": "${workspaceFolder}/static"
+    },
 }

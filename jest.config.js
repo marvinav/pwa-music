@@ -7,6 +7,7 @@ const config = {
     },
     testEnvironment: 'jsdom',
     testPathIgnorePatterns: ['<rootDir>/node_modules/'],
+    moduleDirectories: ['src', 'node_modules'],
 };
 
 // eslint-disable-next-line no-undef

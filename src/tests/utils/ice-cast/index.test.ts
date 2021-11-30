@@ -1,32 +1,33 @@
 import 'regenerator-runtime/runtime';
-import { IcyCastReader } from '../../../utils/IcyCastReader';
+import { IcyCastReader } from 'shared/utils/IcyCastReader';
+
 import { sample } from './sample';
 
 function base64ToArrayBuffer(base64: string) {
     const binaryString = window.atob(base64);
-    const len = binaryString.length;
-    const bytes = new Uint8Array(len);
-    for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
+    const length = binaryString.length;
+    const bytes = new Uint8Array(length);
+    for (let index = 0; index < length; index++) {
+        bytes[index] = binaryString.codePointAt(index);
     }
     return bytes;
 }
 
 function createIcyHeader(header: string) {
-    const headerArray = Array.from(header, (x) => x.charCodeAt(0));
+    const headerArray = [...header].map((x) => x.codePointAt(0));
     const result = new Uint8Array(Math.ceil(headerArray.length / 16) * 16 + 1);
     result.set([Math.ceil(headerArray.length / 16)], 0);
     result.set(headerArray, 1);
     const nullBytesLength = headerArray.length % 16;
     if (nullBytesLength > 0) {
-        result.set(new Array(16 - nullBytesLength).fill(null), headerArray.length + 1);
+        result.set(Array.from<number>({ length: 16 - nullBytesLength }).fill(0), headerArray.length + 1);
     }
     return result;
 }
 
 it('Convert sample to Uint8Array', () => {
     const testSample = base64ToArrayBuffer(sample);
-    expect(testSample.length).toBe(528216);
+    expect(testSample.length).toBe(528_216);
 });
 
 it('Convert song title to Uint8Array', () => {
@@ -45,9 +46,9 @@ test('Read file all in one chunk class', async () => {
     const icyInt = 8000;
     const titles = ['first-title', 'second-title'];
     const firstTitleArray = createIcyHeader(titles[0]);
-    const firstTitleName = String.fromCharCode.apply(null, firstTitleArray.slice(1));
+    const firstTitleName = String.fromCharCode.apply(undefined, firstTitleArray.slice(1));
     const secondTitleArray = createIcyHeader(titles[1]);
-    const secondTitleName = String.fromCharCode.apply(null, secondTitleArray.slice(1));
+    const secondTitleName = String.fromCharCode.apply(undefined, secondTitleArray.slice(1));
     const secondTitleStart = testSample.length / 2;
 
     const totalIcesHeaders = Math.floor(testSample.length / icyInt);
@@ -58,14 +59,14 @@ test('Read file all in one chunk class', async () => {
 
     let offset = 0;
 
-    for (let i = 0; i < totalIcesHeaders; i++) {
-        const header = i * icyInt > secondTitleStart ? secondTitleArray : firstTitleArray;
+    for (let index = 0; index < totalIcesHeaders; index++) {
+        const header = index * icyInt > secondTitleStart ? secondTitleArray : firstTitleArray;
         const alreadyInserted = insertedHeaders.find((x) => x === header);
         const headerToInsert = alreadyInserted ? [0] : header;
         if (!alreadyInserted) {
             insertedHeaders.push(header);
         }
-        icyBuffer.set(testSample.slice(icyInt * i, icyInt * (i + 1)), offset);
+        icyBuffer.set(testSample.slice(icyInt * index, icyInt * (index + 1)), offset);
         offset += icyInt;
         icyBuffer.set(headerToInsert, offset);
         offset += headerToInsert.length;
@@ -79,10 +80,10 @@ test('Read file all in one chunk class', async () => {
     expect(icyBuffer[8001]).toBe(firstTitleArray[1]);
     expect(icyBuffer[8000 + firstTitleArray.length]).toBe(testSample[8000]);
     expect(icyBuffer[8000 + firstTitleArray.length + 1]).toBe(testSample[8001]);
-    expect(icyBuffer[16000 + firstTitleArray.length]).toBe(0);
-    expect(icyBuffer[16000 + firstTitleArray.length + 1]).toBe(testSample[16000]);
-    expect(icyBuffer[16000 + firstTitleArray.length + 2]).toBe(testSample[16001]);
-    expect(icyBuffer[16000 + firstTitleArray.length + 3]).toBe(testSample[16002]);
+    expect(icyBuffer[16_000 + firstTitleArray.length]).toBe(0);
+    expect(icyBuffer[16_000 + firstTitleArray.length + 1]).toBe(testSample[16_000]);
+    expect(icyBuffer[16_000 + firstTitleArray.length + 2]).toBe(testSample[16_001]);
+    expect(icyBuffer[16_000 + firstTitleArray.length + 3]).toBe(testSample[16_002]);
     expect(icyBuffer[icyBuffer.length - 1]).toBe(testSample[testSample.length - 1]);
 
     let sendBytesLength = 0;
@@ -113,7 +114,7 @@ test('Read file all in one chunk class', async () => {
     };
 
     global.fetch = mockFetch;
-    const cast = new IcyCastReader('https://localhost', null);
+    const cast = new IcyCastReader('https://localhost', undefined);
 
     let totalLength = 0;
     const receivedBuffer = new Uint8Array(testSample.length);
@@ -132,7 +133,7 @@ test('Read file all in one chunk class', async () => {
     expect(send).toBe(testSample.length);
     expect(sendBytesLength).toBe(icyBuffer.length);
     expect(totalLength).toBe(testSample.length);
-    for (let i = 0; i < receivedBuffer.length; i++) {
-        expect(receivedBuffer[i]).toBe(testSample[i]);
+    for (const [index, element] of receivedBuffer.entries()) {
+        expect(element).toBe(testSample[index]);
     }
 });

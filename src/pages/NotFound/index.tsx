@@ -1,5 +1,6 @@
 import React from 'react';
-import { useDictionary } from '../../contexts/DictionaryContext';
+
+import { useDictionary } from 'entities/dictionary';
 
 const NotFoundLayout: React.VFC = () => {
     const { d } = useDictionary();

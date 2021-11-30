@@ -1,7 +1,8 @@
-import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import React from 'react';
 
-import { Window } from '../../layouts/Window';
+import { Window } from 'shared/ui/layouts/Window';
+
 import { DictionaryProvider } from '../__mocks__/dictionaryMock';
 
 export default {
@@ -16,8 +17,8 @@ export default {
     },
 } as ComponentMeta<typeof Window>;
 
-const Template: ComponentStory<typeof Window> = (args) => {
-    return <Window {...args} />;
+const Template: ComponentStory<typeof Window> = (arguments_) => {
+    return <Window {...arguments_} />;
 };
 
 export const Primary = Template.bind({});

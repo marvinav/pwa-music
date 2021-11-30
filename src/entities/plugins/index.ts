@@ -1,0 +1,1 @@
+export { PluginSettingsModel } from './PluginSettingsModel';

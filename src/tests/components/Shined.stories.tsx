@@ -1,29 +1,30 @@
-import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { Shined } from '../../components/Shined';
+import React from 'react';
+
+import { Shined } from 'shared/ui/components';
 
 export default {
     component: Shined,
     title: 'Components/Shined',
     args: {
-        children: (props) => {
+        children: (properties) => {
             return (
                 <div
-                    onMouseEnter={props.onMouseEnter}
-                    onMouseLeave={props.onMouseLeave}
-                    onMouseMove={props.onMouseMove}
+                    onMouseEnter={properties.onMouseEnter}
+                    onMouseLeave={properties.onMouseLeave}
+                    onMouseMove={properties.onMouseMove}
                     style={{
                         width: '150px',
                         height: '150px',
                     }}
                 >
-                    {props.shine}
+                    {properties.shine}
                 </div>
             );
         },
     },
 } as ComponentMeta<typeof Shined>;
 
-const Template: ComponentStory<typeof Shined> = (args) => <Shined {...args} />;
+const Template: ComponentStory<typeof Shined> = (arguments_) => <Shined {...arguments_} />;
 
 export const Primary = Template.bind({});

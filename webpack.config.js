@@ -30,12 +30,14 @@ var devServer = {
             return path.includes(publicPath);
         },
     },
+    server: {
+        type: 'https',
+    },
     static: path.resolve(__dirname, 'dist/'),
     host: 'localhost',
     historyApiFallback: {
         disableDotRule: false,
     },
-    https: true,
     hot: true,
     port: 4242,
 };
@@ -64,7 +66,7 @@ var config = {
             ],
         }),
         new FaviconsWebpackPlugin({
-            logo: './static/favicon.png',
+            logo: 'static/favicon.png',
             cache: true,
             favicons: {
                 appName: 'marvinav',
@@ -128,8 +130,19 @@ var config = {
             },
         ],
     },
+    stats: {
+        errorDetails: true,
+    },
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
+        alias: {
+            static: path.resolve(__dirname, 'static'),
+            app: path.resolve(__dirname, 'src/app'),
+            shared: path.resolve(__dirname, 'src/shared'),
+            features: path.resolve(__dirname, 'src/features'),
+            entities: path.resolve(__dirname, 'src/entities'),
+            pages: path.resolve(__dirname, 'src/pages'),
+        },
     },
     output: {
         filename: '[name].[contenthash].bundle.js',
@@ -148,14 +161,17 @@ var config = {
 };
 
 module.exports = (env, argv) => {
-    config.mode = argv.mode;
-    config.devtool = argv.mode === 'development' ? 'source-map' : false;
+    config.mode = argv?.mode;
+    config.devtool = argv?.mode === 'development' ? 'source-map' : false;
     config.plugins.push(
         new webpack.DefinePlugin({
             webpack_env: {
                 SERVICE_WORKER: process.env.SERVICE_WORKER === 'true',
                 MODE: JSON.stringify(config.mode),
                 VERSION: JSON.stringify(pkg.version),
+                GITHUB_AVATAR: JSON.stringify('https://avatars.githubusercontent.com/u/44019557'),
+                CORE_PLUGIN_SOURCE: JSON.stringify('https://localhost:8080/plugins'),
+                WEBPACK_ASSET: JSON.stringify('webpack-assets.json'),
             },
         }),
     );
