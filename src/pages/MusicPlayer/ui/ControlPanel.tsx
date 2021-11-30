@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Player } from 'entities/audio';
-import { Track } from 'entities/audio/types';
+import { Player } from 'shared/audio';
+import { Track } from 'shared/audio/types';
 import { SvgIcon } from 'shared/ui';
 import next from 'static/assets/player/next-solid.svg?raw';
 import pause from 'static/assets/player/pause-solid.svg?raw';

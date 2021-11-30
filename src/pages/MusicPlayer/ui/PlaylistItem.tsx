@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useMemo } from 'react';
 
-import { Track } from 'entities/audio/types';
+import { Track } from 'shared/audio/types';
 
 import { convertDurationToHumanRead } from '../lib/convertDurationToHumanRead';
 

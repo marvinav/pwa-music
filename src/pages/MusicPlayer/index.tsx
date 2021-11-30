@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Player } from 'entities/audio';
-import { Playlist as PlaylistType, Track } from 'entities/audio/types';
+import { Player } from 'shared/audio';
+import { Playlist as PlaylistType, Track } from 'shared/audio/types';
 import { SvgIcon, Window, BottomBar, Content } from 'shared/ui/index';
 import addSong from 'static/assets/player/add-playlist-solid.svg?raw';
 
