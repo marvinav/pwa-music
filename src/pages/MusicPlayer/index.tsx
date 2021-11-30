@@ -12,6 +12,7 @@ import { Visualization } from './ui/Visualization';
 const playlist: PlaylistType = {
     name: 'Only radio',
     path: 'cache',
+    updatedAt: new Date(),
     tracks: [
         {
             recordable: true,
@@ -37,8 +38,17 @@ const MusicPlayer: React.VFC = () => {
     const [selectedPlaylist, setSelectedPlaylist] = React.useState(playlist);
 
     React.useEffect(() => {
-        Player.playlist != selectedPlaylist && Player.setPlaylist(playlist);
-        const id = Player.subscribe('track-start', (_event) => {
+        const id = Player.subscribe('playlist-changed', () => {
+            setSelectedPlaylist(Player.playlist);
+        });
+        return () => {
+            Player.unsubscribe(id);
+        };
+    }, []);
+
+    React.useEffect(() => {
+        Player.playlist.path != selectedPlaylist && Player.setPlaylist(selectedPlaylist);
+        const id = Player.subscribe('track-start', () => {
             setSelectedTrack((x) => {
                 if (x?.path === Player?.state?.track?.track?.path) {
                     return x;
@@ -86,7 +96,7 @@ const MusicPlayer: React.VFC = () => {
                                 artist: 'OGG',
                             },
                         });
-                        const newPlaylist = { ...selectedPlaylist, tracks };
+                        const newPlaylist = { ...selectedPlaylist, updatedAt: new Date(), tracks };
                         setSelectedPlaylist(newPlaylist);
                     }}
                 ></SvgIcon>

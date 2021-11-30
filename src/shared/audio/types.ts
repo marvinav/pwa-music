@@ -60,6 +60,7 @@ export interface IcyCastTrack extends BaseTrack {
 export interface Playlist {
     name: string;
     path: string;
+    updatedAt: Date;
     tracks: Track[];
 }
 
