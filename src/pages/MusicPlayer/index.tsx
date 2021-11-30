@@ -71,6 +71,10 @@ const MusicPlayer: React.VFC = () => {
             <BottomBar>
                 <SvgIcon
                     src={addSong}
+                    onContextMenu={(event) => {
+                        alert('Context menu');
+                        event.preventDefault();
+                    }}
                     onClick={() => {
                         const tracks = [...selectedPlaylist.tracks];
                         tracks.push({
