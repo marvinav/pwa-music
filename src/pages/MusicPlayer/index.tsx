@@ -1,15 +1,15 @@
 import React from 'react';
 
-import { Player } from 'shared/audio';
-import { Playlist as PlaylistType, Track } from 'shared/audio/types';
+import { Player, Playlist } from 'shared/audio';
+import { IPlaylist, ITrack } from 'shared/audio/types';
 import { SvgIcon, Window, BottomBar, Content } from 'shared/ui/index';
 import addSong from 'static/assets/player/add-playlist-solid.svg?raw';
 
 import { ControlPanel } from './ui/ControlPanel';
-import { Playlist } from './ui/Playlist';
+import { Playlist as PlaylistPanel } from './ui/Playlist';
 import { Visualization } from './ui/Visualization';
 
-const playlist: PlaylistType = {
+const playlist: IPlaylist = {
     name: 'Only radio',
     path: 'cache',
     updatedAt: new Date(),
@@ -34,8 +34,8 @@ const playlist: PlaylistType = {
 Player.setPlaylist(playlist);
 
 const MusicPlayer: React.VFC = () => {
-    const [selectedTrack, setSelectedTrack] = React.useState<Track>();
-    const [selectedPlaylist, setSelectedPlaylist] = React.useState(playlist);
+    const [selectedTrack, setSelectedTrack] = React.useState<ITrack>();
+    const [selectedPlaylist, setSelectedPlaylist] = React.useState(Player.playlist);
 
     React.useEffect(() => {
         const id = Player.subscribe('playlist-changed', () => {
@@ -47,7 +47,7 @@ const MusicPlayer: React.VFC = () => {
     }, []);
 
     React.useEffect(() => {
-        Player.playlist.path != selectedPlaylist && Player.setPlaylist(selectedPlaylist);
+        !Playlist.isSame(Player.playlist, selectedPlaylist) && Player.setPlaylist(selectedPlaylist);
         const id = Player.subscribe('track-start', () => {
             setSelectedTrack((x) => {
                 if (x?.path === Player?.state?.track?.track?.path) {
@@ -61,7 +61,7 @@ const MusicPlayer: React.VFC = () => {
         };
     }, [selectedPlaylist]);
 
-    const playTrack = React.useCallback(async (track: Track) => {
+    const playTrack = React.useCallback(async (track: ITrack) => {
         const result = await Player.play({
             trackNumber: Player.playlist.tracks.findIndex((x) => x.path === track.path),
             relative: false,
@@ -75,7 +75,11 @@ const MusicPlayer: React.VFC = () => {
         <Window title="player" className="music-player">
             <Content>
                 <ControlPanel selectedTrack={selectedTrack} />
-                <Playlist setSelectedTrack={playTrack} selectedTrack={selectedTrack} tracks={selectedPlaylist.tracks} />
+                <PlaylistPanel
+                    setSelectedTrack={playTrack}
+                    selectedTrack={selectedTrack}
+                    tracks={selectedPlaylist.tracks}
+                />
                 <Visualization />
             </Content>
             <BottomBar>
@@ -86,8 +90,7 @@ const MusicPlayer: React.VFC = () => {
                         event.preventDefault();
                     }}
                     onClick={() => {
-                        const tracks = [...selectedPlaylist.tracks];
-                        tracks.push({
+                        selectedPlaylist.addTrack({
                             recordable: true,
                             mimeType: 'icy-cast',
                             path: 'http://stream-dc1.radioparadise.com/rp_192m.ogg',
@@ -96,8 +99,6 @@ const MusicPlayer: React.VFC = () => {
                                 artist: 'OGG',
                             },
                         });
-                        const newPlaylist = { ...selectedPlaylist, updatedAt: new Date(), tracks };
-                        setSelectedPlaylist(newPlaylist);
                     }}
                 ></SvgIcon>
             </BottomBar>

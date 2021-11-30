@@ -1,14 +1,14 @@
 import React from 'react';
 
-import { Track } from 'shared/audio/types';
+import { ITrack } from 'shared/audio/types';
 
 import { PlaylistItem } from './PlaylistItem';
 import { playlist } from './index.css';
 
 export const Playlist: React.VFC<{
-    tracks?: Track[];
-    setSelectedTrack: React.Dispatch<React.SetStateAction<Track>>;
-    selectedTrack?: Track;
+    tracks?: ITrack[];
+    setSelectedTrack: React.Dispatch<React.SetStateAction<ITrack>>;
+    selectedTrack?: ITrack;
 }> = (properties) => {
     const reference = React.useRef();
 

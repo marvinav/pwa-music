@@ -1,5 +1,5 @@
-import { Track as t } from '../types';
+import { ITrack } from '../types';
 
-export class Track {
-    constructor() {}
+export function cloneTrack(track: ITrack) {
+    return { ...track, mediaMetadata: { ...track.mediaMetadata } };
 }

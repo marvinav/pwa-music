@@ -1,8 +1,8 @@
-import { AudioPlayer as AudioPlayerImplementation } from './AudioPlayer';
+import { AudioPlayer as AudioPlayerImplementation } from './lib/audio-player';
 
 export type AudioPlayer = AudioPlayerImplementation;
 
-export type Track = IcyCastTrack | Mp3Track;
+export type ITrack = IcyCastTrack | Mp3Track;
 
 export type Events = 'mode-changed' | 'playlist-changed' | 'track-start' | 'track-end' | 'state-changed';
 
@@ -57,14 +57,14 @@ export interface IcyCastTrack extends BaseTrack {
     recordable: true;
 }
 
-export interface Playlist {
+export interface IPlaylist {
     name: string;
     path: string;
     updatedAt: Date;
-    tracks: Track[];
+    tracks: ITrack[];
 }
 
-export interface TrackProcessor<T extends Track> {
+export interface TrackProcessor<T extends ITrack> {
     type: T['mimeType'];
     play: (context: AudioContext, node: GainNode, track: T, onEnd?: () => Promise<void>) => Promise<void>;
     stop: () => Promise<void>;

@@ -1,12 +1,12 @@
-import { Track, TrackProcessor } from './types';
+import { ITrack, TrackProcessor } from '../types';
 
-export class CommonPreprocessor implements TrackProcessor<Track> {
+export class CommonPreprocessor implements TrackProcessor<ITrack> {
     _source: MediaElementAudioSourceNode;
     _audio = document.createElement('audio');
 
     type: 'icy-cast' | 'mp3' = 'icy-cast';
 
-    play: (context: AudioContext, node: GainNode, track: Track, onEnd?: () => Promise<void>) => Promise<void> = async (
+    play: (context: AudioContext, node: GainNode, track: ITrack, onEnd?: () => Promise<void>) => Promise<void> = async (
         c,
         n,
         t,

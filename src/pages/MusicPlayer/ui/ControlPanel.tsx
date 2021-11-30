@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Player } from 'shared/audio';
-import { Track } from 'shared/audio/types';
+import { ITrack } from 'shared/audio/types';
 import { SvgIcon } from 'shared/ui';
 import next from 'static/assets/player/next-solid.svg?raw';
 import pause from 'static/assets/player/pause-solid.svg?raw';
@@ -9,7 +9,7 @@ import play from 'static/assets/player/play-solid.svg?raw';
 
 import { controlPanel, playerStateButtons } from './index.css';
 
-export const ControlPanel: React.VFC<{ selectedTrack?: Track }> = (_properties) => {
+export const ControlPanel: React.VFC<{ selectedTrack?: ITrack }> = (_properties) => {
     return (
         <div className={controlPanel}>
             <SvgIcon

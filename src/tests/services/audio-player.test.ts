@@ -1,9 +1,12 @@
 import 'regenerator-runtime/runtime';
-import { AudioPlayer } from '../../shared/audio/AudioPlayer';
-import { Mp3Track, TrackProcessor } from '../../shared/audio/types';
+import { Playlist } from 'shared/audio';
 
-const playlist: AudioPlayer['_playlist'] = {
+import { AudioPlayer } from '../../shared/audio/lib/audio-player';
+import { IPlaylist, Mp3Track, TrackProcessor } from '../../shared/audio/types';
+
+const playlist: IPlaylist = {
     name: 'Test First',
+    updatedAt: new Date(),
     path: 'test/first',
     tracks: [
         {
@@ -15,8 +18,9 @@ const playlist: AudioPlayer['_playlist'] = {
     ],
 };
 
-const playlistSecond: AudioPlayer['_playlist'] = {
+const playlistSecond: IPlaylist = {
     name: 'Test Second',
+    updatedAt: new Date(),
     path: 'test/second',
     tracks: [
         {
@@ -54,11 +58,10 @@ describe('Audio Player', () => {
         },
     };
 
-    global.AudioContext = jest.fn().mockImplementation(() => {
-        return mockAudioContext;
-    });
-
     it('Add and remove subscription', () => {
+        global.AudioContext = jest.fn().mockImplementation(() => {
+            return mockAudioContext;
+        });
         const action = jest.fn();
         const player = new AudioPlayer();
         const id = player.subscribe('playlist-changed', action);
@@ -76,10 +79,11 @@ describe('Audio Player', () => {
     it('Set playlists', async () => {
         const player = new AudioPlayer();
         expect(player.playlist).toBeUndefined();
-        await player.setPlaylist(playlist);
-        expect(player.playlist).toBe(playlist);
+        const playlistInstance = new Playlist(playlist.path, playlist.name, playlist.tracks, playlist.updatedAt);
+        await player.setPlaylist(playlistInstance);
+        expect(player.playlist).toBe(playlistInstance);
         await player.setPlaylist(playlistSecond);
-        expect(player.playlist).toBe(playlistSecond);
+        expect(player.playlist.path).toBe(playlistSecond.path);
     });
 
     it('Playlist-change subscriptions', async () => {
