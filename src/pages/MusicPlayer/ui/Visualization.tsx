@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Player } from 'shared/audio';
+import { Player } from 'shared/player';
 
 import { visualization, visualNode } from './index.css';
 

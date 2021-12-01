@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ITrack } from 'shared/audio/types';
+import { ITrack } from 'shared/audio-player/types';
 
 import { PlaylistItem } from './PlaylistItem';
 import { playlist } from './index.css';

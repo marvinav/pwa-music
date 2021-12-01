@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Player, Playlist } from 'shared/audio';
-import { IPlaylist, ITrack } from 'shared/audio/types';
-import { SvgIcon, Window, BottomBar, Content } from 'shared/ui/index';
+import { Playlist } from 'shared/audio-player';
+import { IPlaylist, ITrack } from 'shared/audio-player/types';
+import { Player } from 'shared/player';
+import { SvgIcon, Window, BottomBar, Content } from 'shared/ui';
 import addSong from 'static/assets/player/add-playlist-solid.svg?raw';
 
 import { ControlPanel } from './ui/ControlPanel';

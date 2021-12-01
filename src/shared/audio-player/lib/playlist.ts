@@ -54,6 +54,6 @@ export class Playlist {
         if (!target || !origin) {
             return false;
         }
-        return target === origin ?? (target.path === origin.path && target.updatedAt === origin.updatedAt);
+        return target === origin;
     }
 }

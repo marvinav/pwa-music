@@ -143,7 +143,7 @@ module.exports = {
                             'static',
                             ['shared', { package: '${package}' }],
                             ['shared', { declaration: 'types' }],
-                            ['shared-api', { package: '${package}' }],
+                            ['shared-api'],
                         ],
                     },
                     {

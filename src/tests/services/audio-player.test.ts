@@ -1,8 +1,7 @@
 import 'regenerator-runtime/runtime';
-import { Playlist } from 'shared/audio';
+import { Playlist, AudioPlayer } from 'shared/audio-player';
 
-import { AudioPlayer } from '../../shared/audio/lib/audio-player';
-import { IPlaylist, Mp3Track, TrackProcessor } from '../../shared/audio/types';
+import { IPlaylist, Mp3Track, TrackProcessor } from '../../shared/audio-player/types';
 
 const playlist: IPlaylist = {
     name: 'Test First',
@@ -58,10 +57,11 @@ describe('Audio Player', () => {
         },
     };
 
+    global.AudioContext = jest.fn().mockImplementation(() => {
+        return mockAudioContext;
+    });
+
     it('Add and remove subscription', () => {
-        global.AudioContext = jest.fn().mockImplementation(() => {
-            return mockAudioContext;
-        });
         const action = jest.fn();
         const player = new AudioPlayer();
         const id = player.subscribe('playlist-changed', action);
@@ -92,11 +92,12 @@ describe('Audio Player', () => {
         const id = player.subscribe('playlist-changed', mockFunction);
         await player.setPlaylist(playlist);
         expect(mockFunction).toBeCalled();
-        await player.setPlaylist(playlist);
+        const playlistInstance = new Playlist(playlist.path, playlist.name, playlist.tracks, playlist.updatedAt);
+        await player.setPlaylist(playlistInstance);
         expect(mockFunction).toBeCalledTimes(2);
-        expect(player.playlist).toBe(playlist);
+        expect(player.playlist).toBe(playlistInstance);
         player.unsubscribe(id, 'playlist-changed');
-        await player.setPlaylist(playlist);
+        await player.setPlaylist(playlistInstance);
         expect(mockFunction).toBeCalledTimes(2);
     });
 
@@ -136,7 +137,7 @@ describe('Audio Player', () => {
         currentTrack = 0;
         const track = await player.play({ trackNumber: currentTrack, relative: false });
         expect(mockPlay).toBeCalledTimes(1);
-        expect(track).toBe(playlistSecond.tracks[currentTrack]);
+        expect(track).toEqual(playlistSecond.tracks[currentTrack]);
         expect(player.state.track?.trackNumber).toBe(0);
         await onEndBox(); // End first, start second
         expect(mockSubscription).toBeCalledTimes(1);
@@ -150,7 +151,7 @@ describe('Audio Player', () => {
         expect(player.state.track).toBeUndefined();
         expect(mockStop).toBeCalledTimes(1);
         const trackAfterStop = await player.play({ trackNumber: 1, relative: false });
-        expect(trackAfterStop).toBe(playlistSecond.tracks[1]);
+        expect(trackAfterStop).toEqual(playlistSecond.tracks[1]);
         expect(player.state.state).toBe('play');
         await onEndBox(); // End 2, play 3
         await onEndBox(); // End 3, stop playlist

@@ -110,7 +110,7 @@ export class AudioPlayer {
             x.path === this._currenTrack?.track?.path;
         });
 
-        const isSame = Playlist.isSame(this._playlist, playlist);
+        const isSame = Playlist.isSame(this.playlist, playlist);
         if (!isSame || currentTrack < 0) {
             await this.stop();
         }
