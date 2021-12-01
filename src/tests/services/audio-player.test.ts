@@ -76,6 +76,32 @@ describe('Audio Player', () => {
         expect(sub['playlist-changed'].size).toBe(0);
     });
 
+    it('Add and remove track for bound and unbound playlist ', async () => {
+        const tracksChanged = jest.fn();
+        const playlistAttached = jest.fn();
+        const player = new AudioPlayer();
+        const id = player.subscribe('playlist-changed', (event, option) => {
+            if (option === 'playlist-tracks-changed') {
+                tracksChanged();
+            } else if (option === 'playlist-attached') {
+                playlistAttached();
+            }
+        });
+        expect(id).toBeTruthy();
+        await player.setPlaylist(playlist);
+        expect(playlistAttached).toBeCalledTimes(1);
+        player.playlist.addTrack(playlist.tracks[0]);
+        expect(playlistAttached).toBeCalledTimes(1);
+        expect(tracksChanged).toBeCalledTimes(1);
+        player.playlist.removeTrack(1);
+        expect(tracksChanged).toBeCalledTimes(2);
+        const playlistInstance = player.playlist;
+        await player.setPlaylist(playlist);
+        expect(playlistAttached).toBeCalledTimes(2);
+        playlistInstance.addTrack(playlistInstance.tracks[0]);
+        expect(tracksChanged).toBeCalledTimes(2);
+    });
+
     it('Set playlists', async () => {
         const player = new AudioPlayer();
         expect(player.playlist).toBeUndefined();

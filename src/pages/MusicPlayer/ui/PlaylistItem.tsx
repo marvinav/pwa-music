@@ -8,9 +8,7 @@ import { convertDurationToHumanRead } from '../lib/convertDurationToHumanRead';
 
 import { artist, title, duration as durationClassName, playlistItem } from './index.css';
 
-export const PlaylistItem: React.VFC<{ track: ITrack; selected: boolean; onDoubleClick: () => void }> = (
-    properties,
-) => {
+const PlaylistItem: React.VFC<{ track: ITrack; selected: boolean; onDoubleClick: () => void }> = (properties) => {
     const { track, selected } = properties;
 
     const duration = useMemo(() => {
@@ -41,3 +39,9 @@ PlaylistItem.propTypes = {
         }
     },
 };
+
+const PlaylistItemMemo = React.memo(PlaylistItem, (previous, next) => {
+    return previous.selected == next.selected && previous.track.path === next.track.path;
+});
+
+export { PlaylistItemMemo as PlaylistItem };

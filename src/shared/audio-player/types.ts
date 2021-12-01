@@ -12,10 +12,21 @@ export type ModeChangedEvent = AudioPlayer['_mode'];
 
 export type StateChangedEvent = AudioPlayer['_state'];
 
+export type PlaylistMetaChangedSubEvent = 'playlist-meta-changed';
+export type PlaylistTracksChangedSubEvent = 'playlist-tracks-changed';
+export type PlaylistAttachedSubEvent = 'playlist-attached';
+
+export type PlaylistChangedEvent =
+    | PlaylistAttachedSubEvent
+    | PlaylistMetaChangedSubEvent
+    | PlaylistTracksChangedSubEvent;
+
 export type GetEventOption<T extends Events> = T extends 'state-changed'
     ? StateChangedEvent
     : T extends 'mode-changed'
     ? ModeChangedEvent
+    : T extends 'playlist-changed'
+    ? PlaylistChangedEvent
     : undefined;
 
 export type EventHandler<T extends Events> = (event_: T, option: GetEventOption<T>) => Promise<void> | void;

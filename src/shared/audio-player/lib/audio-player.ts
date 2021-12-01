@@ -1,6 +1,14 @@
 import { nanoid } from 'nanoid';
 
-import { EventHandler, Events, GetEventOption, IPlaylist, ITrack, TrackProcessor } from '../types';
+import {
+    EventHandler,
+    Events,
+    GetEventOption,
+    IPlaylist,
+    ITrack,
+    PlaylistChangedEvent,
+    TrackProcessor,
+} from '../types';
 
 import { Playlist } from './playlist';
 
@@ -120,14 +128,21 @@ export class AudioPlayer {
         }
 
         if (!isSame) {
+            if (this._playlist) {
+                this._playlist.unbindPlayer();
+            }
             this._playlist =
                 playlist instanceof Playlist
                     ? playlist
                     : new Playlist(playlist.path, playlist.name, playlist.tracks, playlist.updatedAt);
 
-            //TODO: should pass notification, only related to playlist
-            //TODO: on notification player should check if it current playlist
-            this._playlist.bindPlayer(this.notify);
+            const notify = (option: PlaylistChangedEvent, playlist: Playlist) => {
+                if (this._playlist !== playlist) {
+                    throw new Error('Playlist was unbind from player');
+                }
+                this.notify('playlist-changed', option);
+            };
+            this._playlist.bindPlayer(notify);
         }
     };
 

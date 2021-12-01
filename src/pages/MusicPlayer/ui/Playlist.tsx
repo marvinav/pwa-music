@@ -7,19 +7,19 @@ import { playlist } from './index.css';
 
 export const Playlist: React.VFC<{
     tracks?: ITrack[];
-    setSelectedTrack: React.Dispatch<React.SetStateAction<ITrack>>;
-    selectedTrack?: ITrack;
+    setSelectedTrack: React.Dispatch<React.SetStateAction<number>>;
+    selectedTrack?: { track: ITrack; position: number };
 }> = (properties) => {
     const reference = React.useRef();
 
     return (
         <div className={playlist} ref={reference}>
-            {properties.tracks?.map((x) => {
+            {properties.tracks?.map((x, ind) => {
                 return (
                     <PlaylistItem
-                        selected={properties.selectedTrack && properties.selectedTrack === x}
+                        selected={properties?.selectedTrack?.position === ind}
                         onDoubleClick={() => {
-                            properties.setSelectedTrack(x);
+                            properties.setSelectedTrack(ind);
                         }}
                         key={x.path}
                         track={x}

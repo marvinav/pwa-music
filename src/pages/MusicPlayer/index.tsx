@@ -35,26 +35,36 @@ const playlist: IPlaylist = {
 Player.setPlaylist(playlist);
 
 const MusicPlayer: React.VFC = () => {
-    const [selectedTrack, setSelectedTrack] = React.useState<ITrack>();
-    const [selectedPlaylist, setSelectedPlaylist] = React.useState(Player.playlist);
+    const [selectedTrack, setSelectedTrack] = React.useState<{ track: ITrack; position: number } | undefined>();
+    const [selectedPlaylist] = React.useState(Player.playlist);
+    const [tracks, setTracks] = React.useState(selectedPlaylist?.tracks);
 
     React.useEffect(() => {
-        const id = Player.subscribe('playlist-changed', () => {
-            setSelectedPlaylist(Player.playlist);
+        const id = Player.subscribe('playlist-changed', (_event, option) => {
+            if (option === 'playlist-tracks-changed') {
+                setTracks([...(Player?.playlist?.tracks ?? [])]);
+            }
         });
+
         return () => {
             Player.unsubscribe(id);
         };
     }, []);
 
     React.useEffect(() => {
+        const track = (tracks && tracks[Player.state?.track?.trackNumber]) ?? undefined;
+        setSelectedTrack(track && { track, position: Player.state.track.position });
+    }, [tracks]);
+
+    React.useEffect(() => {
         !Playlist.isSame(Player.playlist, selectedPlaylist) && Player.setPlaylist(selectedPlaylist);
         const id = Player.subscribe('track-start', () => {
             setSelectedTrack((x) => {
-                if (x?.path === Player?.state?.track?.track?.path) {
+                if (x.track?.path === Player?.state?.track?.track?.path) {
                     return x;
                 }
-                return Player.playlist.tracks.find((x) => x.path === Player.state.track.track.path);
+
+                return { track: Player?.state?.track.track, position: Player.state.track.position };
             });
         });
         return () => {
@@ -62,25 +72,21 @@ const MusicPlayer: React.VFC = () => {
         };
     }, [selectedPlaylist]);
 
-    const playTrack = React.useCallback(async (track: ITrack) => {
+    const playTrack = React.useCallback(async (position: number) => {
         const result = await Player.play({
-            trackNumber: Player.playlist.tracks.findIndex((x) => x.path === track.path),
+            trackNumber: position,
             relative: false,
         });
         if (result) {
-            setSelectedTrack(track);
+            setSelectedTrack({ track: result, position: Player.state.track.position });
         }
     }, []);
 
     return (
         <Window title="player" className="music-player">
             <Content>
-                <ControlPanel selectedTrack={selectedTrack} />
-                <PlaylistPanel
-                    setSelectedTrack={playTrack}
-                    selectedTrack={selectedTrack}
-                    tracks={selectedPlaylist.tracks}
-                />
+                <ControlPanel selectedTrack={selectedTrack?.track} />
+                <PlaylistPanel setSelectedTrack={playTrack} selectedTrack={selectedTrack} tracks={tracks} />
                 <Visualization />
             </Content>
             <BottomBar>
