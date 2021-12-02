@@ -6,5 +6,6 @@ export { NavLink } from './NavLink';
 export { Shined } from './Shined';
 export { Spinner } from './Spinner';
 export { SvgIcon } from './SvgIcon';
+export { SvgButton } from './SvgButton';
 export { draculaTheme } from './themes/dracula.theme';
 export { globalThemeVariables as globalThemeVars } from './themes/theme.css';
