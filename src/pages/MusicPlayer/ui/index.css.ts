@@ -30,8 +30,10 @@ export const playlist = style({
         '--duration-width': '40px',
     },
     display: 'flex',
+    overflow: 'auto',
     flexDirection: 'column',
     height: '100%',
+    zIndex: 2,
 });
 
 export const title = style({
@@ -89,6 +91,8 @@ export const visualization = style({
     gap: '1px',
     alignContent: 'flex-end',
     alignItems: 'flex-end',
+    position: 'absolute',
+    bottom: 0,
 });
 
 export const visualNode = style({

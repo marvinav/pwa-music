@@ -76,7 +76,9 @@ const MusicPlayer: React.VFC = () => {
                     playingTrack={playingTrackNumber > -1 && tracks[playingTrackNumber]}
                     tracks={tracks}
                 />
-                <Visualization />
+                <div style={{ position: 'relative' }}>
+                    <Visualization />
+                </div>
             </Content>
             <BottomBar>
                 <SvgIcon
