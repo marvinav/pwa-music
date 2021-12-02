@@ -6,12 +6,18 @@ import { padding, rectangle, globalThemeVariables } from 'shared/ui/index.css';
 export const controlPanel = style([
     {
         display: 'flex',
+        gap: 'inherit',
     },
     padding.s,
 ]);
 
 export const playerStateButtons = recipe({
-    base: rectangle.normal,
+    base: style([
+        rectangle.normal,
+        {
+            color: globalThemeVariables.button.background.primary,
+        },
+    ]),
     variants: {
         action: {
             previous: { transform: 'rotate(180deg)' },

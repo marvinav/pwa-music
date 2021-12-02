@@ -31,7 +31,6 @@ export const Visualization: React.VFC = () => {
         bars.push(result / added);
     }
 
-    console.log(bars.length);
     return (
         <div className={visualization}>
             {bars.map((x, ind) => {

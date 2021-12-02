@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { Playlist } from 'shared/audio-player';
-import { IPlaylist, ITrack } from 'shared/audio-player/types';
+import { IPlaylist } from 'shared/audio-player/types';
 import { Player } from 'shared/player';
 import { SvgIcon, Window, BottomBar, Content } from 'shared/ui';
 import addSong from 'static/assets/player/add-playlist-solid.svg?raw';
@@ -35,12 +34,13 @@ const playlist: IPlaylist = {
 Player.setPlaylist(playlist);
 
 const MusicPlayer: React.VFC = () => {
-    const [selectedTrack, setSelectedTrack] = React.useState<{ track: ITrack; position: number } | undefined>();
+    const [playingTrackNumber, setPlayingTrackNumber] = React.useState<number>();
     const [selectedPlaylist] = React.useState(Player.playlist);
     const [tracks, setTracks] = React.useState(selectedPlaylist?.tracks);
 
     React.useEffect(() => {
         const id = Player.subscribe('playlist-changed', (_event, option) => {
+            setPlayingTrackNumber(Player.state?.track?.trackNumber);
             if (option === 'playlist-tracks-changed') {
                 setTracks([...(Player?.playlist?.tracks ?? [])]);
             }
@@ -52,20 +52,8 @@ const MusicPlayer: React.VFC = () => {
     }, []);
 
     React.useEffect(() => {
-        const track = (tracks && tracks[Player.state?.track?.trackNumber]) ?? undefined;
-        setSelectedTrack(track && { track, position: Player.state.track.position });
-    }, [tracks]);
-
-    React.useEffect(() => {
-        !Playlist.isSame(Player.playlist, selectedPlaylist) && Player.setPlaylist(selectedPlaylist);
         const id = Player.subscribe('track-start', () => {
-            setSelectedTrack((x) => {
-                if (x.track?.path === Player?.state?.track?.track?.path) {
-                    return x;
-                }
-
-                return { track: Player?.state?.track.track, position: Player.state.track.position };
-            });
+            setPlayingTrackNumber(Player.state?.track?.trackNumber);
         });
         return () => {
             Player.unsubscribe(id);
@@ -73,20 +61,21 @@ const MusicPlayer: React.VFC = () => {
     }, [selectedPlaylist]);
 
     const playTrack = React.useCallback(async (position: number) => {
-        const result = await Player.play({
+        await Player.play({
             trackNumber: position,
             relative: false,
         });
-        if (result) {
-            setSelectedTrack({ track: result, position: Player.state.track.position });
-        }
     }, []);
 
     return (
         <Window title="player" className="music-player">
             <Content>
-                <ControlPanel selectedTrack={selectedTrack?.track} />
-                <PlaylistPanel setSelectedTrack={playTrack} selectedTrack={selectedTrack} tracks={tracks} />
+                <ControlPanel />
+                <PlaylistPanel
+                    onPlayTrack={playTrack}
+                    playingTrack={playingTrackNumber > -1 && tracks[playingTrackNumber]}
+                    tracks={tracks}
+                />
                 <Visualization />
             </Content>
             <BottomBar>

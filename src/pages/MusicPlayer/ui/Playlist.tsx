@@ -7,21 +7,21 @@ import { playlist } from './index.css';
 
 export const Playlist: React.VFC<{
     tracks?: ITrack[];
-    setSelectedTrack: React.Dispatch<React.SetStateAction<number>>;
-    selectedTrack?: { track: ITrack; position: number };
+    onPlayTrack: (track: number) => void;
+    playingTrack?: ITrack;
 }> = (properties) => {
     const reference = React.useRef();
 
     return (
         <div className={playlist} ref={reference}>
-            {properties.tracks?.map((x, ind) => {
+            {properties.tracks?.map((x, index) => {
                 return (
                     <PlaylistItem
-                        selected={properties?.selectedTrack?.position === ind}
+                        selected={properties?.playingTrack === x}
                         onDoubleClick={() => {
-                            properties.setSelectedTrack(ind);
+                            properties.onPlayTrack(index);
                         }}
-                        key={x.path}
+                        key={`path:${x.path}order:${index}`}
                         track={x}
                     ></PlaylistItem>
                 );
