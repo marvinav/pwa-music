@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { SvgIcon } from 'shared/ui';
-import close from 'static/assets/window/close.svg?raw';
-import minus from 'static/assets/window/minus.svg?raw';
+import Close from 'static/assets/window/close.svg?raw';
+import Minus from 'static/assets/window/minus.svg?raw';
 
 import { controlButton, icons, topBar } from './index.css';
 
@@ -18,11 +18,11 @@ const TopBar: React.VFC<TopBarProperties> = (properties) => {
             <div className="title">{properties.title}</div>
             <div className={controlButton}>
                 <SvgIcon
-                    src={minus}
+                    src={Minus}
                     className={icons({ action: 'minimize' })}
                     onClick={properties.onMimimize}
                 ></SvgIcon>
-                <SvgIcon src={close} className={icons({ action: 'close' })} onClick={properties.onClose}></SvgIcon>
+                <SvgIcon src={Close} className={icons({ action: 'close' })} onClick={properties.onClose}></SvgIcon>
             </div>
         </div>
     );

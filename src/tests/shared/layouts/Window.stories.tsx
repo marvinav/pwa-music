@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Window } from 'shared/ui/layouts/Window';
 
-import { DictionaryProvider } from '../__mocks__/dictionaryMock';
+import { DictionaryProvider } from '../../__mocks__/dictionaryMock';
 
 export default {
     component: Window,

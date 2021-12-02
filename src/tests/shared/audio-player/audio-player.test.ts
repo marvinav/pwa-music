@@ -1,7 +1,7 @@
 import 'regenerator-runtime/runtime';
 import { Playlist, AudioPlayer } from 'shared/audio-player';
 
-import { IPlaylist, Mp3Track, TrackProcessor } from '../../shared/audio-player/types';
+import { IPlaylist, Mp3Track, TrackProcessor } from '../../../shared/audio-player/types';
 
 const playlist: IPlaylist = {
     name: 'Test First',
@@ -98,7 +98,9 @@ describe('Audio Player', () => {
         const playlistInstance = player.playlist;
         await player.setPlaylist(playlist);
         expect(playlistAttached).toBeCalledTimes(2);
+        const warnSpy = jest.spyOn(console, 'warn').mockImplementation();
         playlistInstance.addTrack(playlistInstance.tracks[0]);
+        expect(warnSpy).toBeCalledWith('Playlist did not attach to player');
         expect(tracksChanged).toBeCalledTimes(2);
     });
 
