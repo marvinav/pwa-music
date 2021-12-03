@@ -3,6 +3,7 @@ import React from 'react';
 import { IPlaylist } from 'shared/audio-player/types';
 import { Player } from 'shared/player';
 import { SvgIcon, Window, BottomBar, Content } from 'shared/ui';
+import { Slider } from 'shared/ui';
 import addSong from 'static/assets/player/add-playlist-solid.svg?raw';
 
 import { ControlPanel } from './ui/ControlPanel';
@@ -70,6 +71,7 @@ const MusicPlayer: React.VFC = () => {
     return (
         <Window title="player" className="music-player">
             <Content>
+                <Slider />
                 <ControlPanel />
                 <PlaylistPanel
                     onPlayTrack={playTrack}
