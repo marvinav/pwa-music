@@ -2,9 +2,9 @@
 
 import 'regenerator-runtime/runtime';
 
-import { Assets } from 'entities/assets/Assets';
-import { env } from 'shared/env/env';
-import { cachedFailbackToNetworkFetch, cachedFetch } from 'shared/utils/helpers';
+import { Assets } from '@/entities/assets/Assets';
+import { env } from '@/shared/env/env';
+import { cachedFailbackToNetworkFetch, cachedFetch } from '@/shared/utils/helpers';
 
 declare const self: ServiceWorkerGlobalScope;
 console.log(`Service worker script of ${env.VERSION}v has been loaded`);

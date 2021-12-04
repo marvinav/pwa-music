@@ -2,13 +2,13 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useMemo } from 'react';
 
-import { Track } from 'shared/audio/types';
+import { ITrack } from '@/shared/audio-player/types';
 
 import { convertDurationToHumanRead } from '../lib/convertDurationToHumanRead';
 
 import { artist, title, duration as durationClassName, playlistItem } from './index.css';
 
-export const PlaylistItem: React.VFC<{ track: Track; selected: boolean; onDoubleClick: () => void }> = (properties) => {
+const PlaylistItem: React.VFC<{ track: ITrack; selected: boolean; onDoubleClick: () => void }> = (properties) => {
     const { track, selected } = properties;
 
     const duration = useMemo(() => {
@@ -39,3 +39,9 @@ PlaylistItem.propTypes = {
         }
     },
 };
+
+const PlaylistItemMemo = React.memo(PlaylistItem, (previous, next) => {
+    return previous.selected == next.selected && previous.track.path === next.track.path;
+});
+
+export { PlaylistItemMemo as PlaylistItem };

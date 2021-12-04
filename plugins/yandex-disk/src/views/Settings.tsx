@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { HandShake } from 'entities/plugins/types';
-import { FileSystemDataBase } from 'shared/files/index';
+import { HandShake } from '@/entities/plugins/types';
+import { FileSystemDataBase } from '@/shared/files/index';
 
 import { YandexStorageProviderSettings } from '..';
 import { YandexDiskClient } from '../YandexDiskClient';

@@ -1,17 +1,23 @@
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
-import { padding, rectangle, globalThemeVariables } from 'shared/ui/index.css';
+import { padding, rectangle, globalThemeVariables } from '@/shared/ui/index.css';
 
 export const controlPanel = style([
     {
         display: 'flex',
+        gap: 'inherit',
     },
     padding.s,
 ]);
 
 export const playerStateButtons = recipe({
-    base: rectangle.normal,
+    base: style([
+        rectangle.normal,
+        {
+            color: globalThemeVariables.button.background.primary,
+        },
+    ]),
     variants: {
         action: {
             previous: { transform: 'rotate(180deg)' },
@@ -24,8 +30,10 @@ export const playlist = style({
         '--duration-width': '40px',
     },
     display: 'flex',
+    overflow: 'auto',
     flexDirection: 'column',
     height: '100%',
+    zIndex: 2,
 });
 
 export const title = style({
@@ -83,6 +91,8 @@ export const visualization = style({
     gap: '1px',
     alignContent: 'flex-end',
     alignItems: 'flex-end',
+    position: 'absolute',
+    bottom: 0,
 });
 
 export const visualNode = style({

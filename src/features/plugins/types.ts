@@ -1,4 +1,4 @@
-import { View } from 'entities/plugins/types';
+import { View } from '@/entities/plugins/types';
 
 /**
  * Plugins of web application.

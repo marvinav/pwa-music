@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import React from 'react';
 
-import { List } from 'shared/ui/components';
+import { List } from '@/shared/ui';
 
 function filler() {
     return Math.random();

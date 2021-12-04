@@ -1,9 +1,14 @@
-export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
-  controls: {
-    matchers: {
-      color: /(background|color)$/i,
-      date: /Date$/,
+import React from 'react';
+
+import { useTheme, draculaTheme } from '../src/shared/ui';
+
+export const decorators = [
+    (Story) => {
+        useTheme(draculaTheme);
+        return (
+            <div>
+                <Story />
+            </div>
+        );
     },
-  },
-}
+];

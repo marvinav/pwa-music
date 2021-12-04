@@ -1,8 +1,8 @@
-import { AudioPlayer as AudioPlayerImplementation } from './AudioPlayer';
+import { AudioPlayer as AudioPlayerImplementation } from './lib/audio-player';
 
 export type AudioPlayer = AudioPlayerImplementation;
 
-export type Track = IcyCastTrack | Mp3Track;
+export type ITrack = IcyCastTrack | Mp3Track;
 
 export type Events = 'mode-changed' | 'playlist-changed' | 'track-start' | 'track-end' | 'state-changed';
 
@@ -12,10 +12,21 @@ export type ModeChangedEvent = AudioPlayer['_mode'];
 
 export type StateChangedEvent = AudioPlayer['_state'];
 
+export type PlaylistMetaChangedSubEvent = 'playlist-meta-changed';
+export type PlaylistTracksChangedSubEvent = 'playlist-tracks-changed';
+export type PlaylistAttachedSubEvent = 'playlist-attached';
+
+export type PlaylistChangedEvent =
+    | PlaylistAttachedSubEvent
+    | PlaylistMetaChangedSubEvent
+    | PlaylistTracksChangedSubEvent;
+
 export type GetEventOption<T extends Events> = T extends 'state-changed'
     ? StateChangedEvent
     : T extends 'mode-changed'
     ? ModeChangedEvent
+    : T extends 'playlist-changed'
+    ? PlaylistChangedEvent
     : undefined;
 
 export type EventHandler<T extends Events> = (event_: T, option: GetEventOption<T>) => Promise<void> | void;
@@ -57,13 +68,14 @@ export interface IcyCastTrack extends BaseTrack {
     recordable: true;
 }
 
-export interface Playlist {
+export interface IPlaylist {
     name: string;
     path: string;
-    tracks: Track[];
+    updatedAt: Date;
+    tracks: ITrack[];
 }
 
-export interface TrackProcessor<T extends Track> {
+export interface TrackProcessor<T extends ITrack> {
     type: T['mimeType'];
     play: (context: AudioContext, node: GainNode, track: T, onEnd?: () => Promise<void>) => Promise<void>;
     stop: () => Promise<void>;

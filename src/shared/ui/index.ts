@@ -1,5 +1,7 @@
 export { Button } from './components/Button';
+export { SvgButton } from './components/SvgButton';
 export { Icon } from './components/Icon';
+export { Slider } from './components/Slider';
 export { Layer } from './components/Layer';
 export { List } from './components/List';
 export { NavLink } from './components/NavLink';

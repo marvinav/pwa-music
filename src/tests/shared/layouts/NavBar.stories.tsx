@@ -1,9 +1,9 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import React, { useState } from 'react';
 
-import { NavBar } from 'shared/ui/layouts/NavBar';
+import { NavBar } from '@/shared/ui';
 
-import { DictionaryProvider } from '../__mocks__/dictionaryMock';
+import { DictionaryProvider } from '../../__mocks__/dictionaryMock';
 
 export default {
     component: NavBar,

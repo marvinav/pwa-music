@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import { dictionaryContext } from 'entities/dictionary';
-import { IDictionaryContextValue } from 'entities/dictionary/types';
+import { dictionaryContext } from '@/entities/dictionary';
+import { IDictionaryContextValue } from '@/entities/dictionary/types';
 
 export const DictionaryProvider: React.FC = (properties) => {
     const dictionary = useDictionary();

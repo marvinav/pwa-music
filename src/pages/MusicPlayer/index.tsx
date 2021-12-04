@@ -1,17 +1,18 @@
 import React from 'react';
 
-import { Player } from 'shared/audio';
-import { Playlist as PlaylistType, Track } from 'shared/audio/types';
-import { SvgIcon, Window, BottomBar, Content } from 'shared/ui/index';
-import addSong from 'static/assets/player/add-playlist-solid.svg?raw';
+import { IPlaylist } from '@/shared/audio-player/types';
+import { Player } from '@/shared/player';
+import { SvgIcon, Window, BottomBar, Content } from '@/shared/ui';
+import addSong from '@/static/assets/player/add-playlist-solid.svg?raw';
 
 import { ControlPanel } from './ui/ControlPanel';
-import { Playlist } from './ui/Playlist';
+import { Playlist as PlaylistPanel } from './ui/Playlist';
 import { Visualization } from './ui/Visualization';
 
-const playlist: PlaylistType = {
+const playlist: IPlaylist = {
     name: 'Only radio',
     path: 'cache',
+    updatedAt: new Date(),
     tracks: [
         {
             recordable: true,
@@ -33,40 +34,51 @@ const playlist: PlaylistType = {
 Player.setPlaylist(playlist);
 
 const MusicPlayer: React.VFC = () => {
-    const [selectedTrack, setSelectedTrack] = React.useState<Track>();
-    const [selectedPlaylist, setSelectedPlaylist] = React.useState(playlist);
+    const [playingTrackNumber, setPlayingTrackNumber] = React.useState<number>();
+    const [selectedPlaylist] = React.useState(Player.playlist);
+    const [tracks, setTracks] = React.useState(selectedPlaylist?.tracks);
 
     React.useEffect(() => {
-        Player.playlist != selectedPlaylist && Player.setPlaylist(playlist);
-        const id = Player.subscribe('track-start', (_event) => {
-            setSelectedTrack((x) => {
-                if (x?.path === Player?.state?.track?.track?.path) {
-                    return x;
-                }
-                return Player.playlist.tracks.find((x) => x.path === Player.state.track.track.path);
-            });
+        const id = Player.subscribe('playlist-changed', (_event, option) => {
+            setPlayingTrackNumber(Player.state?.track?.trackNumber);
+            if (option === 'playlist-tracks-changed') {
+                setTracks([...(Player?.playlist?.tracks ?? [])]);
+            }
+        });
+
+        return () => {
+            Player.unsubscribe(id);
+        };
+    }, []);
+
+    React.useEffect(() => {
+        const id = Player.subscribe('track-start', () => {
+            setPlayingTrackNumber(Player.state?.track?.trackNumber);
         });
         return () => {
             Player.unsubscribe(id);
         };
     }, [selectedPlaylist]);
 
-    const playTrack = React.useCallback(async (track: Track) => {
-        const result = await Player.play({
-            trackNumber: Player.playlist.tracks.findIndex((x) => x.path === track.path),
+    const playTrack = React.useCallback(async (position: number) => {
+        await Player.play({
+            trackNumber: position,
             relative: false,
         });
-        if (result) {
-            setSelectedTrack(track);
-        }
     }, []);
 
     return (
         <Window title="player" className="music-player">
             <Content>
-                <ControlPanel selectedTrack={selectedTrack} />
-                <Playlist setSelectedTrack={playTrack} selectedTrack={selectedTrack} tracks={selectedPlaylist.tracks} />
-                <Visualization />
+                <ControlPanel />
+                <PlaylistPanel
+                    onPlayTrack={playTrack}
+                    playingTrack={playingTrackNumber > -1 && tracks[playingTrackNumber]}
+                    tracks={tracks}
+                />
+                <div style={{ position: 'relative' }}>
+                    <Visualization />
+                </div>
             </Content>
             <BottomBar>
                 <SvgIcon
@@ -76,8 +88,7 @@ const MusicPlayer: React.VFC = () => {
                         event.preventDefault();
                     }}
                     onClick={() => {
-                        const tracks = [...selectedPlaylist.tracks];
-                        tracks.push({
+                        selectedPlaylist.addTrack({
                             recordable: true,
                             mimeType: 'icy-cast',
                             path: 'http://stream-dc1.radioparadise.com/rp_192m.ogg',
@@ -86,8 +97,6 @@ const MusicPlayer: React.VFC = () => {
                                 artist: 'OGG',
                             },
                         });
-                        const newPlaylist = { ...selectedPlaylist, tracks };
-                        setSelectedPlaylist(newPlaylist);
                     }}
                 ></SvgIcon>
             </BottomBar>

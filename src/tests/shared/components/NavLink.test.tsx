@@ -4,7 +4,7 @@ import React from 'react';
 
 import '@testing-library/jest-dom/extend-expect';
 
-import { navlink } from 'shared/ui/components/NavLink/index.css';
+import { navlink } from '@/shared/ui/components/NavLink/index.css';
 
 import story, { NewWindow, NavigateLink } from './NavLink.stories';
 it('Open link in new window', () => {

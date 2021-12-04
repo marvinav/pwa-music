@@ -136,12 +136,8 @@ var config = {
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
         alias: {
-            static: path.resolve(__dirname, 'static'),
-            app: path.resolve(__dirname, 'src/app'),
-            shared: path.resolve(__dirname, 'src/shared'),
-            features: path.resolve(__dirname, 'src/features'),
-            entities: path.resolve(__dirname, 'src/entities'),
-            pages: path.resolve(__dirname, 'src/pages'),
+            '@/static': path.resolve(__dirname, 'static'),
+            '@': path.resolve(__dirname, 'src'),
         },
     },
     output: {

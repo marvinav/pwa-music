@@ -1,4 +1,4 @@
-import { IFile, StorageEntry } from 'shared/files/types';
+import { IFile, StorageEntry } from '@/shared/files/types';
 
 export abstract class StorageProvider {
     _: 'storageProvider';

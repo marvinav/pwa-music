@@ -1,6 +1,16 @@
 import { nanoid } from 'nanoid';
 
-import { EventHandler, Events, GetEventOption, Playlist, Track, TrackProcessor } from './types';
+import {
+    EventHandler,
+    Events,
+    GetEventOption,
+    IPlaylist,
+    ITrack,
+    PlaylistChangedEvent,
+    TrackProcessor,
+} from '../types';
+
+import { Playlist } from './playlist';
 
 /**
  * @class AudioPlayer
@@ -11,7 +21,7 @@ export class AudioPlayer {
     private _gainNode: GainNode;
     private _analyzer: AnalyserNode;
     private _playlist: Playlist;
-    private readonly _processors: Record<Track['mimeType'], TrackProcessor<Track>> | Record<string, never>;
+    private readonly _processors: Record<ITrack['mimeType'], TrackProcessor<ITrack>> | Record<string, never>;
 
     private _subscriptions: {
         [key in Events | 'all']: Map<string, EventHandler<key extends Events ? key : Events>>;
@@ -26,7 +36,7 @@ export class AudioPlayer {
 
     private _currenTrack: {
         trackNumber: number;
-        track: Track;
+        track: ITrack;
         position: number;
     };
 
@@ -89,7 +99,7 @@ export class AudioPlayer {
         this.notify('mode-changed', mode);
     }
 
-    addProcessor(processor: TrackProcessor<Track>): void {
+    addProcessor(processor: TrackProcessor<ITrack>): void {
         this._processors[processor.type] = processor;
     }
 
@@ -103,12 +113,13 @@ export class AudioPlayer {
      *
      * @param playlist Playlist
      */
-    setPlaylist = async (playlist: Playlist): Promise<void> => {
+    setPlaylist = async (playlist: IPlaylist | Playlist): Promise<void> => {
         const currentTrack = playlist?.tracks?.findIndex((x) => {
             x.path === this._currenTrack?.track?.path;
         });
 
-        if (playlist.path !== this._playlist?.path || currentTrack < 0) {
+        const isSame = Playlist.isSame(this.playlist, playlist);
+        if (!isSame || currentTrack < 0) {
             await this.stop();
         }
 
@@ -116,8 +127,23 @@ export class AudioPlayer {
             this._currenTrack.trackNumber = currentTrack;
         }
 
-        this._playlist = playlist;
-        this.notify('playlist-changed');
+        if (!isSame) {
+            if (this._playlist) {
+                this._playlist.unbindPlayer();
+            }
+            this._playlist =
+                playlist instanceof Playlist
+                    ? playlist
+                    : new Playlist(playlist.path, playlist.name, playlist.tracks, playlist.updatedAt);
+
+            const notify = (option: PlaylistChangedEvent, playlist: Playlist) => {
+                if (this._playlist !== playlist) {
+                    throw new Error('Playlist was unbind from player');
+                }
+                this.notify('playlist-changed', option);
+            };
+            this._playlist.bindPlayer(notify);
+        }
     };
 
     /**
@@ -131,8 +157,8 @@ export class AudioPlayer {
      * - If mode is `none`, respected and negative out of range, when first track in playlist will be selected.
      * - If mode is respected and {@link AudioPlayer#state.track} equal `null`, when first track in playlist will be selected.
      */
-    play = async (track: { trackNumber: number; relative: boolean }): Promise<Track> => {
-        let _track: Track;
+    play = async (track: { trackNumber: number; relative: boolean }): Promise<ITrack> => {
+        let _track: ITrack;
         let trackNumber: number = track.trackNumber;
         if (!track.relative) {
             _track = this._playlist.tracks[track.trackNumber];
@@ -190,7 +216,7 @@ export class AudioPlayer {
         }
     };
 
-    getMetadata = (trackNumber: number): Track => {
+    getMetadata = (trackNumber: number): ITrack => {
         return this._playlist.tracks[trackNumber];
     };
 

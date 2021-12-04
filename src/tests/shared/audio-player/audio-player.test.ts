@@ -1,9 +1,11 @@
 import 'regenerator-runtime/runtime';
-import { AudioPlayer } from '../../shared/audio/AudioPlayer';
-import { Mp3Track, TrackProcessor } from '../../shared/audio/types';
+import { Playlist, AudioPlayer } from '@/shared/audio-player';
 
-const playlist: AudioPlayer['_playlist'] = {
+import { IPlaylist, Mp3Track, TrackProcessor } from '../../../shared/audio-player/types';
+
+const playlist: IPlaylist = {
     name: 'Test First',
+    updatedAt: new Date(),
     path: 'test/first',
     tracks: [
         {
@@ -15,8 +17,9 @@ const playlist: AudioPlayer['_playlist'] = {
     ],
 };
 
-const playlistSecond: AudioPlayer['_playlist'] = {
+const playlistSecond: IPlaylist = {
     name: 'Test Second',
+    updatedAt: new Date(),
     path: 'test/second',
     tracks: [
         {
@@ -73,13 +76,42 @@ describe('Audio Player', () => {
         expect(sub['playlist-changed'].size).toBe(0);
     });
 
+    it('Add and remove track for bound and unbound playlist ', async () => {
+        const tracksChanged = jest.fn();
+        const playlistAttached = jest.fn();
+        const player = new AudioPlayer();
+        const id = player.subscribe('playlist-changed', (event, option) => {
+            if (option === 'playlist-tracks-changed') {
+                tracksChanged();
+            } else if (option === 'playlist-attached') {
+                playlistAttached();
+            }
+        });
+        expect(id).toBeTruthy();
+        await player.setPlaylist(playlist);
+        expect(playlistAttached).toBeCalledTimes(1);
+        player.playlist.addTrack(playlist.tracks[0]);
+        expect(playlistAttached).toBeCalledTimes(1);
+        expect(tracksChanged).toBeCalledTimes(1);
+        player.playlist.removeTrack(1);
+        expect(tracksChanged).toBeCalledTimes(2);
+        const playlistInstance = player.playlist;
+        await player.setPlaylist(playlist);
+        expect(playlistAttached).toBeCalledTimes(2);
+        const warnSpy = jest.spyOn(console, 'warn').mockImplementation();
+        playlistInstance.addTrack(playlistInstance.tracks[0]);
+        expect(warnSpy).toBeCalledWith('Playlist did not attach to player');
+        expect(tracksChanged).toBeCalledTimes(2);
+    });
+
     it('Set playlists', async () => {
         const player = new AudioPlayer();
         expect(player.playlist).toBeUndefined();
-        await player.setPlaylist(playlist);
-        expect(player.playlist).toBe(playlist);
+        const playlistInstance = new Playlist(playlist.path, playlist.name, playlist.tracks, playlist.updatedAt);
+        await player.setPlaylist(playlistInstance);
+        expect(player.playlist).toBe(playlistInstance);
         await player.setPlaylist(playlistSecond);
-        expect(player.playlist).toBe(playlistSecond);
+        expect(player.playlist.path).toBe(playlistSecond.path);
     });
 
     it('Playlist-change subscriptions', async () => {
@@ -88,11 +120,12 @@ describe('Audio Player', () => {
         const id = player.subscribe('playlist-changed', mockFunction);
         await player.setPlaylist(playlist);
         expect(mockFunction).toBeCalled();
-        await player.setPlaylist(playlist);
+        const playlistInstance = new Playlist(playlist.path, playlist.name, playlist.tracks, playlist.updatedAt);
+        await player.setPlaylist(playlistInstance);
         expect(mockFunction).toBeCalledTimes(2);
-        expect(player.playlist).toBe(playlist);
+        expect(player.playlist).toBe(playlistInstance);
         player.unsubscribe(id, 'playlist-changed');
-        await player.setPlaylist(playlist);
+        await player.setPlaylist(playlistInstance);
         expect(mockFunction).toBeCalledTimes(2);
     });
 
@@ -132,7 +165,7 @@ describe('Audio Player', () => {
         currentTrack = 0;
         const track = await player.play({ trackNumber: currentTrack, relative: false });
         expect(mockPlay).toBeCalledTimes(1);
-        expect(track).toBe(playlistSecond.tracks[currentTrack]);
+        expect(track).toEqual(playlistSecond.tracks[currentTrack]);
         expect(player.state.track?.trackNumber).toBe(0);
         await onEndBox(); // End first, start second
         expect(mockSubscription).toBeCalledTimes(1);
@@ -146,7 +179,7 @@ describe('Audio Player', () => {
         expect(player.state.track).toBeUndefined();
         expect(mockStop).toBeCalledTimes(1);
         const trackAfterStop = await player.play({ trackNumber: 1, relative: false });
-        expect(trackAfterStop).toBe(playlistSecond.tracks[1]);
+        expect(trackAfterStop).toEqual(playlistSecond.tracks[1]);
         expect(player.state.state).toBe('play');
         await onEndBox(); // End 2, play 3
         await onEndBox(); // End 3, stop playlist

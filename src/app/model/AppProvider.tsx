@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
-import { DictionaryProvider } from 'entities/dictionary';
-import { PluginProvider } from 'features/plugins';
+import { DictionaryProvider } from '@/entities/dictionary';
+import { PluginProvider } from '@/features/plugins';
 
 // В этом месте происходит объявление всех провайдеров
 // Порядок вложенности в основном может быть хаотичным

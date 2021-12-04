@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import React from 'react';
 
-import { Spinner } from 'shared/ui/components';
+import { Spinner } from '@/shared/ui';
 
 export default {
     component: Spinner,
