@@ -20,12 +20,11 @@ module.exports = {
             type: 'asset/source',
             resourceQuery: /raw/,
         });
-        console.log(config);
-        console.log(appWebpack());
         config.resolve.alias = {
             ...(config.resolve.alias || {}),
             ...appWebpack().resolve.alias,
         };
+        console.log(config.resolve.alias);
         config.output.devtoolModuleFilenameTemplate = 'file:///[absolute-resource-path]';
         return config;
     },

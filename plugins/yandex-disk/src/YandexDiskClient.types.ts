@@ -1,4 +1,4 @@
-import { StorageEntry } from 'shared/files/types';
+import { StorageEntry } from '@/shared/files/types';
 
 import { YandexDiskClient } from './YandexDiskClient';
 

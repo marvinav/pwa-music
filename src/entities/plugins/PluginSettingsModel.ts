@@ -1,6 +1,6 @@
 import localforage from 'localforage';
 
-import { PluginSettingsConnection } from 'entities/plugins/types';
+import { PluginSettingsConnection } from '@/entities/plugins/types';
 
 export class PluginSettingsModel<T> extends PluginSettingsConnection<T> {
     private readonly pluginStorageKey: string;

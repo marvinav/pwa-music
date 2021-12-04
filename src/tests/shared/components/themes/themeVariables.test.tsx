@@ -1,5 +1,5 @@
-import { iterateThemeVariables, setThemeVariables, useTheme } from 'shared/ui/components/themes';
-import { draculaTheme } from 'shared/ui/components/themes/dracula.theme';
+import { draculaTheme } from '@/shared/ui';
+import { iterateThemeVariables, setThemeVariables, useTheme } from '@/shared/ui/components/themes/index';
 
 it('Iterate theme variables', () => {
     const object = {

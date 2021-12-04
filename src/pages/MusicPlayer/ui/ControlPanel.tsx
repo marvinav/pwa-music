@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { ITrack } from 'shared/audio-player/types';
-import { Player } from 'shared/player';
-import { SvgButton } from 'shared/ui';
-import next from 'static/assets/player/next-solid.svg?raw';
-import pause from 'static/assets/player/pause-solid.svg?raw';
-import play from 'static/assets/player/play-solid.svg?raw';
+import { ITrack } from '@/shared/audio-player/types';
+import { Player } from '@/shared/player';
+import { SvgButton } from '@/shared/ui';
+import next from '@/static/assets/player/next-solid.svg?raw';
+import pause from '@/static/assets/player/pause-solid.svg?raw';
+import play from '@/static/assets/player/play-solid.svg?raw';
 
 import { controlPanel, playerStateButtons } from './index.css';
 

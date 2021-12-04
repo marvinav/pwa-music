@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import React from 'react';
 
-import { NavLink } from 'shared/ui/components/NavLink';
+import { NavLink } from '@/shared/ui';
 
 const story: ComponentMeta<typeof NavLink> = {
     component: NavLink,

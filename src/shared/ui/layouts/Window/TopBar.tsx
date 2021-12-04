@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { SvgIcon } from 'shared/ui';
-import Close from 'static/assets/window/close.svg?raw';
-import Minus from 'static/assets/window/minus.svg?raw';
+import { SvgIcon } from '@/shared/ui';
+import Close from '@/static/assets/window/close.svg?raw';
+import Minus from '@/static/assets/window/minus.svg?raw';
 
 import { controlButton, icons, topBar } from './index.css';
 

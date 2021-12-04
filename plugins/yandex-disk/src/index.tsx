@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { HandShake, IBaseManifest, StorageProviderPlugin, StorageProvider, View } from 'entities/plugins/types';
-import { IFile, StorageEntry } from 'shared/files/types';
+import { HandShake, IBaseManifest, StorageProviderPlugin, StorageProvider, View } from '@/entities/plugins/types';
+import { IFile, StorageEntry } from '@/shared/files/types';
 
 import { YandexDiskClient } from './YandexDiskClient';
 import { Resource } from './YandexDiskClient.types';

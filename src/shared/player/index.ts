@@ -1,5 +1,5 @@
-import { AudioPlayer } from 'shared/audio-player';
-import { CommonPreprocessor } from 'shared/audio-player';
+import { AudioPlayer } from '@/shared/audio-player';
+import { CommonPreprocessor } from '@/shared/audio-player';
 
 const Player = new AudioPlayer();
 

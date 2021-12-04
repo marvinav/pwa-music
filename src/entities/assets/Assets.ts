@@ -1,5 +1,5 @@
-import { env } from 'shared/env/env';
-import { cachedFetch } from 'shared/utils/helpers';
+import { env } from '@/shared/env/env';
+import { cachedFetch } from '@/shared/utils/helpers';
 
 import { AssetBase, AssetEntry, RawAsset } from './types';
 

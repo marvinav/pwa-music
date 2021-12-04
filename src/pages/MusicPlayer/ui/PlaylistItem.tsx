@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useMemo } from 'react';
 
-import { ITrack } from 'shared/audio-player/types';
+import { ITrack } from '@/shared/audio-player/types';
 
 import { convertDurationToHumanRead } from '../lib/convertDurationToHumanRead';
 

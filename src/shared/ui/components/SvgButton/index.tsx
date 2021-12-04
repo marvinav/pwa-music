@@ -1,6 +1,6 @@
 import React, { SyntheticEvent } from 'react';
 
-import { SvgIcon } from 'shared/ui';
+import { SvgIcon } from '@/shared/ui';
 
 import { GlobalThemeVariables } from '../themes/theme.css';
 import { useBaseClassName } from '../utils/useBaseClassName';

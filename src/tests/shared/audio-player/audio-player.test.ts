@@ -1,5 +1,5 @@
 import 'regenerator-runtime/runtime';
-import { Playlist, AudioPlayer } from 'shared/audio-player';
+import { Playlist, AudioPlayer } from '@/shared/audio-player';
 
 import { IPlaylist, Mp3Track, TrackProcessor } from '../../../shared/audio-player/types';
 

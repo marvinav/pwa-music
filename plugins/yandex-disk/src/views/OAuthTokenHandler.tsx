@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { HandShake } from 'entities/plugins/types';
-import { Loading } from 'pages/Loading';
+import { HandShake } from '@/entities/plugins/types';
+import { Loading } from '@/pages/Loading';
 
 import { YandexStorageProviderSettings } from '..';
 import { parseHash } from '../helpers/parseHash';

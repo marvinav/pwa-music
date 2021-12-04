@@ -3,7 +3,7 @@ import React from 'react';
 
 import '@testing-library/jest-dom/extend-expect';
 
-import { svgIconContainer } from 'shared/ui/components/SvgIcon/index.css';
+import { svgIconContainer } from '@/shared/ui/components/SvgIcon/index.css';
 
 import story, { SvgIconSave } from './SvgIcon.stories';
 

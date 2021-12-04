@@ -21,23 +21,11 @@
     ],
     "baseUrl": "./",
     "paths": {
-      "static/*": [
+      "@/static/*": [
         "static/*"
       ],
-      "app/*": [
-        "src/app/*"
-      ],
-      "shared/*": [
-        "src/shared/*"
-      ],
-      "features/*": [
-        "src/features/*"
-      ],
-      "entities/*": [
-        "src/entities/*"
-      ],
-      "pages/*": [
-        "src/pages/*"
+      "@/*": [
+        "src/*"
       ],
     },
     "outDir": "dist/",

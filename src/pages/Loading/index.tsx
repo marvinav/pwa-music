@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Spinner } from 'shared/ui';
+import { Spinner } from '@/shared/ui';
 
 const style = {
     height: '100vh',

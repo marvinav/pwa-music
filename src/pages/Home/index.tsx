@@ -1,10 +1,10 @@
 import localforage from 'localforage';
 import React from 'react';
 
-import { useDictionary } from 'entities/dictionary';
-import { usePlugin } from 'features/plugins';
-import { env } from 'shared/env/env';
-import { Icon, Shined } from 'shared/ui';
+import { useDictionary } from '@/entities/dictionary';
+import { usePlugin } from '@/features/plugins';
+import { env } from '@/shared/env/env';
+import { Icon, Shined } from '@/shared/ui';
 
 const Home: React.VFC = () => {
     const { d } = useDictionary();

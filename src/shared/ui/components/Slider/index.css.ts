@@ -1,7 +1,7 @@
 import { createVar, style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
-import { globalThemeVariables, rectangle } from 'shared/ui/index.css';
+import { globalThemeVariables, rectangle } from '@/shared/ui/index.css';
 
 export const size = createVar();
 

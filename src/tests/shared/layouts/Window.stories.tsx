@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import React from 'react';
 
-import { Window } from 'shared/ui/layouts/Window';
+import { Window, Content } from '@/shared/ui';
 
 import { DictionaryProvider } from '../../__mocks__/dictionaryMock';
 
@@ -12,7 +12,7 @@ export default {
     parameters: { layout: 'none' },
     args: {
         title: 'Setting Window',
-        children: <div>Test</div>,
+        children: <Content>Test</Content>,
         fullSize: true,
     },
 } as ComponentMeta<typeof Window>;

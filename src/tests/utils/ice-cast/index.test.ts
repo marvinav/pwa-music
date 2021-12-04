@@ -1,5 +1,5 @@
 import 'regenerator-runtime/runtime';
-import { IcyCastReader } from 'shared/utils/IcyCastReader';
+import { IcyCastReader } from '@/shared/utils/IcyCastReader';
 
 import { sample } from './sample';
 

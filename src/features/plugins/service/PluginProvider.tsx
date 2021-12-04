@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { PluginSettingsModel } from 'entities/plugins';
-import { HandShake, LoadingView, Manifest, Plugin, View } from 'entities/plugins/types';
-import { env } from 'shared/env/env';
+import { PluginSettingsModel } from '@/entities/plugins';
+import { HandShake, LoadingView, Manifest, Plugin, View } from '@/entities/plugins/types';
+import { env } from '@/shared/env/env';
 
 import { pluginManager } from '../service/PluginManager';
 import { IPluginContextValue } from '../types';

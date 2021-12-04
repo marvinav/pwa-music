@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import React from 'react';
 
-import { Icon } from 'shared/ui/components';
+import { Icon } from '@/shared/ui';
 
 export default {
     component: Icon,
