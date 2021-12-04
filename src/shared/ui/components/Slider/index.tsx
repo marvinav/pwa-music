@@ -1,18 +1,26 @@
 import React from 'react';
 
-import { sliderAnchor, sliderBackground, sliderContainer, sliderScroll } from './index.css';
+import { sliderContainer, sliderScroll } from './index.css';
 
 export interface SliderProperties {
     size?: 's' | 'normal' | 'l';
+    onChange: (value: number) => void;
+    value: number;
+    maxValue?: number;
 }
 
-export const Slider: React.VFC<SliderProperties> = ({ size }) => {
+export const Slider: React.VFC<SliderProperties> = ({ size, value, onChange, maxValue }) => {
     return (
-        <div className={sliderContainer}>
-            <div className={sliderBackground({ size })}></div>
-            <div className={sliderScroll({ size })}>
-                <div className={sliderAnchor({ size })}></div>
-            </div>
+        <div className={sliderContainer({ size })}>
+            <input
+                value={value}
+                type="range"
+                max={maxValue}
+                onChange={(event) => {
+                    onChange(Number.parseInt(event.currentTarget.value, 10));
+                }}
+                className={sliderScroll({ size })}
+            />
         </div>
     );
 };

@@ -1,18 +1,11 @@
-import { createVar, style } from '@vanilla-extract/css';
+import { createVar } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
-import { globalThemeVariables, rectangle } from '@/shared/ui/index.css';
+import { globalThemeVariables } from '@/shared/ui/index.css';
 
 export const size = createVar();
 
-export const sliderContainer = style({
-    display: 'flex',
-    position: 'relative',
-    flexDirection: 'row',
-    margin: globalThemeVariables.padding.normal,
-});
-
-export const sliderBackground = recipe({
+export const sliderContainer = recipe({
     variants: {
         size: {
             s: {
@@ -29,14 +22,14 @@ export const sliderBackground = recipe({
             },
         },
         color: {
-            primary: {
-                backgroundColor: globalThemeVariables.button.background.primary,
-            },
+            primary: {},
         },
     },
     base: {
-        position: 'relative',
         width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     defaultVariants: {
         size: 's',
@@ -48,13 +41,16 @@ export const sliderScroll = recipe({
     variants: {
         size: {
             s: {
-                borderRadius: globalThemeVariables.size.s,
+                vars: { '--border-radius': globalThemeVariables.size.s },
+                height: globalThemeVariables.size.s,
             },
             normal: {
-                borderRadius: globalThemeVariables.size.normal,
+                vars: { '--border-radius': globalThemeVariables.size.s },
+                height: globalThemeVariables.size.normal,
             },
             l: {
-                borderRadius: globalThemeVariables.size.l,
+                vars: { '--border-radius': globalThemeVariables.size.s },
+                height: globalThemeVariables.size.l,
             },
         },
         color: {
@@ -64,36 +60,68 @@ export const sliderScroll = recipe({
         },
     },
     base: {
-        vars: {
-            '--slider-scroll-width': '50%',
+        width: '100%',
+        borderRadius: 'var(--border-radius)',
+        WebkitAppearance: 'none',
+        background: 'transparent',
+        selectors: {
+            '&::-webkit-slider-thumb': {
+                WebkitAppearance: 'none',
+                border: '1px solid #000000',
+                width: '16px',
+                height: '100%',
+                background: '#ffffff',
+                borderRadius: 'var(--border-radius)',
+                cursor: 'pointer',
+            },
+            '&:focus': {
+                outline: 'none',
+            },
+            '&::-ms-track': {
+                width: '100%',
+                cursor: 'pointer',
+                background: 'transparent',
+                borderColor: 'transparent',
+                borderWidth: '16px 0',
+                color: 'transparent',
+                borderRadius: 'var(--border-radius)',
+            },
+            '&::-webkit-slider-runnable-track': {
+                width: '100%',
+                height: '100%',
+                cursor: 'pointer',
+                background: '#3071a9',
+                border: '0.2px solid #010101',
+                borderRadius: 'var(--border-radius)',
+            },
+            '&:focus::-webkit-slider-runnable-track': {
+                background: '#367ebd',
+            },
+            '&::-moz-range-track': {
+                width: '100%',
+                cursor: 'pointer',
+                background: '#3071a9',
+                border: '0.2px solid #010101',
+                borderRadius: 'var(--border-radius)',
+            },
+            '&::-moz-range-thumb': {
+                border: '1px solid #000000',
+                width: '16px',
+                background: '#ffffff',
+                cursor: 'pointer',
+                borderRadius: 'var(--border-radius)',
+            },
+            '&::-ms-thumb': {
+                border: '1px solid #000000',
+                width: '16px',
+                background: '#ffffff',
+                borderRadius: 'var(--border-radius)',
+                cursor: 'pointer',
+            },
         },
-        position: 'absolute',
-        alignContent: 'center',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        display: 'flex',
-        width: 'var(--slider-scroll-width)',
-        minWidth: 'fit-content',
     },
     defaultVariants: {
         size: 's',
         color: 'primary',
-    },
-});
-
-export const sliderAnchor = recipe({
-    variants: {
-        size: {
-            s: [rectangle['s']],
-            normal: [rectangle['normal']],
-            l: [rectangle['l']],
-        },
-    },
-    base: {
-        borderRadius: '50%',
-        background: 'white',
-    },
-    defaultVariants: {
-        size: 's',
     },
 });

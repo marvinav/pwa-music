@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ITrack } from '@/shared/audio-player/types';
 import { Player } from '@/shared/player';
-import { SvgButton } from '@/shared/ui';
+import { Slider, SvgButton } from '@/shared/ui';
 import next from '@/static/assets/player/next-solid.svg?raw';
 import pause from '@/static/assets/player/pause-solid.svg?raw';
 import play from '@/static/assets/player/play-solid.svg?raw';
@@ -14,8 +14,15 @@ const ControlIcon = React.memo(SvgButton, () => {
 });
 
 export const ControlPanel: React.VFC<{ selectedTrack?: ITrack }> = (_properties) => {
+    const [gain, setGain] = React.useState(Player.nodes.gain.gain.value * 100);
+
+    React.useEffect(() => {
+        Player.nodes.gain.gain.setValueAtTime(gain / 100, 0);
+    }, [gain]);
+
     return (
         <div className={controlPanel}>
+            <Slider onChange={setGain} value={gain}></Slider>
             <ControlIcon
                 type="primary"
                 onClick={() => Player.play({ trackNumber: -1, relative: true })}
