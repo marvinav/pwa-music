@@ -1,7 +1,7 @@
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
-import { padding, rectangle, globalThemeVariables } from '@/shared/ui/index.css';
+import { padding, globalThemeVariables } from '@/shared/ui/index.css';
 
 export const controlPanel = style([
     {
@@ -12,12 +12,6 @@ export const controlPanel = style([
 ]);
 
 export const playerStateButtons = recipe({
-    base: style([
-        rectangle.normal,
-        {
-            color: globalThemeVariables.button.background.primary,
-        },
-    ]),
     variants: {
         action: {
             previous: { transform: 'rotate(180deg)' },
