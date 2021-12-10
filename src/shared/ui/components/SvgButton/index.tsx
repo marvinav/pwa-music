@@ -9,7 +9,7 @@ import { svgButton } from './index.css';
 
 export interface SvgButtonProperties {
     src: string;
-    type: keyof GlobalThemeVariables['button']['background'];
+    type?: keyof GlobalThemeVariables['button']['background'];
     onClick: (event: SyntheticEvent) => void;
     className?: string;
 }
