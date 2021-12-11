@@ -1,4 +1,4 @@
-import { createVar } from '@vanilla-extract/css';
+import { createVar, style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
 import { globalThemeVariables } from '@/shared/ui/index.css';
@@ -36,7 +36,7 @@ export const sliderContainer = recipe({
         color: 'primary',
     },
 });
-
+// TODO: change slider color
 export const sliderScroll = recipe({
     variants: {
         size: {
@@ -63,16 +63,16 @@ export const sliderScroll = recipe({
         width: '100%',
         borderRadius: 'var(--border-radius)',
         WebkitAppearance: 'none',
+        overflow: 'hidden',
         background: 'transparent',
         selectors: {
             '&::-webkit-slider-thumb': {
                 WebkitAppearance: 'none',
-                border: '1px solid #000000',
-                width: '16px',
-                height: '100%',
-                background: '#ffffff',
-                borderRadius: 'var(--border-radius)',
+                width: '0',
+                height: '0',
+                background: 'darkred',
                 cursor: 'pointer',
+                boxShadow: '-100vw 0 0 100vw red',
             },
             '&:focus': {
                 outline: 'none',
@@ -84,7 +84,6 @@ export const sliderScroll = recipe({
                 borderColor: 'transparent',
                 borderWidth: '16px 0',
                 color: 'transparent',
-                borderRadius: 'var(--border-radius)',
             },
             '&::-webkit-slider-runnable-track': {
                 width: '100%',
@@ -105,18 +104,26 @@ export const sliderScroll = recipe({
                 borderRadius: 'var(--border-radius)',
             },
             '&::-moz-range-thumb': {
-                border: '1px solid #000000',
-                width: '16px',
-                background: '#ffffff',
+                width: '0',
+                height: '0',
+                boxShadow: '-100vw 0 0 100vw red',
                 cursor: 'pointer',
                 borderRadius: 'var(--border-radius)',
             },
             '&::-ms-thumb': {
-                border: '1px solid #000000',
-                width: '16px',
-                background: '#ffffff',
+                width: '0',
+                height: '0',
                 borderRadius: 'var(--border-radius)',
                 cursor: 'pointer',
+            },
+            '&::-ms-fill-lower': {
+                background: 'red',
+            },
+            '&::-ms-ticks-after': {
+                display: 'none',
+            },
+            '&::-ms-ticks-before': {
+                display: 'none',
             },
         },
     },
@@ -124,4 +131,10 @@ export const sliderScroll = recipe({
         size: 's',
         color: 'primary',
     },
+});
+
+export const scrollWidthVariable = createVar();
+
+export const sliderScrollBackground = style({
+    width: 'var(--slider-scroll-background-width)',
 });

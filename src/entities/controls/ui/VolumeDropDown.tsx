@@ -24,7 +24,7 @@ export const VolumeDropDown: React.VFC = () => {
 
     return (
         <DropDown host={<GainHost gain={gain} />}>
-            <Slider onChange={setGain} value={gain}></Slider>
+            <Slider step={2} min={0} max={100} onChange={setGain} value={gain}></Slider>
         </DropDown>
     );
 };

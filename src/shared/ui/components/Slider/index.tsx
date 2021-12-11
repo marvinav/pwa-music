@@ -6,16 +6,22 @@ export interface SliderProperties {
     size?: 's' | 'normal' | 'l';
     onChange: (value: number) => void;
     value: number;
-    maxValue?: number;
+    max?: number;
+    min?: number;
+    step?: number;
+    list?: string;
 }
 
-export const Slider: React.VFC<SliderProperties> = ({ size, value, onChange, maxValue }) => {
+export const Slider: React.VFC<SliderProperties> = ({ size, value, onChange, max, step, min, list }) => {
     return (
         <div className={sliderContainer({ size })}>
             <input
                 value={value}
+                step={step}
                 type="range"
-                max={maxValue}
+                max={max}
+                list={list}
+                min={min}
                 onChange={(event) => {
                     onChange(Number.parseInt(event.currentTarget.value, 10));
                 }}
