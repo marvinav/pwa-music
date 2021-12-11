@@ -6,20 +6,19 @@ import { useBaseClassName } from '../utils/useBaseClassName';
 import { layer } from './index.css';
 
 export interface LayerProperties extends BaseComponentProperties {
-    level: 0 | 1;
+    level?: 0 | 1;
+    rounded?: true;
+    fadeIn?: true;
 }
 
 export const Layer: React.FC<
     React.DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & LayerProperties
-> = (properties) => {
-    const baseClassName = useBaseClassName(properties, layer[properties.level]);
-    const standartProperties = { ...properties };
-
-    delete standartProperties.level;
+> = ({ level, fadeIn, className, rounded, children, ...properties }) => {
+    const baseClassName = useBaseClassName({ className }, layer({ level, rounded, fadeIn }));
 
     return (
-        <div {...standartProperties} className={baseClassName}>
-            {properties.children}
+        <div {...properties} className={baseClassName}>
+            {children}
         </div>
     );
 };
