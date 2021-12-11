@@ -8,6 +8,7 @@ export { NavLink } from './components/NavLink';
 export { Shined } from './components/Shined';
 export { Spinner } from './components/Spinner';
 export { SvgIcon } from './components/SvgIcon';
+export { DropDown } from './components/Dropdown';
 export { draculaTheme } from './components/themes/dracula.theme';
 export { useTheme } from './components/themes/index';
 export { Background, BackgroundMemo } from './layouts/Background';

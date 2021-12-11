@@ -1,6 +1,6 @@
 // @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto&display=swap');
 
-import { style } from '@vanilla-extract/css';
+import { keyframes, style } from '@vanilla-extract/css';
 
 import { globalThemeVariables } from './themes/theme.css';
 import { DeviceSize, PaddinSize, Size } from './types';
@@ -48,6 +48,12 @@ export const mediaQueries: Record<DeviceSize, string> = {
     xxl: '(min-width: 1400px)',
 };
 
+export const fadeIn = keyframes({
+    '0%': { opacity: 0 },
+    '100%': { opacity: 1 },
+});
+
+export const fadeInAnimation = `1s ${fadeIn}`;
 // // Layers
 
 // .layer-0 .shine-shadow,
