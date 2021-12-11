@@ -78,6 +78,14 @@ export class AudioPlayer {
     }
 
     /**
+     * Set Volume
+     */
+    setVolume(volume: number): void {
+        console.log(volume);
+        this._gainNode.gain.setValueAtTime(volume, 0);
+    }
+
+    /**
      * Get player current state
      * @returns Player state
      */

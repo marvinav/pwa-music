@@ -5,11 +5,11 @@ import { Layer } from '@/shared/ui';
 import { dropDownContainer, dropDownMenu } from './index.css';
 
 export interface DropDownProperties {
-    Host: React.ComponentType;
+    host: Element | React.ReactNode;
     isOpen?: boolean;
 }
 
-export const DropDown: React.FC<DropDownProperties> = ({ children, Host, isOpen }) => {
+export const DropDown: React.FC<DropDownProperties> = ({ children, host, isOpen }) => {
     const [open, setOpen] = React.useState(isOpen);
     const reference = React.useRef<HTMLDivElement>(null);
 
@@ -39,7 +39,7 @@ export const DropDown: React.FC<DropDownProperties> = ({ children, Host, isOpen 
                 }
             }}
         >
-            <Host />
+            {host}
             {open && (
                 <div ref={reference} className={dropDownContainer}>
                     <Layer level={0} className={dropDownMenu} fadeIn rounded>
